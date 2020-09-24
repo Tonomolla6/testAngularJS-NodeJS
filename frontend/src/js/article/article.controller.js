@@ -1,6 +1,6 @@
 import marked from 'marked';
 
-class ArticleCtrl {
+class ServiceCtrl {
   constructor(article, User, Comments, $sce, $rootScope) {
     'ngInject';
 
@@ -53,5 +53,4 @@ class ArticleCtrl {
 
 }
 
-
-export default ArticleCtrl;
+export default ServiceCtrl;
