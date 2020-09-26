@@ -1,8 +1,10 @@
 class HomeCtrl {
-  constructor(User, Tags, AppConstants, services) {
+  constructor(User, Tags, AppConstants, services, comments) {
     'ngInject';
     this.services = services;
+    this.comments = comments;
     this.appName = AppConstants.appName;
+    
     // Get list of all tags
     Tags
       .getAll()
@@ -23,7 +25,6 @@ class HomeCtrl {
   changeList(newList) {
     this._$scope.$broadcast('setListTo', newList);
   }
-
 
 }
 

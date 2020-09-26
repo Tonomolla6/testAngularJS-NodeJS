@@ -53,28 +53,28 @@ router.get('/comments', function (req, res, next) {
     return Promise.all([
         Comment.find()
             .limit(Number(limit))
+            .populate('user')
         ]).then(function (results) {
             var comments = results[0];
-            var commentsCount = results[1];
 
             return res.json({
-                comments: comments,
-                commentsCount: commentsCount
+                comments: comments
         });
     });
 });
 
-// // Return a Service
-// router.get('/:service', auth.optional, function (req, res, next) {
-//     Promise.all([
-//         req.payload ? User.findById(req.payload.id) : null,
-//         req.service.populate('author').execPopulate()
-//     ]).then(function (results) {
-//         var user = results[0];
-
-//         return res.json({ service: req.service.toJSONFor(user) });
-//     }).catch(next);
-// });
+// Return a Service
+router.get('/:service', function (req, res, next) {
+    console.log(req.params);
+    return Promise.all([
+        Service.findOne({"slug":req.params.service})
+        ]).then(function (results) {
+            var services = results[0];
+            return res.json({
+                services:services
+            });
+        });
+});
 
 // Create new service
 router.post('/', auth.required, function (req, res, next) {

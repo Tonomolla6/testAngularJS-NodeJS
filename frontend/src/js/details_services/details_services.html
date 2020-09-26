@@ -1,0 +1,83 @@
+<style>
+.center {
+      display: flex;
+      flex-direction: column;
+      /* justify-content: center; */
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    .padding h4 {
+      margin-top: 40px;
+    }
+
+    .banner {
+      height: 250px;
+      background-color: white;
+      background-image: url(https://i.postimg.cc/h4z3LJ15/server-90389.jpg) !important;
+      display: flex;
+      padding: 0px;
+    }
+
+    .banner3 {
+      background-color: #00000063;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      height: 100%;
+    }
+
+    .page {
+      border-top: 4px solid #2a96f4;
+      min-height: 350px;
+    }
+
+    .inf {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .arround {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .row {
+      height: 245px;
+    }
+
+</style>
+ <div class="details-service-page primary">
+
+  <!-- Splash banner that only shows when not logged in -->
+  <div class="banner" show-authed="false">
+    <div class="banner3">
+      <h1>¿Quieres que nos ocupemos de todo?</h1>
+      <p></p>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="row">
+      <!-- Main view - contains tabs & article list -->
+      <div class="col-md-12 arround">
+          <h2>Servicio seleccionado: <strong>{{$ctrl.service.title}}</strong></h2>
+          <div>
+            <h4>Descripcion</h4>
+            <p>{{$ctrl.service.description}}</p>
+          </div>
+          
+          <div class="inf">
+            <h5>Precio: <strong>{{$ctrl.service.price}}</strong></h5>
+            <div class="button-primary">Pedir infomacion</div>
+          </div>
+          
+      </div>
+    </div>
+  </div>
+</div>

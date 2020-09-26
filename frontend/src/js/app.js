@@ -19,7 +19,9 @@ import './services';
 import './auth';
 import './settings';
 import './editor';
+import './download';
 import './customer_services';
+import './details_services';
 
 // Create and bootstrap application
 const requires = [
@@ -33,8 +35,10 @@ const requires = [
   'app.services',
   'app.auth',
   'app.settings',
+  'app.download',
   'app.editor',
-  'app.customer_services'
+  'app.customer_services',
+  'app.details_services'
 ];
 
 // Mount on window for testing

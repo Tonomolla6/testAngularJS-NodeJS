@@ -4,7 +4,6 @@ class ServiceCtrl {
 
     this.appName = "hola";
     this.services = services;
-    console.log(services);
     
   }
 }

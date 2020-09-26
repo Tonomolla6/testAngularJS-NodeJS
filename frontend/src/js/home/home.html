@@ -23,17 +23,11 @@
   }
 
   .page {
-    background-color: white;
-    padding: 50px;
     border-top: 4px solid #2a96f4;
     transform: translateY(-50px);
   }
-
-  .home-page {
-    background-color: #e6e6e6;
-  }
 </style>
-<div class="home-page">
+<div class="home-page primary">
 
   <!-- Splash banner that only shows when not logged in -->
   <div class="banner" show-authed="false">
@@ -57,7 +51,7 @@
         <hr class="space">
         <services-list services="$ctrl.services"></services-list>
         <hr class="space">
-        <services-comments></services-comments>
+        <services-comments comments="$ctrl.comments"></services-comments>
       </div>
 
       <!-- Sidebar where popular tags are listed -->

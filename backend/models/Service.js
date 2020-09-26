@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var slug = require('slug');
-var User = mongoose.model('User');
 
 var ServiceSchema = new mongoose.Schema({
   slug: {type: String, lowercase: true, unique: true},
@@ -9,7 +8,6 @@ var ServiceSchema = new mongoose.Schema({
   description: String,
   price: String,
   body: String,
-  favoritesCount: {type: Number, default: 0},
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {timestamps: true});

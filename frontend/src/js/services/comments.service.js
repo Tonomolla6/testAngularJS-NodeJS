@@ -17,9 +17,9 @@ export default class Comments {
 
   }
 
-  getAll(slug) {
+  getAll() {
     return this._$http({
-      url: `${this._AppConstants.api}/articles/${slug}/comments`,
+      url: `${this._AppConstants.api}/services/comments`,
       method: 'GET',
     }).then((res) => res.data.comments);
 

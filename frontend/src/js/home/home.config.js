@@ -12,8 +12,8 @@ function HomeConfig($stateProvider) {
       services: function(Services) { 
         return Services.getServices();
       },
-      comments: function(Services) { 
-        return Services.getComments();
+      comments: function(Comments) { 
+        return Comments.getAll();
       }
     }
   });
