@@ -7,7 +7,12 @@ function HomeConfig($stateProvider) {
     controller: 'HomeCtrl',
     controllerAs: '$ctrl',
     templateUrl: 'home/home.html',
-    title: 'Home'
+    title: 'Home',
+    resolve: {
+      services: function(Services) { 
+        return Services.getServices();
+      }
+    }
   });
 
 };

@@ -16,6 +16,4 @@ export default class Tags {
     }).then((res) => res.data.tags);
 
   }
-
-
 }

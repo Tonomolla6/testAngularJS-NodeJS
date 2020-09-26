@@ -1,78 +1,65 @@
- <div class="home-page">
+<style>
+  .banner {
+    height: 350px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    background-image: url("https://pixabay.com/get/53e9d1434352b114f6dd8579c52c3379083ed8e55251744a7c2f78.jpg") !important;
+    background-size: cover !important;
+  }
+
+  .banner2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #00000063;
+    width: 100%;
+    height: 100%;
+    color: white;
+    max-width: none;
+  }
+
+  .page {
+    background-color: white;
+    padding: 50px;
+    border-top: 4px solid #2a96f4;
+    transform: translateY(-50px);
+  }
+
+  .home-page {
+    background-color: #e6e6e6;
+  }
+</style>
+<div class="home-page">
 
   <!-- Splash banner that only shows when not logged in -->
   <div class="banner" show-authed="false">
-    <div class="container">
-      <h1 class="logo-font">{{$ctrl.appName}}</h1>
-      <p>A place to share your knowledge.</p>
+    <div class="container banner2">
+      <h1 class="logo-font">FACTURASCRIPTS</h1>
+      <h2>Sencillo y <strong>personalizable.</strong></h2>
     </div>
+    
   </div>
 
   <div class="container page">
     <div class="row">
 
-
       <!-- Main view - contains tabs & article list -->
-      <div class="col-md-9">
+      <div class="col-md-12">
         <!-- Tabs for toggling between feed, article lists -->
-        <div class="feed-toggle">
-          <ul class="nav nav-pills outline-active">
-
-            <li class="nav-item" show-authed="true">
-              <a href="" class="nav-link"
-                ng-class="{ active: $ctrl.listConfig.type === 'feed' }"
-                ng-click="$ctrl.changeList({ type: 'feed' })">
-                Your Feed
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="" class="nav-link"
-                ng-class="{ active: $ctrl.listConfig.type === 'all' && !$ctrl.listConfig.filters }"
-                ng-click="$ctrl.changeList({ type: 'all' })">
-                Global Feed
-              </a>
-            </li>
-
-            <li class="nav-item" ng-show="$ctrl.listConfig.filters.tag">
-              <a href="" class="nav-link active">
-                <i class="ion-pound"></i> {{$ctrl.listConfig.filters.tag}}
-              </a>
-            </li>
-
-          </ul>
-        </div>
 
         <!-- List the current articles -->
-        <article-list limit="10" list-config="$ctrl.listConfig"></article-list>
-
+        <!-- <article-list limit="10" list-config="$ctrl.listConfig"></article-list> -->
+        <services-banner title="Gestiona tu negocio online"></services-banner>
+        <hr class="space">
+        <services-list services="$ctrl.services"></services-list>
+        <hr class="space">
+        <services-comments></services-comments>
       </div>
 
       <!-- Sidebar where popular tags are listed -->
-      <div class="col-md-3">
-        <div class="sidebar">
-
-          <p>Popular Tags</p>
-
-          <div class="tag-list" ng-show="$ctrl.tags">
-            <a href="" class="tag-default tag-pill"
-              ng-click="$ctrl.changeList({ type: 'all', filters: { tag: tagName } })"
-              ng-repeat="tagName in $ctrl.tags"
-              ng-bind="tagName">
-            </a>
-          </div>
-
-          <div ng-show="!$ctrl.tagsLoaded">
-            Loading tags...
-          </div>
-
-          <div class="post-preview"
-            ng-show="$ctrl.tagsLoaded && !$ctrl.tags.length">
-            No tags are here... yet.
-          </div>
-
-        </div>
-      </div>
 
       <!-- End the row & container divs -->
     </div>

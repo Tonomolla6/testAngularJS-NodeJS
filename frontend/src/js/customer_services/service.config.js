@@ -7,7 +7,12 @@ function ServiceConfig($stateProvider) {
       controller: 'ServiceCtrl',
       controllerAs: '$ctrl',
       templateUrl: 'customer_services/service.html',
-      title: 'Service'
+      title: 'Service',
+      resolve: {
+        services: function(Services) { 
+          return Services.getServices();
+        }
+      }
     });
   
   };

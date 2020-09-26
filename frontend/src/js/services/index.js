@@ -22,4 +22,7 @@ servicesModule.service('Comments', CommentsService);
 import TagsService from './tags.service';
 servicesModule.service('Tags', TagsService);
 
+import ServicesService from './services.service';
+servicesModule.service('Services', ServicesService);
+
 export default servicesModule;

@@ -1,7 +1,7 @@
 class HomeCtrl {
-  constructor(User, Tags, AppConstants) {
+  constructor(User, Tags, AppConstants, services) {
     'ngInject';
-
+    this.services = services;
     this.appName = AppConstants.appName;
 
     // Get list of all tags

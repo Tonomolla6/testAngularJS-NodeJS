@@ -27,4 +27,13 @@ componentsModule.component('articleList', ArticleList);
 import ListPagination from './article-helpers/list-pagination.component';
 componentsModule.component('listPagination', ListPagination);
 
+import ServicesList from './services-helpers/services-list.component';
+componentsModule.component('servicesList', ServicesList);
+
+import ServicesBanner from './services-helpers/services-banner.component';
+componentsModule.component('servicesBanner', ServicesBanner);
+
+import ServicesComments from './services-helpers/services-comments.component';
+componentsModule.component('servicesComments', ServicesComments);
+
 export default componentsModule;
