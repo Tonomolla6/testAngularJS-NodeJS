@@ -44,7 +44,6 @@ if(isProduction){
 }
 
 require('./models/User');
-require('./models/Article');
 require('./models/Comment');
 require('./models/Service');
 require('./config/passport');

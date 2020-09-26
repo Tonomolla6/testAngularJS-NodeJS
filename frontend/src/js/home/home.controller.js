@@ -3,7 +3,6 @@ class HomeCtrl {
     'ngInject';
     this.services = services;
     this.appName = AppConstants.appName;
-
     // Get list of all tags
     Tags
       .getAll()

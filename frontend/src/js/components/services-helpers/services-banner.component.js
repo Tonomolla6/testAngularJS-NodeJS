@@ -1,17 +1,12 @@
 class ServicesBannerCtrl {
-    constructor(Services, $scope, title) {
+    constructor(Services, $scope) {
       'ngInject';
-
-      this.title = title;
     }
 }
 
 let ServicesBanner = {
-    bindings: {
-      title: '='
-    },
     controller: ServicesBannerCtrl,
-    templateUrl: 'components/services-helpers/services-list.html'
+    templateUrl: 'components/services-helpers/services-banner.html'
 };
 
 export default ServicesBanner;

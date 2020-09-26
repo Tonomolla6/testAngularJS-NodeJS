@@ -11,6 +11,9 @@ function HomeConfig($stateProvider) {
     resolve: {
       services: function(Services) { 
         return Services.getServices();
+      },
+      comments: function(Services) { 
+        return Services.getComments();
       }
     }
   });

@@ -11,7 +11,6 @@ var ServiceSchema = new mongoose.Schema({
   body: String,
   favoritesCount: {type: Number, default: 0},
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  tagList: [{ type: String }],
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {timestamps: true});
 
@@ -38,7 +37,6 @@ ServiceSchema.methods.toJSONFor = function(user){
     body: this.body,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
-    tagList: this.tagList,
     favorited: user ? user.isFavorite(this._id) : false,
     favoritesCount: this.favoritesCount,
     author: this.author.toProfileJSONFor(user)

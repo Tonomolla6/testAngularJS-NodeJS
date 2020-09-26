@@ -2,6 +2,7 @@ var router = require('express').Router();
 var mongoose = require('mongoose');
 var Service = mongoose.model('Service');
 var User = mongoose.model('User');
+var Comment = mongoose.model('Comment');
 var auth = require('../auth');
 
 // Select all limit 20
@@ -43,27 +44,37 @@ router.get('/', auth.optional, function (req, res, next) {
 });
 
 // Parametros
-router.param('comment', function (req, res, next, id) {
-    Comment.findById(id).then(function (comment) {
-        if (!comment) { return res.sendStatus(404); }
+router.get('/comments', function (req, res, next) {
+    var limit = 4;
 
-        req.comment = comment;
+    if (typeof req.query.limit !== 'undefined') {
+        limit = req.query.limit;
+    }
+    return Promise.all([
+        Comment.find()
+            .limit(Number(limit))
+        ]).then(function (results) {
+            var comments = results[0];
+            var commentsCount = results[1];
 
-        return next();
-    }).catch(next);
+            return res.json({
+                comments: comments,
+                commentsCount: commentsCount
+        });
+    });
 });
 
-// Return a Service
-router.get('/:service', auth.optional, function (req, res, next) {
-    Promise.all([
-        req.payload ? User.findById(req.payload.id) : null,
-        req.service.populate('author').execPopulate()
-    ]).then(function (results) {
-        var user = results[0];
+// // Return a Service
+// router.get('/:service', auth.optional, function (req, res, next) {
+//     Promise.all([
+//         req.payload ? User.findById(req.payload.id) : null,
+//         req.service.populate('author').execPopulate()
+//     ]).then(function (results) {
+//         var user = results[0];
 
-        return res.json({ service: req.service.toJSONFor(user) });
-    }).catch(next);
-});
+//         return res.json({ service: req.service.toJSONFor(user) });
+//     }).catch(next);
+// });
 
 // Create new service
 router.post('/', auth.required, function (req, res, next) {

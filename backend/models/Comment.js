@@ -1,9 +1,12 @@
 var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
+var slug = require('slug');
+var User = mongoose.model('User');
 
 var CommentSchema = new mongoose.Schema({
   body: String,
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  article: { type: mongoose.Schema.Types.ObjectId, ref: 'Article' }
+  service: { type: mongoose.Schema.Types.ObjectId, ref: 'Service' }
 }, {timestamps: true});
 
 // Requires population of author
