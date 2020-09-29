@@ -48,6 +48,9 @@ require('./models/Comment');
 require('./models/Service');
 require('./config/passport');
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(require('./routes'));
 
 //// Swagger ////
