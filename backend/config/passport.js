@@ -25,8 +25,6 @@ passport.use(new GitHubStrategy({
 },
   function (accessToken, refreshToken, profile, done) {
 
-    console.log(profile);
-
     User.findOne({ idsocial: profile.id.toString() }, function (err, user) {
       if (err) {
         return done(err);
@@ -43,6 +41,7 @@ passport.use(new GitHubStrategy({
           type: "client",
           provider: "github"
         });
+        console.log(user);
         user.save(function (err) {
           // if (err) {
           console.log(err);

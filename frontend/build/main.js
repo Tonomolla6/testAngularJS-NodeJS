@@ -42650,7 +42650,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./article":10,"./auth":13,"./components":20,"./config/app.config":26,"./config/app.constants":27,"./config/app.run":28,"./config/app.templates":29,"./customer_services":31,"./details_services":36,"./download":39,"./editor":42,"./home":45,"./layout":48,"./profile":49,"./services":55,"./settings":61,"angular":3,"angular-ui-router":1}],6:[function(require,module,exports){
+},{"./article":10,"./auth":13,"./components":21,"./config/app.config":27,"./config/app.constants":28,"./config/app.run":29,"./config/app.templates":30,"./customer_services":32,"./details_services":37,"./download":40,"./editor":43,"./home":46,"./layout":49,"./profile":50,"./services":56,"./settings":62,"angular":3,"angular-ui-router":1}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -42926,6 +42926,15 @@ function AuthConfig($stateProvider, $httpProvider) {
         return User.ensureAuthIs(false);
       }]
     }
+  }).state('app.sociallogin', {
+    url: '/auth/sociallogin',
+    controller: 'SocialCtrl as $ctrl',
+    title: 'Sign up by Social login',
+    resolve: {
+      auth: ["User", function auth(User) {
+        return User.ensureAuthIs(false);
+      }]
+    }
   });
 };
 
@@ -42996,6 +43005,10 @@ var _auth3 = require('./auth.controller');
 
 var _auth4 = _interopRequireDefault(_auth3);
 
+var _social = require('./social.controller');
+
+var _social2 = _interopRequireDefault(_social);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Create the module where our functionality can attach to
@@ -43009,9 +43022,50 @@ authModule.config(_auth2.default);
 
 authModule.controller('AuthCtrl', _auth4.default);
 
+authModule.controller('SocialCtrl', _social2.default);
+
 exports.default = authModule;
 
-},{"./auth.config":11,"./auth.controller":12,"angular":3}],14:[function(require,module,exports){
+},{"./auth.config":11,"./auth.controller":12,"./social.controller":14,"angular":3}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SocialCtrl = function SocialCtrl(User, $state, $scope) {
+  'ngInject';
+
+  var _this = this;
+
+  _classCallCheck(this, SocialCtrl);
+
+  this._User = User;
+  this._$state = $state;
+  this._$scope = $scope;
+
+  this.title = $state.current.title;
+  this.authType = $state.current.name.replace('app.', '');
+
+  this._User.attemptAuth(this.authType, null).then(function (res) {
+
+    setTimeout(function () {
+      location.reload();
+      _this._$state.go('app.home');
+    }, 1500);
+  }, function (err) {
+    setTimeout(function () {
+      _this._$state.go('app.home');
+    }, 1500);
+  });
+};
+SocialCtrl.$inject = ["User", "$state", "$scope"];
+
+exports.default = SocialCtrl;
+
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43114,7 +43168,7 @@ var ArticleList = {
 
 exports.default = ArticleList;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43130,7 +43184,7 @@ var ArticleMeta = {
 
 exports.default = ArticleMeta;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43145,7 +43199,7 @@ var ArticlePreview = {
 
 exports.default = ArticlePreview;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43198,7 +43252,7 @@ var ListPagination = {
 
 exports.default = ListPagination;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43263,7 +43317,7 @@ var FavoriteBtn = {
 
 exports.default = FavoriteBtn;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43329,7 +43383,7 @@ var FollowBtn = {
 
 exports.default = FollowBtn;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43412,7 +43466,7 @@ componentsModule.component('servicesComments', _servicesComments2.default);
 
 exports.default = componentsModule;
 
-},{"./article-helpers/article-list.component":14,"./article-helpers/article-meta.component":15,"./article-helpers/article-preview.component":16,"./article-helpers/list-pagination.component":17,"./buttons/favorite-btn.component":18,"./buttons/follow-btn.component":19,"./list-errors.component":21,"./services-helpers/services-banner.component":22,"./services-helpers/services-comments.component":23,"./services-helpers/services-list.component":24,"./show-authed.directive":25,"angular":3}],21:[function(require,module,exports){
+},{"./article-helpers/article-list.component":15,"./article-helpers/article-meta.component":16,"./article-helpers/article-preview.component":17,"./article-helpers/list-pagination.component":18,"./buttons/favorite-btn.component":19,"./buttons/follow-btn.component":20,"./list-errors.component":22,"./services-helpers/services-banner.component":23,"./services-helpers/services-comments.component":24,"./services-helpers/services-list.component":25,"./show-authed.directive":26,"angular":3}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43427,7 +43481,7 @@ var ListErrors = {
 
 exports.default = ListErrors;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43450,7 +43504,7 @@ var ServicesBanner = {
 
 exports.default = ServicesBanner;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43476,7 +43530,7 @@ var ServicesComments = {
 
 exports.default = ServicesComments;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43502,7 +43556,7 @@ var ServicesList = {
 
 exports.default = ServicesList;
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 ShowAuthed.$inject = ["User"];
@@ -43541,7 +43595,7 @@ function ShowAuthed(User) {
 
 exports.default = ShowAuthed;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 AppConfig.$inject = ["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider"];
@@ -43581,7 +43635,7 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
 
 exports.default = AppConfig;
 
-},{"./auth.interceptor":30}],27:[function(require,module,exports){
+},{"./auth.interceptor":31}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43596,7 +43650,7 @@ var AppConstants = {
 
 exports.default = AppConstants;
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 AppRun.$inject = ["AppConstants", "$rootScope"];
@@ -43625,7 +43679,7 @@ function AppRun(AppConstants, $rootScope) {
 
 exports.default = AppRun;
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
@@ -43635,8 +43689,8 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("auth/auth.html", "<div class=\"auth-page\">\n  <div class=\"container page\">\n    <div class=\"row\">\n\n      <div class=\"col-md-6 offset-md-3 col-xs-12\">\n        <h1 class=\"text-xs-center\" ng-bind=\"::$ctrl.title\"></h1>\n        <p class=\"text-xs-center\">\n          <a ui-sref=\"app.login\"\n            ng-show=\"$ctrl.authType === \'register\'\">\n            Have an account?\n          </a>\n          <a ui-sref=\"app.register\"\n            ng-show=\"$ctrl.authType === \'login\'\">\n            Need an account?\n          </a>\n        </p>\n\n        <a href=\"http://localhost:3000/api/auth/github\" style=\"color: white; background-color: black; padding: 10px\"> Github </a>\n        \n        <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n        <form ng-submit=\"$ctrl.submitForm()\">\n          <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n            <fieldset class=\"form-group\" ng-show=\"$ctrl.authType === \'register\'\">\n              <input class=\"form-control form-control-lg\"\n                type=\"text\"\n                placeholder=\"Username\"\n                ng-model=\"$ctrl.formData.username\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                type=\"email\"\n                placeholder=\"Email\"\n                ng-model=\"$ctrl.formData.email\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                type=\"password\"\n                placeholder=\"Password\"\n                ng-model=\"$ctrl.formData.password\" />\n            </fieldset>\n\n            <button class=\"btn btn-lg btn-primary pull-xs-right\"\n              type=\"submit\"\n              ng-bind=\"::$ctrl.title\">\n            </button>\n\n          </fieldset>\n        </form>\n      </div>\n\n    </div>\n  </div>\n</div>\n");
   $templateCache.put("components/list-errors.html", "<ul class=\"error-messages\" ng-show=\"$ctrl.errors\">\n  <div ng-repeat=\"(field, errors) in $ctrl.errors\">\n    <li ng-repeat=\"error in errors\">\n      {{field}} {{error}}\n    </li>\n  </div>\n</ul>\n");
   $templateCache.put("customer_services/service.html", "<style>\n</style>\n <div class=\"customer_service-page\">\n\n  <!-- Splash banner that only shows when not logged in -->\n  <!-- <div class=\"banner\" show-authed=\"false\">\n    <div class=\"container\">\n      <h1>{{$ctrl.appName}}</h1>\n      <p>Our services for sale to the public</p>\n    </div>\n  </div> -->\n\n\n  <div class=\"container page\">\n    <div class=\"row\">\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12\">\n        \n        <services-list services=\"$ctrl.services\"></services-list>\n        \n      </div>\n    </div>\n  </div>\n</div>");
-  $templateCache.put("download/download.html", "<div class=\"download-page primary\">\n\n  <style>\n    .center {\n      display: flex;\n      flex-direction: column;\n      /* justify-content: center; */\n      align-items: center;\n      padding-bottom: 40px;\n    }\n\n    .padding h4 {\n      margin-top: 40px;\n    }\n\n    .banner {\n      height: 400px;\n      background-color: white;\n      background-image: url(https://i.postimg.cc/7ZFPhN5x/programming-1873854.png) !important;\n      display: flex;\n      padding: 0px;\n    }\n\n    .banner3 {\n      background-color: #00000063;\n      width: 100%;\n      display: flex;\n      justify-content: center;\n      flex-direction: column;\n      align-items: center;\n      padding: 40px;\n    }\n\n    .banner3 .button-secundary {\n      padding: 15px 30px;\n      margin-top: 20px;\n    }\n\n    .page {\n      border-top: 4px solid #2a96f4;\n    }\n  </style>\n  <!-- Splash banner that only shows when not logged in -->\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class=\"banner\" show-authed=\"false\">\n    <div class=\"banner3\">\n      <h2>¿Como descargar FacturaScripts?</h2>\n      <div ng-click=\"$ctrl.prueba()\" class=\"button-secundary\">Descargar</div>\n    </div>\n  </div>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12 center\">\n\n        <h1>¿Quieres instalar facturascript en tu servidor y personalizarlo?</h1>\n        <p>Como FacturaScripts es una aplicación web, necesita Apache, PHP y MySQL para poder ejecutarse. Siga los pasos\n          para instalar XAMPP y después FacturaScripts.</p>\n\n        <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/4QRXir81xlc\" frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen></iframe>\n      </div>\n      <div class=\"col-md-12 padding\">\n        <h4>1. Descargue e instale XAMPP</h4>\n        <p>Instale XAMPP en Windows e inicie los servicios <strong>MySQL</strong> y <strong>Apache</strong>.</p>\n\n        <h4>2. Descargue FacturaScripts</h4>\n\n        <h4>3. Descomprima y copie FacturaScripts</h4>\n        <p>Descomprima FacturaScripts en C:/xampp/htdocs y renombre el directorio FacturaScripts a facturas, para mayor\n          comodidad. A continuación acceda localhost/facturas para ir al instalador. No necesita cambiar ningún valor\n          del instalador, simplemente pulse el botón aceptar.</p>\n\n        <h4>4. Usuario y contraseña</h4>\n        <p>Cuando le solicite usuario y contraseña escriba: admin como usuario y admin como contraseña.</p>\n      </div>\n    </div>\n  </div>\n</div>");
   $templateCache.put("details_services/details_services.html", "<style>\n.center {\n      display: flex;\n      flex-direction: column;\n      /* justify-content: center; */\n      align-items: center;\n      padding-bottom: 40px;\n    }\n\n    .padding h4 {\n      margin-top: 40px;\n    }\n\n    .banner {\n      height: 250px;\n      background-color: white;\n      background-image: url(https://i.postimg.cc/h4z3LJ15/server-90389.jpg) !important;\n      display: flex;\n      padding: 0px;\n    }\n\n    .banner3 {\n      background-color: #00000063;\n      width: 100%;\n      display: flex;\n      justify-content: center;\n      flex-direction: column;\n      align-items: center;\n      padding: 40px;\n      height: 100%;\n    }\n\n    .page {\n      border-top: 4px solid #2a96f4;\n      min-height: 350px;\n    }\n\n    .inf {\n      display: flex;\n      justify-content: space-between;\n    }\n\n    .arround {\n      display: flex;\n      flex-direction: column;\n      justify-content: space-between;\n      height: 100%;\n    }\n\n    .row {\n      height: 245px;\n    }\n\n</style>\n <div class=\"details-service-page primary\">\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class=\"banner\" show-authed=\"false\">\n    <div class=\"banner3\">\n      <h1>¿Quieres que nos ocupemos de todo?</h1>\n      <p></p>\n    </div>\n  </div>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12 arround\">\n          <h2>Servicio seleccionado: <strong>{{$ctrl.service.title}}</strong></h2>\n          <div>\n            <h4>Descripcion</h4>\n            <p>{{$ctrl.service.description}}</p>\n          </div>\n          \n          <div class=\"inf\">\n            <h5>Precio: <strong>{{$ctrl.service.price}}</strong></h5>\n            <div class=\"button-primary\">Pedir infomacion</div>\n          </div>\n          \n      </div>\n    </div>\n  </div>\n</div>");
+  $templateCache.put("download/download.html", "<div class=\"download-page primary\">\n\n  <style>\n    .center {\n      display: flex;\n      flex-direction: column;\n      /* justify-content: center; */\n      align-items: center;\n      padding-bottom: 40px;\n    }\n\n    .padding h4 {\n      margin-top: 40px;\n    }\n\n    .banner {\n      height: 400px;\n      background-color: white;\n      background-image: url(https://i.postimg.cc/7ZFPhN5x/programming-1873854.png) !important;\n      display: flex;\n      padding: 0px;\n    }\n\n    .banner3 {\n      background-color: #00000063;\n      width: 100%;\n      display: flex;\n      justify-content: center;\n      flex-direction: column;\n      align-items: center;\n      padding: 40px;\n    }\n\n    .banner3 .button-secundary {\n      padding: 15px 30px;\n      margin-top: 20px;\n    }\n\n    .page {\n      border-top: 4px solid #2a96f4;\n    }\n  </style>\n  <!-- Splash banner that only shows when not logged in -->\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class=\"banner\" show-authed=\"false\">\n    <div class=\"banner3\">\n      <h2>¿Como descargar FacturaScripts?</h2>\n      <div ng-click=\"$ctrl.prueba()\" class=\"button-secundary\">Descargar</div>\n    </div>\n  </div>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12 center\">\n\n        <h1>¿Quieres instalar facturascript en tu servidor y personalizarlo?</h1>\n        <p>Como FacturaScripts es una aplicación web, necesita Apache, PHP y MySQL para poder ejecutarse. Siga los pasos\n          para instalar XAMPP y después FacturaScripts.</p>\n\n        <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/4QRXir81xlc\" frameborder=\"0\"\n          allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\"\n          allowfullscreen></iframe>\n      </div>\n      <div class=\"col-md-12 padding\">\n        <h4>1. Descargue e instale XAMPP</h4>\n        <p>Instale XAMPP en Windows e inicie los servicios <strong>MySQL</strong> y <strong>Apache</strong>.</p>\n\n        <h4>2. Descargue FacturaScripts</h4>\n\n        <h4>3. Descomprima y copie FacturaScripts</h4>\n        <p>Descomprima FacturaScripts en C:/xampp/htdocs y renombre el directorio FacturaScripts a facturas, para mayor\n          comodidad. A continuación acceda localhost/facturas para ir al instalador. No necesita cambiar ningún valor\n          del instalador, simplemente pulse el botón aceptar.</p>\n\n        <h4>4. Usuario y contraseña</h4>\n        <p>Cuando le solicite usuario y contraseña escriba: admin como usuario y admin como contraseña.</p>\n      </div>\n    </div>\n  </div>\n</div>");
   $templateCache.put("editor/editor.html", "<div class=\"editor-page\">\n  <div class=\"container page\">\n    <div class=\"row\">\n      <div class=\"col-md-10 offset-md-1 col-xs-12\">\n\n        <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n        <form>\n          <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                ng-model=\"$ctrl.article.title\"\n                type=\"text\"\n                placeholder=\"Article Title\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control\"\n                ng-model=\"$ctrl.article.description\"\n                type=\"text\"\n                placeholder=\"What\'s this article about?\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <textarea class=\"form-control\"\n                rows=\"8\"\n                ng-model=\"$ctrl.article.body\"\n                placeholder=\"Write your article (in markdown)\">\n              </textarea>\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control\"\n                type=\"text\"\n                placeholder=\"Enter tags\"\n                ng-model=\"$ctrl.tagField\"\n                ng-keyup=\"$event.keyCode == 13 && $ctrl.addTag()\" />\n\n              <div class=\"tag-list\">\n                <span ng-repeat=\"tag in $ctrl.article.tagList\"\n                  class=\"tag-default tag-pill\">\n                  <i class=\"ion-close-round\" ng-click=\"$ctrl.removeTag(tag)\"></i>\n                  {{ tag }}\n                </span>\n              </div>\n            </fieldset>\n\n            <button class=\"btn btn-lg pull-xs-right btn-primary\" type=\"button\" ng-click=\"$ctrl.submit()\">\n              Publish Article\n            </button>\n\n          </fieldset>\n        </form>\n\n      </div>\n    </div>\n  </div>\n</div>\n");
   $templateCache.put("home/home.html", "<style>\n  .banner {\n    height: 350px;\n    display: flex !important;\n    justify-content: center;\n    align-items: center;\n    background-color: white !important;\n    background-image: url(https://i.postimg.cc/zX08czBW/home-office-336377.jpg) !important;\n    background-size: cover !important;\n    background-position-y: -354px !important;\n  }\n\n  .banner2 {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    background: #00000063;\n    width: 100%;\n    height: 100%;\n    color: white;\n    max-width: none;\n  }\n\n  .page {\n    border-top: 4px solid #2a96f4;\n    transform: translateY(-50px);\n  }\n</style>\n<div class=\"home-page primary\">\n\n  <!-- Splash banner that only shows when not logged in -->\n  <div class=\"banner\" show-authed=\"false\">\n    <div class=\"container banner2\">\n      <h1 class=\"logo-font\">FACTURASCRIPTS</h1>\n      <h2>Sencillo y <strong>personalizable.</strong></h2>\n    </div>\n    \n  </div>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12\">\n        <!-- Tabs for toggling between feed, article lists -->\n\n        <!-- List the current articles -->\n        <!-- <article-list limit=\"10\" list-config=\"$ctrl.listConfig\"></article-list> -->\n        <services-banner></services-banner>\n        <hr class=\"space\">\n        <services-list services=\"$ctrl.services\"></services-list>\n        <hr class=\"space\">\n        <services-comments comments=\"$ctrl.comments\"></services-comments>\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\n\n<div ui-view></div>\n\n<app-footer></app-footer>\n");
@@ -43656,7 +43710,7 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("components/services-helpers/services-list.html", "<style>\n    .container4 {\n        margin: 20px;\n        display: flex;\n        flex-direction: row-reverse;\n    }\n\n    .service {\n        padding: 40px 25px;\n        display: flex;\n        min-height: 400px;\n        align-items: center;\n        flex-direction: column;\n        width: 30%;\n        text-align: center;\n        border-radius: 20px;\n        border: 1px solid #0000002e;\n        margin: 3%;\n        justify-content: space-between;\n        transition: 0.3s border;\n        }\n\n    .service:hover {\n        border-top: 4px solid #2a96f4;\n    }\n\n    .service h4 {\n        font-size: 20px;\n        font-weight: bold;\n        margin-top: 10px\n    }\n\n    .service h2 {\n        font-size: 2.5rem;\n        font-family: \'Open Sans\', sans-serif;\n        color: #707070;\n        margin-bottom: 36px;\n    }\n\n    .title {\n      width: 100%;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      flex-direction: column;\n      text-align: center;\n    }\n\n    .title p {\n        font-size: 1.25rem;\n        font-weight: 300;\n    }\n\n</style>\n\n<div class=\"title\">\n    <h1 class=\"logo-font\">Podemos instalarlo por ti</h1>\n    <p>Si no tienes suficientes conocimientos para instalar facturascripts nosotros te lo instalamos con hosting personalizado, estos son nuestros precios.</p>\n</div>\n\n<div class=\"container4\">\n    <div class=\"service\" ng-repeat=\"service in $ctrl.services\">\n        <h4 class=\"name\">{{service.title}}</h4>\n        <div class=\"content\">\n            <h2>{{service.price}}</h2>\n            <p>{{service.description}}</p>\n        </div>\n        <div ui-sref=\"app.details_services({slug:\'{{service.slug}}\'})\" class=\"button-primary\">Seleccionar</div>\n    </div>\n</div>");
 }]);
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 authInterceptor.$inject = ["JWT", "AppConstants", "$window", "$q"];
@@ -43691,7 +43745,7 @@ function authInterceptor(JWT, AppConstants, $window, $q) {
 
 exports.default = authInterceptor;
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43725,7 +43779,7 @@ serviceModule.controller('ServiceCtrl', _service2.default);
 
 exports.default = serviceModule;
 
-},{"./service.config.js":32,"./service.controller":33,"angular":3}],32:[function(require,module,exports){
+},{"./service.config.js":33,"./service.controller":34,"angular":3}],33:[function(require,module,exports){
 'use strict';
 
 ServiceConfig.$inject = ["$stateProvider"];
@@ -43751,7 +43805,7 @@ function ServiceConfig($stateProvider) {
 
 exports.default = ServiceConfig;
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43772,7 +43826,7 @@ ServiceCtrl.$inject = ["User", "Tags", "AppConstants", "services", "$scope"];
 
 exports.default = ServiceCtrl;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 DetailsServiceConfig.$inject = ["$stateProvider"];
@@ -43798,7 +43852,7 @@ function DetailsServiceConfig($stateProvider) {
 
 exports.default = DetailsServiceConfig;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43818,7 +43872,7 @@ DetailsServiceCtrl.$inject = ["User", "Tags", "AppConstants", "$scope", "service
 
 exports.default = DetailsServiceCtrl;
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43852,7 +43906,7 @@ detailsServiceModule.controller('DetailsServiceCtrl', _details_services2.default
 
 exports.default = detailsServiceModule;
 
-},{"./details_services.config.js":34,"./details_services.controller":35,"angular":3}],37:[function(require,module,exports){
+},{"./details_services.config.js":35,"./details_services.controller":36,"angular":3}],38:[function(require,module,exports){
 'use strict';
 
 DownloadConfig.$inject = ["$stateProvider"];
@@ -43873,7 +43927,7 @@ function DownloadConfig($stateProvider) {
 
 exports.default = DownloadConfig;
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43906,7 +43960,7 @@ var DownloadCtrl = function () {
 
 exports.default = DownloadCtrl;
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43940,7 +43994,7 @@ downloadModule.controller('ServiceCtrl', _download2.default);
 
 exports.default = downloadModule;
 
-},{"./download.config.js":37,"./download.controller":38,"angular":3}],40:[function(require,module,exports){
+},{"./download.config.js":38,"./download.controller":39,"angular":3}],41:[function(require,module,exports){
 'use strict';
 
 EditorConfig.$inject = ["$stateProvider"];
@@ -43983,7 +44037,7 @@ function EditorConfig($stateProvider) {
 
 exports.default = EditorConfig;
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44052,7 +44106,7 @@ var EditorCtrl = function () {
 
 exports.default = EditorCtrl;
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44086,7 +44140,7 @@ editorModule.controller('EditorCtrl', _editor4.default);
 
 exports.default = editorModule;
 
-},{"./editor.config":40,"./editor.controller":41,"angular":3}],43:[function(require,module,exports){
+},{"./editor.config":41,"./editor.controller":42,"angular":3}],44:[function(require,module,exports){
 'use strict';
 
 HomeConfig.$inject = ["$stateProvider"];
@@ -44115,7 +44169,7 @@ function HomeConfig($stateProvider) {
 
 exports.default = HomeConfig;
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44163,7 +44217,7 @@ var HomeCtrl = function () {
 
 exports.default = HomeCtrl;
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44197,7 +44251,7 @@ homeModule.controller('HomeCtrl', _home4.default);
 
 exports.default = homeModule;
 
-},{"./home.config":43,"./home.controller":44,"angular":3}],46:[function(require,module,exports){
+},{"./home.config":44,"./home.controller":45,"angular":3}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44225,7 +44279,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44257,7 +44311,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44289,7 +44343,7 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":46,"./header.component":47,"angular":3}],49:[function(require,module,exports){
+},{"./footer.component":47,"./header.component":48,"angular":3}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44329,7 +44383,7 @@ profileModule.controller('ProfileArticlesCtrl', _profileArticles2.default);
 
 exports.default = profileModule;
 
-},{"./profile-articles.controller":50,"./profile.config":51,"./profile.controller":52,"angular":3}],50:[function(require,module,exports){
+},{"./profile-articles.controller":51,"./profile.config":52,"./profile.controller":53,"angular":3}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44367,7 +44421,7 @@ ProfileArticlesCtrl.$inject = ["profile", "$state", "$rootScope"];
 
 exports.default = ProfileArticlesCtrl;
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 ProfileConfig.$inject = ["$stateProvider"];
@@ -44410,7 +44464,7 @@ function ProfileConfig($stateProvider) {
 
 exports.default = ProfileConfig;
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44437,7 +44491,7 @@ ProfileCtrl.$inject = ["profile", "User"];
 
 exports.default = ProfileCtrl;
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44554,7 +44608,7 @@ var Articles = function () {
 
 exports.default = Articles;
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44615,7 +44669,7 @@ var Comments = function () {
 
 exports.default = Comments;
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44675,7 +44729,7 @@ servicesModule.service('Services', _services2.default);
 
 exports.default = servicesModule;
 
-},{"./articles.service":53,"./comments.service":54,"./jwt.service":56,"./profile.service":57,"./services.service":58,"./tags.service":59,"./user.service":60,"angular":3}],56:[function(require,module,exports){
+},{"./articles.service":54,"./comments.service":55,"./jwt.service":57,"./profile.service":58,"./services.service":59,"./tags.service":60,"./user.service":61,"angular":3}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44719,7 +44773,7 @@ var JWT = function () {
 
 exports.default = JWT;
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44778,7 +44832,7 @@ var Profile = function () {
 
 exports.default = Profile;
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44853,7 +44907,7 @@ var Services = function () {
 
 exports.default = Services;
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -44893,7 +44947,7 @@ var Tags = function () {
 
 exports.default = Tags;
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45018,7 +45072,7 @@ var User = function () {
 
 exports.default = User;
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -45051,7 +45105,7 @@ settingsModule.controller('SettingsCtrl', _settings4.default);
 
 exports.default = settingsModule;
 
-},{"./settings.config":62,"./settings.controller":63,"angular":3}],62:[function(require,module,exports){
+},{"./settings.config":63,"./settings.controller":64,"angular":3}],63:[function(require,module,exports){
 'use strict';
 
 SettingsConfig.$inject = ["$stateProvider"];
@@ -45077,7 +45131,7 @@ function SettingsConfig($stateProvider) {
 
 exports.default = SettingsConfig;
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
