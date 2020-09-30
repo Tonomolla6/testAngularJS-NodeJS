@@ -12,6 +12,7 @@ router.get('/user', auth.required, function(req, res, next){
   }).catch(next);
 });
 
+
 router.put('/user', auth.required, function(req, res, next){
   User.findById(req.payload.id).then(function(user){
     if(!user){ return res.sendStatus(401); }
@@ -99,25 +100,25 @@ router.post("/users/sociallogin", function(req, res, next) {
 router.get("/auth/github", passport.authenticate("github"));
 
 router.get('/auth/github/callback',
-  passport.authenticate("github", {
+  passport.authenticate("github", { 
     successRedirect: "http://localhost:4000/#!/auth/sociallogin",
     failureRedirect: "/"
   })
 );
 
-
 //GOOGLE AUTH
 
-// router.get('/auth/google',
-//   passport.authenticate('google', { scope: 
-//       [ 'https://www.googleapis.com/auth/plus.login',
-//       , 'https://www.googleapis.com/auth/plus.profile.emails.read' ] }
-// ));
+router.get('/auth/google',
+  passport.authenticate('google', { scope: 
+      [ 'https://www.googleapis.com/auth/plus.login',
+      , 'https://www.googleapis.com/auth/plus.profile.emails.read'  
+      , 'https://www.googleapis.com/auth/userinfo.email'] }
+));
 
-// router.get( '/auth/google/callback', 
-//     passport.authenticate( 'google', { 
-//         successRedirect: 'http://localhost:4000/#!/auth/sociallogin',
-//         failureRedirect: '/'
-// }));
+router.get( '/auth/google/callback', 
+    passport.authenticate( 'google', { 
+        successRedirect: 'http://localhost:4000/#!/auth/sociallogin',
+        failureRedirect: '/'
+}));
 
 module.exports = router;

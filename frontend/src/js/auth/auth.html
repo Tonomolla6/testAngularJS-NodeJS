@@ -1,3 +1,48 @@
+<style>
+  .social {
+    margin: 15px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .social a.github {
+    color: white;
+    background-color: black;
+    padding: 10px;
+    border: 1px solid black;
+    text-decoration: none;
+  }
+
+  .social a.github:hover {
+    color: black;
+    background-color: transparent;
+  }
+
+  .social a.google {
+    color: white;
+    background-color: #d6483e;
+    padding: 10px;
+    border: 1px solid #d6483e;
+    text-decoration:none;
+    margin: 5px;
+  }
+
+  .social a.google:hover {
+    color: #d6483e;
+    background-color: transparent;
+  }
+
+  .social p {
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+  }
+
+</style>
+
 <div class="auth-page">
   <div class="container page">
     <div class="row">
@@ -14,8 +59,6 @@
             Need an account?
           </a>
         </p>
-
-        <a href="http://localhost:3000/api/auth/github" style="color: white; background-color: black; padding: 10px"> Github </a>
         
         <list-errors errors="$ctrl.errors"></list-errors>
 
@@ -50,6 +93,11 @@
 
           </fieldset>
         </form>
+        <div class="social">
+          <p>Quieres inicial sesion desde servicios externos?</p>
+          <a class="github" href="http://localhost:3000/api/auth/github"> Github </a>
+          <a class="google" href="http://localhost:3000/api/auth/google"> Google </a>
+        </div>
       </div>
 
     </div>
