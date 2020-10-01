@@ -81,18 +81,17 @@ passport.use(new GoogleStrategy({
       } else {
         var user = new User({
           idsocial: profile.id,
-          username: profile.email.split("@")[0].toString(36).replace(/\./g, '_') + '_' + (Math.random() * Math.pow(36, 6) | 0),
+          username: profile.email.split("@")[0].toString(36).replace(/\./g, '') + (Math.floor(Math.random() * 999)),
           email: profile.email,
           image: profile.photos[0].value,
           type: "client",
           provider: "google"
         });
-        console.log(user);
         user.save(function (err) {
-          // if (err) {
-          // console.log(err);
+          if (err) {
+            console.log(err);
+          }
           return done(null, user);
-          // }
         });
       } 
     });
