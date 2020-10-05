@@ -25,4 +25,7 @@ servicesModule.service('Tags', TagsService);
 import ServicesService from './services.service';
 servicesModule.service('Services', ServicesService);
 
+import ToastrService from './toastr.service.js';
+servicesModule.service('Toastr', ToastrService);
+
 export default servicesModule;
