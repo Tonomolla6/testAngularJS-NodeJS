@@ -36,4 +36,7 @@ componentsModule.component('servicesBanner', ServicesBanner);
 import ServicesComments from './services-helpers/services-comments.component';
 componentsModule.component('servicesComments', ServicesComments);
 
+import HomeSlider from './home/home-slider.component';
+componentsModule.component('homeSliderComp', HomeSlider);
+
 export default componentsModule;
