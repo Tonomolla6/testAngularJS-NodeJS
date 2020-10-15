@@ -13,6 +13,8 @@ var merge         = require('merge-stream');
 // Where our files are located
 var jsFiles   = "src/js/**/*.js";
 var viewFiles = "src/js/**/*.html";
+var cssFiles = "src/js/**/*.css";
+var cssMain = "src/css/*.css";
 
 var interceptErrors = function(error) {
   var args = Array.prototype.slice.call(arguments);
@@ -46,6 +48,18 @@ gulp.task('html', function() {
       .pipe(gulp.dest('./build/'));
 });
 
+gulp.task('css', function() {
+  return gulp.src(cssFiles)
+      .on('error', interceptErrors)
+      .pipe(gulp.dest('./build/css'));
+});
+
+gulp.task('css_main', function() {
+  return gulp.src(cssMain)
+      .on('error', interceptErrors)
+      .pipe(gulp.dest('./build/css'));
+});
+
 gulp.task('views', function() {
   return gulp.src(viewFiles)
       .pipe(templateCache({
@@ -69,11 +83,11 @@ gulp.task('build', ['html', 'browserify'], function() {
   return merge(html,js);
 });
 
-gulp.task('default', ['html', 'browserify'], function() {
+gulp.task('default', ['html', 'css', 'css_main', 'browserify'], function() {
 
   browserSync.init(['./build/**/**.**'], {
     server: "./build",
-    port: 4000,
+    port: 3000,
     notify: false,
     ui: {
       port: 4001
@@ -82,5 +96,7 @@ gulp.task('default', ['html', 'browserify'], function() {
 
   gulp.watch("src/index.html", ['html']);
   gulp.watch(viewFiles, ['views']);
+  gulp.watch(cssFiles, ['css']);
+  gulp.watch(cssMain, ['css_main']);
   gulp.watch(jsFiles, ['browserify']);
 });

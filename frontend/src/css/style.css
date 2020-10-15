@@ -1,0 +1,86 @@
+.navbar-brand {
+    color: #2a96f4 !important;
+  }
+
+  a {
+    color: #2a96f4;
+  }
+
+  .page {
+    background-color: white;
+    padding: 50px;
+  }
+
+  .button-primary {
+    padding: 10px;
+    border: 1px solid #2a96f4;
+    border-radius: 15px;
+    cursor: pointer;
+    color: #2a96f4 !important;
+  }
+
+  .button-primary:hover {
+    background-color: #2a96f4;
+    color: white !important;
+  }
+
+  .button-secundary {
+    padding: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    background-color: #2a96f4;
+    font-size: 17px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .button-secundary:hover {
+    background-color: #ffffff;
+    color: #2a96f4;
+  }
+
+  a:hover {
+    color: #0074da;
+  }
+
+  .primary {
+    background-color: #e6e6e6;
+  }
+
+  footer {
+    margin-top: 0px;
+  }
+
+  hr.space {
+    margin: 45px;
+  }
+
+  .navbar-light .navbar-nav .open>.nav-link,
+  .navbar-light .navbar-nav .open>.nav-link:focus,
+  .navbar-light .navbar-nav .open>.nav-link:hover,
+  .navbar-light .navbar-nav .active>.nav-link,
+  .navbar-light .navbar-nav .active>.nav-link:focus,
+  .navbar-light .navbar-nav .active>.nav-link:hover,
+  .navbar-light .navbar-nav .nav-link.open,
+  .navbar-light .navbar-nav .nav-link.open:focus,
+  .navbar-light .navbar-nav .nav-link.open:hover,
+  .navbar-light .navbar-nav .nav-link.active,
+  .navbar-light .navbar-nav .nav-link.active:focus,
+  .navbar-light .navbar-nav .nav-link.active:hover {
+    color: #2a96f4;
+  }
+
+  .img-fluid {
+    width: 100%;
+  }
+
+  p.title {
+    position: absolute;
+    color: white;
+    z-index: 100;
+    bottom: 50%;
+    width: 100%;
+    font-size: 40px;
+  }
