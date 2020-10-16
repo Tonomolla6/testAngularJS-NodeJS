@@ -1,9 +1,13 @@
+:root {
+  --color-app: #ffc900;
+}
+
 .navbar-brand {
-    color: #2a96f4 !important;
+    color: var(--color-app) !important;
   }
 
   a {
-    color: #2a96f4;
+    color: var(--color-app);
   }
 
   .page {
@@ -13,14 +17,14 @@
 
   .button-primary {
     padding: 10px;
-    border: 1px solid #2a96f4;
+    border: 1px solid var(--color-app);
     border-radius: 15px;
     cursor: pointer;
-    color: #2a96f4 !important;
+    color: var(--color-app) !important;
   }
 
   .button-primary:hover {
-    background-color: #2a96f4;
+    background-color: var(--color-app);
     color: white !important;
   }
 
@@ -28,7 +32,7 @@
     padding: 10px;
     border-radius: 15px;
     cursor: pointer;
-    background-color: #2a96f4;
+    background-color: var(--color-app);
     font-size: 17px;
     font-weight: bold;
     display: flex;
@@ -38,7 +42,7 @@
 
   .button-secundary:hover {
     background-color: #ffffff;
-    color: #2a96f4;
+    color: var(--color-app);
   }
 
   a:hover {
@@ -46,12 +50,17 @@
   }
 
   .primary {
-    background-color: #e6e6e6;
+    background-color: var(--color-app);
   }
 
   footer {
     margin-top: 0px;
   }
+
+  li.ng-scope.active {
+    background-color: var(--color-app);
+  }
+  
 
   hr.space {
     margin: 45px;
@@ -69,7 +78,8 @@
   .navbar-light .navbar-nav .nav-link.active,
   .navbar-light .navbar-nav .nav-link.active:focus,
   .navbar-light .navbar-nav .nav-link.active:hover {
-    color: #2a96f4;
+    color: var(--color-app) !important;
+    background-color: #ffffff;
   }
 
   .img-fluid {
@@ -84,3 +94,64 @@
     width: 100%;
     font-size: 40px;
   }
+
+  .title-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title-logo p {
+    margin: 0px;
+    font-size: 26px;
+  }
+
+  .title-logo i {
+    margin-right: 10px;
+  }
+
+  .navbar {
+    margin: 0;
+  }
+
+  .nav {
+    margin: 8px 0px;
+  }
+
+  a {
+    font-weight: bold;
+  }
+
+  .button {
+    width: 100px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-app);
+    color: white !important;
+    text-align: center;
+    border: 1px dashed var(--color-app);
+  }
+
+  .button:hover {
+    background-color: white !important;
+    color: var(--color-app) !important;
+  }
+
+  html {
+    padding-bottom: 57px;
+ }
+
+ .toast-message {
+   color: var(--color-app) !important;
+   font-weight: bold;
+}
+
+.toast.toast-error {
+  background: white !important;
+  border-left: 3px solid var(--color-app) !important;
+  opacity: 1 !important;
+}
+
+a:hover {
+  color: black !important;
+}

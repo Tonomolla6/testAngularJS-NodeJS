@@ -5,7 +5,7 @@ class homeSliderCtrl {
         this.noWrapSlides = false;
 
         this.slides = [
-            {image:'https://cdn.pixabay.com/photo/2015/11/15/19/49/bingo-1044718_1280.jpg',titulo:"FACTURASCRIPTS",text:"Sencillo y personalizable.",id:0},
+            {image:'https://cdn.pixabay.com/photo/2015/11/15/19/49/bingo-1044718_1280.jpg',titulo:"bingo",text:"Sencillo y personalizable.",id:0},
             {image:'https://i.postimg.cc/zX08czBW/home-office-336377.jpg',text:"Share your content",id:1}
         ]
     }

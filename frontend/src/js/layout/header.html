@@ -4,9 +4,10 @@
 
   <div class="container">
 
-    <a class="navbar-brand"
-      ui-sref="app.home"
-      ng-bind="::$ctrl.appName | lowercase">
+    <a class="title-logo navbar-brand"
+      ui-sref="app.home">
+      <i class="fas fa-crown"></i>
+      <p ng-bind="::$ctrl.appName | lowercase"></p>
     </a>
 
     <!-- Show this for logged out users -->
@@ -14,10 +15,10 @@
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link" 
           ui-sref-active="active"
           ui-sref="app.home">
-          Inicio
+          Home
         </a>
       </li>
 
@@ -25,7 +26,7 @@
         <a class="nav-link"
           ui-sref-active="active"
           ui-sref="app.customer_services">
-          Servicios
+          Board
         </a>
       </li>
 
@@ -33,7 +34,7 @@
         <a class="nav-link"
           ui-sref-active="active"
           ui-sref="app.download">
-          Descargar
+          Top Winners
         </a>
       </li>
 
@@ -41,18 +42,9 @@
         <a class="nav-link button"
           ui-sref-active="active"
           ui-sref="app.login">
-          Iniciar sesión
+          Log in
         </a>
       </li>
-
-      <li class="nav-item">
-        <a class="nav-link"
-          ui-sref-active="active"
-          ui-sref="app.register">
-          Registrate
-        </a>
-      </li>
-
     </ul>
 
     <!-- Show this for logged in users -->
