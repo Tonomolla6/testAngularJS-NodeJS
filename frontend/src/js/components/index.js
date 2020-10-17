@@ -27,14 +27,14 @@ componentsModule.component('articleList', ArticleList);
 import ListPagination from './article-helpers/list-pagination.component';
 componentsModule.component('listPagination', ListPagination);
 
-import ServicesList from './services-helpers/services-list.component';
-componentsModule.component('servicesList', ServicesList);
+import WinnersTop from './winners-helpers/winners-top.component';
+componentsModule.component('winnersTop', WinnersTop);
 
-import ServicesBanner from './services-helpers/services-banner.component';
-componentsModule.component('servicesBanner', ServicesBanner);
+import WinnersBanner from './winners-helpers/winners-banner.component';
+componentsModule.component('winnersBanner', WinnersBanner);
 
-import ServicesComments from './services-helpers/services-comments.component';
-componentsModule.component('servicesComments', ServicesComments);
+import WinnersList from './winners-helpers/winners-list.component';
+componentsModule.component('winnersList', WinnersList);
 
 import HomeSlider from './home/home-slider.component';
 componentsModule.component('homeSliderComp', HomeSlider);

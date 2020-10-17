@@ -27,7 +27,7 @@ import './auth';
 import './settings';
 import './editor';
 import './download';
-import './customer_services';
+import './winners';
 import './details_services';
 
 // Create and bootstrap application
@@ -44,7 +44,7 @@ const requires = [
   'app.settings',
   'app.download',
   'app.editor',
-  'app.customer_services',
+  'app.winners',
   'app.details_services',
   'ngMessages',
   toaster,

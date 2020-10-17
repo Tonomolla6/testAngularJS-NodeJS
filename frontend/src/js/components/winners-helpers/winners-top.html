@@ -1,0 +1,16 @@
+
+<link rel="stylesheet" href="css/components/winners-helpers/winners-top.css">
+<div class="title">
+    <h1 class="logo-font">Players with the most games won</h1>
+</div>
+
+<div class="podium">
+    <div class="user" ng-repeat="user in $ctrl.users">
+        <h4 class="name">{{user.title}}</h4>
+        <div class="content">
+            <h2>{{user.price}}</h2>
+            <p>{{user.description}}</p>
+        </div>
+        <div ui-sref="app.details_services({slug:'{{service.slug}}'})" class="button-primary">Seleccionar</div>
+    </div>
+</div>
