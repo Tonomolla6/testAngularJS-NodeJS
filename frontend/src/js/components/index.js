@@ -12,20 +12,8 @@ componentsModule.directive('showAuthed', ShowAuthed);
 import FollowBtn from './buttons/follow-btn.component';
 componentsModule.component('followBtn', FollowBtn);
 
-import ArticleMeta from './article-helpers/article-meta.component';
-componentsModule.component('articleMeta', ArticleMeta);
-
 import FavoriteBtn from './buttons/favorite-btn.component';
 componentsModule.component('favoriteBtn', FavoriteBtn);
-
-import ArticlePreview from './article-helpers/article-preview.component';
-componentsModule.component('articlePreview', ArticlePreview);
-
-import ArticleList from './article-helpers/article-list.component';
-componentsModule.component('articleList', ArticleList);
-
-import ListPagination from './article-helpers/list-pagination.component';
-componentsModule.component('listPagination', ListPagination);
 
 import WinnersTop from './winners-helpers/winners-top.component';
 componentsModule.component('winnersTop', WinnersTop);
@@ -38,5 +26,14 @@ componentsModule.component('winnersList', WinnersList);
 
 import HomeSlider from './home/home-slider.component';
 componentsModule.component('homeSliderComp', HomeSlider);
+
+import ArticleDraw from './article/article-draw.component';
+componentsModule.component('articleDraw', ArticleDraw);
+
+import ArticleComment from './article/article-comment.component';
+componentsModule.component('articleComment', ArticleComment);
+
+import PopularNewsBanner from './board/popular-news.componet';
+componentsModule.component('popularNews', PopularNewsBanner);
 
 export default componentsModule;

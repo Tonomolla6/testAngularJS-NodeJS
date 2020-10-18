@@ -1,45 +1,55 @@
+:root {
+    --color-app: #ffc900;
+}
+
 .podium {
-    margin: 20px;
     display: flex;
-    flex-direction: row-reverse;
+    align-items: flex-end;
+    margin: 30px 0px;
 }
 
-.user {
-    padding: 40px 25px;
-    display: flex;
-    min-height: 400px;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    border: 1px solid #0000002e;
+.podium .user {
+    padding: 30px;
+    border: 1px solid black;
     margin: 1%;
-    justify-content: space-between;
-    transition: 0.3s border;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
-.user h4 {
-    font-size: 20px;
+.user0 {
+    height: 460px;
+}
+
+.user1 {
+    height: 500px;
+}
+
+.user2 {
+    height: 430px;
+}
+
+img.image {
+    width: 130px;
+    border-radius: 100%;
+    margin-bottom: 20px;
+}
+
+.user h3 {
+    color: var(--color-app);
     font-weight: bold;
-    margin-top: 10px
+    font-size: 50px;
 }
 
-.user h2 {
-    font-size: 2.5rem;
-    font-family: 'Open Sans', sans-serif;
-    color: #707070;
-    margin-bottom: 36px;
+.button-winner-top {
+    border: 2px dashed var(--color-app);
+    padding: 10px 30px;
+    cursor: pointer;
 }
 
-.title {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-}
-
-.title p {
-    font-size: 1.25rem;
-    font-weight: 300;
+.button-winner-top:hover {
+    background-color: var(--color-app);
+    color: white;
 }

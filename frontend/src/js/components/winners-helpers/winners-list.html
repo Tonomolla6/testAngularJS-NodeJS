@@ -1,18 +1,99 @@
-<style>
-    .title {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
-      }
-  
-</style>
-
+<link rel="stylesheet" href="css/components/winners-helpers/winners-list.css">
 <div class="title">
-    <h1 class="logo-font">Algunas personas hablan de nosotros</h1>
     <div class="comments" ng-repeat="comment in $ctrl.comments"></div>
-        <div>{{$ctrl.comments}}</div>
+    <table>
+        <tr>
+            <th class="image"></th>
+            <th>Name</th>
+            <th>Times won</th>
+            <th>Times losses</th>
+            <th>Position</th>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Germany</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Mexico</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Austria</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>UK</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Canada</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Italy</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Austria</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>UK</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Canada</td>
+        </tr>
+        <tr>
+            <td><img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt=""></td>
+            <td>Alfreds Futterkiste</td>
+            <td>124</td>
+            <td>424</td>
+            <td>Italy</td>
+        </tr>
+    </table>
+
+    <div class="pagination_winners">
+        <span><i class="fas fa-arrow-left"></i></span>
+        <span class="active">1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+        <span>10</span>
+        <span><i class="fas fa-arrow-right"></i></span>
     </div>
+</div>
 </div>

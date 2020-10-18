@@ -1,0 +1,24 @@
+:root {
+    --color-app: #ffc900;
+}
+
+.article-page.ng-scope {
+    padding: 10px;
+}
+
+.container.page {
+    margin-bottom: 25px;
+    padding: 0;
+}
+
+.article-page.ng-scope {
+    background-image: url(https://cdn.pixabay.com/photo/2016/03/17/23/09/roulette-1264078_1280.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container.page {
+    min-height: 800px;
+    background-color: white;
+    padding: 25px;
+}

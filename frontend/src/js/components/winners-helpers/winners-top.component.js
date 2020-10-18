@@ -1,12 +1,12 @@
 class WinnersTopCtrl {
     constructor(Services, $scope) {
-      'ngInject';
+        'ngInject';
     }
 }
 
 let WinnersTop = {
     bindings: {
-      users: '='
+        users: '='
     },
     controller: WinnersTopCtrl,
     templateUrl: 'components/winners-helpers/winners-top.html'
