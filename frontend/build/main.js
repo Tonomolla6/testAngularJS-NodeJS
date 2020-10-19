@@ -51321,8 +51321,8 @@ exports.default = AppRun;
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("article/article.html", "<link rel=\"stylesheet\" href=\"css/article/article.css\">\n<div class=\"article-page primary\">\n    <div class=\"container page\">\n        <article-draw></article-draw>\n        <article-comment></article-comment>\n    </div>\n</div>");
+  $templateCache.put("auth/auth.html", "<link rel=\"stylesheet\" href=\"css/auth/auth.css\">\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.css\" />\n<div class=\"auth-page\">\n    <div class=\"container page\">\n        <div class=\"row row_bank\">\n            <h1>YOU AREN\'T 18 YEARS OLD?</h1>\n            <p>Minors are prohibited from gambling, but you should know a few more things that can help prevent possible risky behavior. The Public, State and Autonomous Administrations, regulate the conditions under which games of chance are developed and\n                commercialized and establish the identity verification mechanisms to be used in order to verify the age of majority of the participants, as well as the games to those who need that identification.</p>\n        </div>\n        <hr>\n        <div class=\"row\">\n\n            <div class=\"page_row\">\n                <h1 class=\"text-xs-center\" ng-bind=\"::$ctrl.title\"></h1>\n                <p class=\"text-xs-center\">\n                    <a ui-sref=\"app.login\" ng-show=\"$ctrl.authType === \'register\'\">\n            Have an account?\n          </a>\n                    <a ui-sref=\"app.register\" ng-show=\"$ctrl.authType === \'login\'\">\n            Need an account?\n          </a>\n                </p>\n\n                <!-- <list-errors errors=\"$ctrl.errors\"></list-errors> -->\n\n                <form name=\"formData\" ng-submit=\"$ctrl.submitForm()\">\n                    <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n                        <fieldset class=\"form-group\" ng-show=\"$ctrl.authType === \'register\'\">\n                            <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\" ng-model=\"$ctrl.formData.username\" name=\"username\" />\n\n                            <div ng-messages=\"formData.Username.$error\" style=\"color:red\">\n                                <p ng-message=\"required\" ng-show=\"formData.Username.$dirty\">Esta vacio. Empanao</p>\n                            </div>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\" ng-model=\"$ctrl.formData.email\" name=\"Email\" required />\n\n                            <div ng-messages=\"formData.Email.$error\" style=\"color:red\">\n                                <p ng-message=\"required\" ng-show=\"formData.Email.$dirty\">Esta vacio. Empanao</p>\n                            </div>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\" ng-model=\"$ctrl.formData.password\" ng-minlength=\"3\" ng-maxlength=\"15\" name=\"Password\" required />\n\n                            <div ng-messages=\"formData.Password.$error\" style=\"color:red\">\n                                <p ng-message=\"required\" ng-show=\"formData.Password.$dirty\">Esta vacio. Empanao</p>\n                                <p ng-message=\"minlength\">Los caracteres minimos para la contraseña son 3.</p>\n                                <p ng-message=\"maxlength\">Los caracteres minimos para la contraseña son 15.</p>\n                            </div>\n                        </fieldset>\n\n                        <button class=\"btn btn-lg btn-primary pull-xs-right\" type=\"submit\" ng-bind=\"::$ctrl.title\">\n            </button>\n\n                    </fieldset>\n                </form>\n                <hr class=\"social\">\n                <p>Do you want to use external services?</p>\n                <a class=\"social_button\" href=\"http://localhost:3000/api/auth/github\"> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\">\n            <path\n              d=\"M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z\" />\n          </svg>Entrar con Github </a>\n                <a class=\"social_button\" href=\"http://localhost:3000/api/auth/google\"> <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" enable-background=\"new 0 0 24 24\" class=\"Svg-sc-sr61w3 lnykFD\">\n            <path fill=\"#FBBB00\"\n              d=\"M6.2 14.2l-.7 2.7-2.7.1c-.8-1.5-1.2-3.2-1.2-5 0-1.7.4-3.4 1.2-4.8l3.3 2.8c-.2.6-.3 1.3-.3 2 0 .8.1 1.5.4 2.2z\">\n            </path>\n            <path fill=\"#518EF8\"\n              d=\"M22.4 12c0 .7-.1 1.5-.2 2.2-.5 2.4-1.8 4.5-3.7 6l-3.4-2.8c1.2-.7 2.2-1.8 2.7-3.2h-5.6v-4.1h10c.2.6.2 1.2.2 1.9z\">\n            </path>\n            <path fill=\"#28B446\"\n              d=\"M18.5 20.1c-1.8 1.4-4.1 2.3-6.5 2.3-4 0-7.4-2.2-9.2-5.5l3.4-2.8c.9 2.4 3.2 4 5.8 4 1.1 0 2.2-.3 3.1-.8l3.4 2.8z\">\n            </path>\n            <path fill=\"#F14336\"\n              d=\"M18.7 4l-3.4 2.8c-1-.6-2.1-.9-3.3-.9-2.7 0-5 1.8-5.9 4.2l-3.4-2.9c1.8-3.4 5.3-5.6 9.3-5.6 2.5 0 4.9.9 6.7 2.4z\">\n            </path>\n          </svg> Entrar con Google </a>\n            </div>\n\n        </div>\n    </div>\n</div>");
   $templateCache.put("board/board.html", "<link rel=\"stylesheet\" href=\"css/board/board.css\">\n<div class=\"board-page\">\n    <div class=\"container page\">\n        <popular-news news=\"$ctrl.popular_news\"></popular-news>\n        <section>\n            <div class=\"left-page\">\n                <h4>Board</h4>\n                <hr>\n\n                <article-draw></article-draw>\n            </div>\n            <div class=\"right-page\">\n                <!-- <friends></friends> -->\n                <h4>Friends</h4>\n                <hr>\n                <div class=\"friends\">\n                    <div class=\"friend active\">\n                        <img src=\"https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg\" alt=\"\">\n                        <h6>Carla Gandia Benito</h6>\n                    </div>\n                    <div class=\"friend\">\n                        <img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\">\n                        <h6>Marcos Pérez Gomez</h6>\n                    </div>\n                    <div class=\"friend\">\n                        <img src=\"https://cdn.pixabay.com/photo/2017/01/03/01/38/man-1948310_960_720.jpg\" alt=\"\">\n                        <h6>Raul Lopez Juarez</h6>\n                    </div>\n                </div>\n            </div>\n        </section>\n    </div>\n</div>");
-  $templateCache.put("auth/auth.html", "<link rel=\"stylesheet\" href=\"css/auth/auth.css\">\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.css\" />\n<div class=\"auth-page\">\n  <div class=\"container page\">\n    <div class=\"row row_bank\">\n      <h1>YOU AREN\'T 18 YEARS OLD?</h1>\n      <p>Minors are prohibited from gambling, but you should know a few more things that can help prevent possible risky\n        behavior. The Public, State and Autonomous Administrations, regulate the conditions under which games of chance\n        are developed and\n        commercialized and establish the identity verification mechanisms to be used in order to verify the age of\n        majority of the participants, as well as the games to those who need that identification.</p>\n    </div>\n    <hr>\n    <div class=\"row\">\n\n      <div class=\"page_row\">\n        <h1 class=\"text-xs-center\" ng-bind=\"::$ctrl.title\"></h1>\n        <p class=\"text-xs-center\">\n          <a ui-sref=\"app.login\" ng-show=\"$ctrl.authType === \'register\'\">\n            Have an account?\n          </a>\n          <a ui-sref=\"app.register\" ng-show=\"$ctrl.authType === \'login\'\">\n            Need an account?\n          </a>\n        </p>\n\n        <!-- <list-errors errors=\"$ctrl.errors\"></list-errors> -->\n\n        <form name=\"formData\" ng-submit=\"$ctrl.submitForm()\">\n          <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n            <fieldset class=\"form-group\" ng-show=\"$ctrl.authType === \'register\'\">\n              <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\"\n                ng-model=\"$ctrl.formData.username\" name=\"Username\" required />\n\n              <div ng-messages=\"formData.Username.$error\" style=\"color:red\">\n                <p ng-message=\"required\" ng-show=\"formData.Username.$dirty\">Esta vacio. Empanao</p>\n              </div>\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\"\n                ng-model=\"$ctrl.formData.email\" name=\"Email\" required />\n\n              <div ng-messages=\"formData.Email.$error\" style=\"color:red\">\n                <p ng-message=\"required\" ng-show=\"formData.Email.$dirty\">Esta vacio. Empanao</p>\n              </div>\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\"\n                ng-model=\"$ctrl.formData.password\" ng-minlength=\"3\" ng-maxlength=\"15\" name=\"Password\" required />\n\n              <div ng-messages=\"formData.Password.$error\" style=\"color:red\">\n                <p ng-message=\"required\" ng-show=\"formData.Password.$dirty\">Esta vacio. Empanao</p>\n                <p ng-message=\"minlength\">Los caracteres minimos para la contraseña son 3.</p>\n                <p ng-message=\"maxlength\">Los caracteres minimos para la contraseña son 15.</p>\n              </div>\n            </fieldset>\n\n            <button class=\"btn btn-lg btn-primary pull-xs-right\" type=\"submit\" ng-bind=\"::$ctrl.title\">\n            </button>\n\n          </fieldset>\n        </form>\n        <hr class=\"social\">\n        <p>Do you want to use external services?</p>\n        <a class=\"social_button\" href=\"http://localhost:3000/api/auth/github\"> <svg xmlns=\"http://www.w3.org/2000/svg\"\n            width=\"24\" height=\"24\" viewBox=\"0 0 24 24\">\n            <path\n              d=\"M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z\" />\n          </svg>Entrar con Github </a>\n        <a class=\"social_button\" href=\"http://localhost:3000/api/auth/google\"> <svg xmlns=\"http://www.w3.org/2000/svg\"\n            viewBox=\"0 0 24 24\" enable-background=\"new 0 0 24 24\" class=\"Svg-sc-sr61w3 lnykFD\">\n            <path fill=\"#FBBB00\"\n              d=\"M6.2 14.2l-.7 2.7-2.7.1c-.8-1.5-1.2-3.2-1.2-5 0-1.7.4-3.4 1.2-4.8l3.3 2.8c-.2.6-.3 1.3-.3 2 0 .8.1 1.5.4 2.2z\">\n            </path>\n            <path fill=\"#518EF8\"\n              d=\"M22.4 12c0 .7-.1 1.5-.2 2.2-.5 2.4-1.8 4.5-3.7 6l-3.4-2.8c1.2-.7 2.2-1.8 2.7-3.2h-5.6v-4.1h10c.2.6.2 1.2.2 1.9z\">\n            </path>\n            <path fill=\"#28B446\"\n              d=\"M18.5 20.1c-1.8 1.4-4.1 2.3-6.5 2.3-4 0-7.4-2.2-9.2-5.5l3.4-2.8c.9 2.4 3.2 4 5.8 4 1.1 0 2.2-.3 3.1-.8l3.4 2.8z\">\n            </path>\n            <path fill=\"#F14336\"\n              d=\"M18.7 4l-3.4 2.8c-1-.6-2.1-.9-3.3-.9-2.7 0-5 1.8-5.9 4.2l-3.4-2.9c1.8-3.4 5.3-5.6 9.3-5.6 2.5 0 4.9.9 6.7 2.4z\">\n            </path>\n          </svg> Entrar con Google </a>\n      </div>\n\n    </div>\n  </div>\n</div>");
   $templateCache.put("components/list-errors.html", "<ul class=\"error-messages\" ng-show=\"$ctrl.errors\">\n  <div ng-repeat=\"(field, errors) in $ctrl.errors\">\n    <li ng-repeat=\"error in errors\">\n      {{field}} {{error}}\n    </li>\n  </div>\n</ul>\n");
   $templateCache.put("editor/editor.html", "<div class=\"editor-page\">\n  <div class=\"container page\">\n    <div class=\"row\">\n      <div class=\"col-md-10 offset-md-1 col-xs-12\">\n\n        <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n        <form>\n          <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                ng-model=\"$ctrl.article.title\"\n                type=\"text\"\n                placeholder=\"Article Title\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control\"\n                ng-model=\"$ctrl.article.description\"\n                type=\"text\"\n                placeholder=\"What\'s this article about?\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <textarea class=\"form-control\"\n                rows=\"8\"\n                ng-model=\"$ctrl.article.body\"\n                placeholder=\"Write your article (in markdown)\">\n              </textarea>\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control\"\n                type=\"text\"\n                placeholder=\"Enter tags\"\n                ng-model=\"$ctrl.tagField\"\n                ng-keyup=\"$event.keyCode == 13 && $ctrl.addTag()\" />\n\n              <div class=\"tag-list\">\n                <span ng-repeat=\"tag in $ctrl.article.tagList\"\n                  class=\"tag-default tag-pill\">\n                  <i class=\"ion-close-round\" ng-click=\"$ctrl.removeTag(tag)\"></i>\n                  {{ tag }}\n                </span>\n              </div>\n            </fieldset>\n\n            <button class=\"btn btn-lg pull-xs-right btn-primary\" type=\"button\" ng-click=\"$ctrl.submit()\">\n              Publish Article\n            </button>\n\n          </fieldset>\n        </form>\n\n      </div>\n    </div>\n  </div>\n</div>\n");
   $templateCache.put("home/home.html", "<link rel=\"stylesheet\" href=\"css/home/home.css\">\n<div class=\"home-page primary\">\n\n  <!-- Slider component -->\n  <home-slider-comp></home-slider-comp>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12\">\n        <!-- Tabs for toggling between feed, article lists -->\n\n        <!-- List the current articles -->\n        <!-- <article-list limit=\"10\" list-config=\"$ctrl.listConfig\"></article-list> -->\n        <services-banner></services-banner>\n        <hr class=\"space\">\n        <services-list services=\"$ctrl.services\"></services-list>\n        <hr class=\"space\">\n        <services-comments comments=\"$ctrl.comments\"></services-comments>\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
@@ -51332,7 +51332,7 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("profile/profile-articles.html", "<article-list limit=\"5\" list-config=\"$ctrl.listConfig\"></article-list>\n");
   $templateCache.put("profile/profile.html", "<div class=\"profile-page\">\n\n  <!-- User\'s basic info & action buttons -->\n  <div class=\"user-info\">\n    <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-xs-12 col-md-10 offset-md-1\">\n\n          <img ng-src=\"{{::$ctrl.profile.image}}\" class=\"user-img\" />\n          <h4 ng-bind=\"::$ctrl.profile.username\"></h4>\n          <p ng-bind=\"::$ctrl.profile.bio\"></p>\n\n          <a ui-sref=\"app.settings\"\n            class=\"btn btn-sm btn-outline-secondary action-btn\"\n            ng-show=\"$ctrl.isUser\">\n            <i class=\"ion-gear-a\"></i> Edit Profile Settings\n          </a>\n\n          <follow-btn user=\"$ctrl.profile\" ng-hide=\"$ctrl.isUser\"></follow-btn>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- Container where User\'s posts & favs are list w/ toggle tabs -->\n  <div class=\"container\">\n    <div class=\"row\">\n\n      <div class=\"col-xs-12 col-md-10 offset-md-1\">\n\n        <!-- Tabs for switching between author articles & favorites -->\n        <div class=\"articles-toggle\">\n          <ul class=\"nav nav-pills outline-active\">\n\n            <li class=\"nav-item\">\n              <a class=\"nav-link active\"\n                ui-sref-active=\"active\"\n                ui-sref=\"app.profile.main({username: $ctrl.profile.username})\">\n                My Articles\n              </a>\n            </li>\n\n            <li class=\"nav-item\">\n              <a class=\"nav-link\"\n                ui-sref-active=\"active\"\n                ui-sref=\"app.profile.favorites({username: $ctrl.profile.username})\">\n                Favorited Articles\n              </a>\n            </li>\n\n          </ul>\n        </div>\n\n        <!-- List of articles -->\n        <div ui-view></div>\n\n\n      </div>\n\n    <!-- End row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
   $templateCache.put("settings/settings.html", "<link rel=\"stylesheet\" href=\"css/settings/settings.css\">\n<div class=\"settings-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n\n                <h1 class=\"text-xs-center\">Your Settings</h1>\n                <hr class=\"title\">\n                <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n                <form ng-submit=\"$ctrl.submitForm()\">\n                    <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control\" type=\"text\" placeholder=\"URL of profile picture\" ng-model=\"$ctrl.formData.image\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\" ng-model=\"$ctrl.formData.username\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <textarea class=\"form-control form-control-lg\" rows=\"8\" placeholder=\"Short bio about you\" ng-model=\"$ctrl.formData.bio\"></textarea>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\" ng-model=\"$ctrl.formData.email\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"New Password\" ng-model=\"$ctrl.formData.password\" />\n                        </fieldset>\n\n                        <button class=\"btn btn-lg btn-primary pull-xs-right\" type=\"submit\">\n                            Update Settings\n                        </button>\n\n                    </fieldset>\n                </form>\n\n                <!-- Line break for logout button -->\n                <hr />\n\n                <button class=\"btn btn-outline-danger\" ng-click=\"$ctrl.logout()\">\n                    Or click here to logout.\n                </button>\n\n            </div>\n        </div>\n    </div>\n</div>");
-  $templateCache.put("winners/winners.html", "<link rel=\"stylesheet\" href=\"css/winners/winners.css\">\n<div class=\"winners-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n\n                <winners-top users=\"$ctrl.users\"></winners-top>\n\n                <winners-list users=\"$ctrl.users\"></winners-list>\n\n            </div>\n        </div>\n    </div>\n</div>");
+  $templateCache.put("winners/winners.html", "<link rel=\"stylesheet\" href=\"css/winners/winners.css\">\n<div class=\"winners-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n\n                <winners-top users=\"$ctrl.users_top\"></winners-top>\n\n                <winners-list users=\"$ctrl.users\"></winners-list>\n\n            </div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/article/article-comment.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-commpont.css\">\n\n<div class=\"comments\">\n    <div class=\"comment\">\n\n    </div>\n    <div class=\"comment\">\n\n    </div>\n</div>");
   $templateCache.put("components/article/article-draw.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-draw.css\">\n\n<div class=\"news\">\n    <div class=\"new\">\n        <header>\n            <img class=\"profile\" src=\"https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg\" alt=\"\">\n            <div class=\"text\">\n                <h6>Carla Gandia Benito</h6>\n                <p>2020/20/18 13:27</p>\n            </div>\n        </header>\n        <article>\n            <div class=\"description\">\n                I have won a game with more than 50,000 players, it has been intense, fast and very fun, I share my victory with all of you so that you are encouraged to participate in these events, Thank you BINGO KING!!!!\n            </div>\n            <img class=\"image\" src=\"https://cdn.pixabay.com/photo/2016/06/01/08/40/money-1428594_1280.jpg\" alt=\"\">\n            <section class=\"social_control_post\">\n                <a href=\"/#!/article\">\n                    <div>\n                        <p>0</p>\n                        <i class=\"fas fa-comment\"></i>\n                        <!-- <p>Comments</p> -->\n                    </div>\n                </a>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-heart\"></i>\n                    <!-- <p>Likes</p> -->\n                </div>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-heart-broken\"></i>\n                    <!-- <p>Dislike</p> -->\n                </div>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-share\"></i>\n                    <!-- <p>Share</p> -->\n                </div>\n            </section>\n        </article>\n    </div>\n    <hr>\n</div>");
   $templateCache.put("components/board/popular-news.html", "<link rel=\"stylesheet\" href=\"css/components/board/popular-news.css\">\n\n<div class=\"title\">\n    <h4>Popular posts</h4>\n    <hr>\n</div>\n\n<div class=\"news_popular\">\n    <div class=\"new_popular {{user.news}}\" ng-repeat=\"new in $ctrl.news\">\n        <div class=\"effect\">\n            <a href=\"/#!/article\"></a>\n            <div class=\"img\" style=\"background-image: url({{new.image}})\"></div>\n        </div>\n        <div class=\"text\">\n            <h5 class=\"name\"><strong>{{new.title}}</strong></h5>\n            <p>{{new.description}}</p>\n        </div>\n    </div>\n</div>");
@@ -51341,7 +51341,7 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("components/home/home-slider.html", "<link rel=\"stylesheet\" href=\"css/components/home/home-slider.css\">\n<div style=\"height: 400px\">\n    <div uib-carousel active=\"active\" interval=\"$ctrl.imgInterval\" no-wrap=\"$ctrl.noWrapSlides\">\n        <div uib-slide ng-repeat=\"slide in $ctrl.slides track by slide.id\" index=\"slide.id\" style=\"height: 400px\">\n            <img ng-src=\"{{slide.image}}\" class=\"img-fluid\" style=\"filter: blur(2px);\">\n            <div style=\"position: absolute; color: white; z-index: 100; bottom: 50%; width: 100%;\">\n                <h1 class=\"logo-font\">{{slide.titulo}}</h1>\n                <h2>{{slide.text}}</h2>\n\n                <div ng-if=\"slide.button.text\" class=\"buttons-slider\">\n                    <a href=\"{{slide.button.url}}\">\n                        {{slide.button.text}}\n                    </a>\n                </div>\n            </div>\n            <div class=\"carousel-caption\" style=\"padding-bottom:100px;\"></div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/winners-helpers/winners-banner.html", "<style>\n    .title {\n        width: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        flex-direction: column;\n        text-align: center;\n      }\n  \n      .title p {\n          font-size: 1.25rem;\n          font-weight: 300;\n      }\n  \n      .img {\n          margin-top: 10px;\n          display: flex;\n          justify-content: center;\n      }\n  \n</style>\n\n<div class=\"title\">\n    <h1 class=\"logo-font\">Gestiona tu negocio online</h1>\n    <p>Ya seas un autónomo o pequeño empresario, una startup o una gestoría, tenemos las herramientas que necesitas para que tus empleados y tú podáis teletrabajar desde cualquier lugar y a cualquier hora.</p>\n</div>\n\n<div class=\"img\">\n    <img src=\"https://blog.desdelinux.net/wp-content/uploads/2016/09/bingo.png\" />\n</div>");
   $templateCache.put("components/winners-helpers/winners-list.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-list.css\">\n<div class=\"title\">\n    <div class=\"comments\" ng-repeat=\"comment in $ctrl.comments\"></div>\n    <table>\n        <tr>\n            <th class=\"image\"></th>\n            <th>Name</th>\n            <th>Times won</th>\n            <th>Times losses</th>\n            <th>Position</th>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Germany</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Mexico</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Austria</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>UK</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Canada</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Italy</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Austria</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>UK</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Canada</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Italy</td>\n        </tr>\n    </table>\n\n    <div class=\"pagination_winners\">\n        <span><i class=\"fas fa-arrow-left\"></i></span>\n        <span class=\"active\">1</span>\n        <span>2</span>\n        <span>3</span>\n        <span>4</span>\n        <span>5</span>\n        <span>6</span>\n        <span>7</span>\n        <span>8</span>\n        <span>9</span>\n        <span>10</span>\n        <span><i class=\"fas fa-arrow-right\"></i></span>\n    </div>\n</div>\n</div>");
-  $templateCache.put("components/winners-helpers/winners-top.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-top.css\">\n<div class=\"title\">\n    <h1 class=\"logo-font\">Players with the most games won</h1>\n    <hr>\n</div>\n\n<div class=\"podium\">\n    <!-- <div class=\"user {{user.class}}\" ng-repeat=\"user in $ctrl.users\">\n        <h4 class=\"name\">{{user.image}}</h4>\n        <h4 class=\"name\">{{user.title}}</h4>\n        <div class=\"content\">\n            <h2>{{user.price}}</h2>\n            <p>{{user.description}}</p>\n        </div>\n        <div ui-sref=\"app.details_services({slug:\'{{service.slug}}\'})\" class=\"button-primary\">Seleccionar</div>\n    </div> -->\n\n    <div class=\"user {{user.class}}\" ng-repeat=\"user in $ctrl.users\">\n        <h2>{{user.position}}</h2>\n        <img class=\"image\" src=\"{{user.image}}\" />\n        <h4 class=\"name\"><strong>{{user.name}}</strong></h4>\n        <h6>Times Won</h6>\n        <h3>{{user.times_won}}</h3>\n        <div ui-sref=\"app.details_services({slug:\'{{service.slug}}\'})\" class=\"button-winner-top\">View Profile</div>\n    </div>\n</div>");
+  $templateCache.put("components/winners-helpers/winners-top.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-top.css\">\n<div class=\"title\">\n    <h1 class=\"logo-font\">Players with the most games won</h1>\n    <hr>\n</div>\n\n<div class=\"podium\">\n    <div class=\"user {{user.class}}\" ng-repeat=\"user in $ctrl.users\">\n        <h2>{{user.position}}</h2>\n        <img class=\"image\" src=\"{{user.image}}\" />\n        <h4 class=\"name\"><strong>@{{user.username}}</strong></h4>\n        <h6>Times Won</h6>\n        <h3>{{user.won}}</h3>\n        <div ui-sref=\"app.details_services({slug:\'{{service.slug}}\'})\" class=\"button-winner-top\">View Profile</div>\n    </div>\n</div>");
 }]);
 
 },{}],37:[function(require,module,exports){
@@ -52286,7 +52286,7 @@ exports.default = Toastr;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -52294,121 +52294,131 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var User = function () {
-  User.$inject = ["JWT", "AppConstants", "$http", "$state", "$q"];
-  function User(JWT, AppConstants, $http, $state, $q) {
-    'ngInject';
+    User.$inject = ["JWT", "AppConstants", "$http", "$state", "$q"];
+    function User(JWT, AppConstants, $http, $state, $q) {
+        'ngInject';
 
-    _classCallCheck(this, User);
+        _classCallCheck(this, User);
 
-    this._JWT = JWT;
-    this._AppConstants = AppConstants;
-    this._$http = $http;
-    this._$state = $state;
-    this._$q = $q;
+        this._JWT = JWT;
+        this._AppConstants = AppConstants;
+        this._$http = $http;
+        this._$state = $state;
+        this._$q = $q;
 
-    this.current = null;
-  }
+        this.current = null;
+    }
 
-  _createClass(User, [{
-    key: "attemptAuth",
-    value: function attemptAuth(type, credentials) {
-      var _this = this;
+    _createClass(User, [{
+        key: "attemptAuth",
+        value: function attemptAuth(type, credentials) {
+            var _this = this;
 
-      var route = "";
-      if (type == "sociallogin") {
-        route = "/sociallogin";
-      } else if (type == "login") {
-        route = "/login";
-      }
+            var route = "";
+            if (type == "sociallogin") {
+                route = "/sociallogin";
+            } else if (type == "login") {
+                route = "/login";
+            }
 
-      return this._$http({
-        url: this._AppConstants.api + '/users' + route,
-        method: 'POST',
-        data: {
-          user: credentials
+            return this._$http({
+                url: this._AppConstants.api + '/users' + route,
+                method: 'POST',
+                data: {
+                    user: credentials
+                }
+            }).then(function (res) {
+                _this._JWT.save(res.data.user.token);
+                _this.current = res.data.user;
+
+                return res;
+            });
         }
-      }).then(function (res) {
-        _this._JWT.save(res.data.user.token);
-        _this.current = res.data.user;
+    }, {
+        key: "update",
+        value: function update(fields) {
+            var _this2 = this;
 
-        return res;
-      });
-    }
-  }, {
-    key: "update",
-    value: function update(fields) {
-      var _this2 = this;
-
-      return this._$http({
-        url: this._AppConstants.api + '/user',
-        method: 'PUT',
-        data: { user: fields }
-      }).then(function (res) {
-        _this2.current = res.data.user;
-        return res.data.user;
-      });
-    }
-  }, {
-    key: "logout",
-    value: function logout() {
-      this.current = null;
-      this._JWT.destroy();
-      this._$state.go(this._$state.$current, null, { reload: true });
-    }
-  }, {
-    key: "verifyAuth",
-    value: function verifyAuth() {
-      var _this3 = this;
-
-      var deferred = this._$q.defer();
-
-      // check for JWT token
-      if (!this._JWT.get()) {
-        deferred.resolve(false);
-        return deferred.promise;
-      }
-
-      if (this.current) {
-        deferred.resolve(true);
-      } else {
-        this._$http({
-          url: this._AppConstants.api + '/user',
-          method: 'GET',
-          headers: {
-            Authorization: 'Token ' + this._JWT.get()
-          }
-        }).then(function (res) {
-          _this3.current = res.data.user;
-          deferred.resolve(true);
-        }, function (err) {
-          _this3._JWT.destroy();
-          deferred.resolve(false);
-        });
-      }
-
-      return deferred.promise;
-    }
-  }, {
-    key: "ensureAuthIs",
-    value: function ensureAuthIs(bool) {
-      var _this4 = this;
-
-      var deferred = this._$q.defer();
-
-      this.verifyAuth().then(function (authValid) {
-        if (authValid !== bool) {
-          _this4._$state.go('app.home');
-          deferred.resolve(false);
-        } else {
-          deferred.resolve(true);
+            return this._$http({
+                url: this._AppConstants.api + '/user',
+                method: 'PUT',
+                data: { user: fields }
+            }).then(function (res) {
+                _this2.current = res.data.user;
+                return res.data.user;
+            });
         }
-      });
+    }, {
+        key: "logout",
+        value: function logout() {
+            this.current = null;
+            this._JWT.destroy();
+            this._$state.go(this._$state.$current, null, { reload: true });
+        }
+    }, {
+        key: "verifyAuth",
+        value: function verifyAuth() {
+            var _this3 = this;
 
-      return deferred.promise;
-    }
-  }]);
+            var deferred = this._$q.defer();
 
-  return User;
+            // check for JWT token
+            if (!this._JWT.get()) {
+                deferred.resolve(false);
+                return deferred.promise;
+            }
+
+            if (this.current) {
+                deferred.resolve(true);
+            } else {
+                this._$http({
+                    url: this._AppConstants.api + '/user',
+                    method: 'GET',
+                    headers: {
+                        Authorization: 'Token ' + this._JWT.get()
+                    }
+                }).then(function (res) {
+                    _this3.current = res.data.user;
+                    deferred.resolve(true);
+                }, function (err) {
+                    _this3._JWT.destroy();
+                    deferred.resolve(false);
+                });
+            }
+
+            return deferred.promise;
+        }
+    }, {
+        key: "ensureAuthIs",
+        value: function ensureAuthIs(bool) {
+            var _this4 = this;
+
+            var deferred = this._$q.defer();
+
+            this.verifyAuth().then(function (authValid) {
+                if (authValid !== bool) {
+                    _this4._$state.go('app.home');
+                    deferred.resolve(false);
+                } else {
+                    deferred.resolve(true);
+                }
+            });
+
+            return deferred.promise;
+        }
+    }, {
+        key: "getTopUsers",
+        value: function getTopUsers() {
+            return this._$http({
+                url: this._AppConstants.api + '/users/',
+                method: 'GET'
+            }).then(function (res) {
+                return res.data;
+            });
+        }
+    }]);
+
+    return User;
 }();
 
 exports.default = User;
@@ -52562,23 +52572,23 @@ exports.default = winnersModule;
 
 WinnersConfig.$inject = ["$stateProvider"];
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 function WinnersConfig($stateProvider) {
-  'ngInject';
+    'ngInject';
 
-  $stateProvider.state('app.winners', {
-    url: '/winners',
-    controller: 'WinnersCtrl',
-    controllerAs: '$ctrl',
-    templateUrl: 'winners/winners.html',
-    title: 'Top Winners',
-    resolve: {
-      users: ["Services", function users(Services) {
-        return Services.getServices();
-      }]
-    }
-  });
+    $stateProvider.state('app.winners', {
+        url: '/winners',
+        controller: 'WinnersCtrl',
+        controllerAs: '$ctrl',
+        templateUrl: 'winners/winners.html',
+        title: 'Top Winners',
+        resolve: {
+            TopUsers: ["User", function TopUsers(User) {
+                return User.getTopUsers();
+            }]
+        }
+    });
 };
 
 exports.default = WinnersConfig;
@@ -52590,37 +52600,37 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var WinnersCtrl = function WinnersCtrl(User, AppConstants, users, $scope) {
+var WinnersCtrl = function WinnersCtrl(TopUsers) {
     'ngInject';
+
+    var _this = this;
 
     _classCallCheck(this, WinnersCtrl);
 
-    this.users = users;
-    var users_top = users.map(function (element, i) {
-        element["class"] = "user" + i;
+    this.users_top = TopUsers;
+    this.users = [].concat(_toConsumableArray(this.users_top));
+
+    this.users_top = this.users_top.map(function (element, i) {
         if (i == 1) {
+            element["class"] = "user0";
+            element = _this.users[0];
             element["position"] = "First position";
-            element["name"] = "Carla Gandia Benito";
-            element["times_won"] = 301;
-            element["image"] = "https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg";
         } else if (i == 0) {
+            element["class"] = "user1";
+            element = _this.users[1];
             element["position"] = "Second position";
-            element["name"] = "Marcos Pérez Gomez";
-            element["times_won"] = 254;
-            element["image"] = "https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg";
         } else {
+            element["class"] = "user2";
             element["position"] = "Third position";
-            element["name"] = "Raul Lopez Juarez";
-            element["times_won"] = 234;
-            element["image"] = "https://cdn.pixabay.com/photo/2017/01/03/01/38/man-1948310_960_720.jpg";
         }
         return element;
     });
-    console.log(users_top);
 };
-WinnersCtrl.$inject = ["User", "AppConstants", "users", "$scope"];
+WinnersCtrl.$inject = ["TopUsers"];
 
 exports.default = WinnersCtrl;
 

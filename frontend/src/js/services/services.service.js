@@ -24,8 +24,7 @@ export default class Services {
             method: 'GET'
         }).then(res => {
             return res.data.services
-        }
-        );
+        });
     }
 
     get(slug) {

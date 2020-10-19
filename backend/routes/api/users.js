@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 var mongoose = require('mongoose');
 var router = require('express').Router();
 var passport = require('passport');
@@ -10,6 +11,23 @@ router.get('/user', auth.required, function(req, res, next) {
 
         return res.json({ user: user.toAuthJSON() });
     }).catch(next);
+});
+
+router.get('/users', function(req, res, next) {
+    User.find({}).sort([
+        ['won', 'desc']
+    ]).limit(3).select({ 'username': 1, 'won': 1, 'image': 1 }).then(function(user) {
+        return res.json(user);
+    }).catch(next);
+
+    // try {
+    //     let topUsers = await User.find({}).sort([
+    //         ['won', 'desc']
+    //     ]).limit(3);
+    //     res.send(topUsers)
+    // } catch (error) {
+    //     res.send(null)
+    // }
 });
 
 router.post("/users/register", function(req, res, next) {
@@ -98,6 +116,10 @@ router.post('/users', function(req, res, next) {
     user.username = req.body.user.username;
     user.email = req.body.user.email;
     user.setPassword(req.body.user.password);
+    user.type = req.body.user.type;
+    user.won = req.body.user.won;
+    user.losses = req.body.user.losses;
+    user.image = req.body.user.image;
 
     user.save().then(function() {
         return res.json({ user: user.toAuthJSON() });
