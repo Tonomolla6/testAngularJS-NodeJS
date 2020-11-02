@@ -31,7 +31,7 @@ section .left-page {
     width: 75%;
     min-height: 800px;
     margin-right: 10px;
-    padding: 15px;
+    padding: 20px;
 }
 
 section .left-page hr {
@@ -47,7 +47,7 @@ section .right-page {
     width: 25%;
     min-height: 800px;
     margin-left: 10px;
-    padding: 15px;
+    padding: 20px;
 }
 
 section .right-page hr {
@@ -67,7 +67,7 @@ div.component {
 div.friends {
     display: flex;
     flex-direction: column;
-    padding: 20px 10px;
+    padding: 15px 10px;
 }
 
 div.friend {
@@ -93,4 +93,29 @@ div.friend img {
 div.friend h6 {
     margin: 10px;
     font-weight: bold;
+}
+
+div.friends-separator hr {
+    height: 1px;
+    width: 80%;
+    margin: 5px 10%;
+}
+
+.all-img {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--color-app);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.not-logged {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    flex-direction: column;
 }

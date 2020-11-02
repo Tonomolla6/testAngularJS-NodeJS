@@ -7,7 +7,12 @@ function BoardConfig($stateProvider) {
             controller: 'BoardCtrl',
             controllerAs: '$ctrl',
             templateUrl: 'board/board.html',
-            title: 'Board'
+            title: 'Board',
+            resolve: {
+                // popular: function(Articles) {
+                //     return Articles.query();
+                // }
+            }
         });
 };
 

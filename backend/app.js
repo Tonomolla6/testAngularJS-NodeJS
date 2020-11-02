@@ -45,7 +45,7 @@ if(isProduction){
 
 require('./models/User');
 require('./models/Comment');
-require('./models/Service');
+require('./models/Article');
 require('./config/passport');
 
 app.use(passport.initialize());

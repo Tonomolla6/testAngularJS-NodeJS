@@ -5,48 +5,32 @@ class EditorCtrl {
     this._Articles = Articles;
     this._$state = $state;
 
+    // Si el articulo esta vacio se borra todo para añadir uno nuevo, si no se pinta el seleccionado.
     if (!article) {
       this.article = {
         title: '',
         description: '',
-        body: '',
-        tagList: []
+        image: '',
       }
     } else {
       this.article = article;
     }
-
-  }
-
-  addTag() {
-    if (!this.article.tagList.includes(this.tagField)) {
-      this.article.tagList.push(this.tagField);
-      this.tagField = '';
-    }
-  }
-
-  removeTag(tagName) {
-    this.article.tagList = this.article.tagList.filter((slug) => slug != tagName);
   }
 
   submit() {
+    // Si esta en true se deshabilita el formulario.
     this.isSubmitting = true;
 
+    // Enviamos la informacion para guardarla.
     this._Articles.save(this.article).then(
-      (newArticle) => {
-        this._$state.go('app.article', { slug: newArticle.slug });
-      },
-
-      (err) => {
+      (res) => {
+        this._$state.go('app.article', { slug: res.slug });
+      },(err) => {
         this.isSubmitting = false;
         this.errors = err.data.errors;
       }
-
     )
   }
-
-
-
 }
 
 

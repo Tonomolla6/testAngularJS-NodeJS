@@ -1,8 +1,9 @@
 class ArticleCtrl {
-    constructor(User, AppConstants) {
+    constructor(User, AppConstants, article) {
         'ngInject';
         this.appName = AppConstants.appName;
-
+        this.article = article;
+        console.log(article);
     }
 }
 

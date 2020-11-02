@@ -13,21 +13,18 @@ router.get('/user', auth.required, function(req, res, next) {
     }).catch(next);
 });
 
-router.get('/users', function(req, res, next) {
+router.post('/users', function(req, res, next) {
+    var limit = 3;
+
+    if (typeof req.body.limit !== 'undefined') {
+        limit = req.body.limit;
+    }
+
     User.find({}).sort([
         ['won', 'desc']
-    ]).limit(3).select({ 'username': 1, 'won': 1, 'image': 1 }).then(function(user) {
+    ]).limit(Number(limit)).select({ 'username': 1, 'won': 1, 'image': 1, 'losses': 1 }).then(function(user) {
         return res.json(user);
     }).catch(next);
-
-    // try {
-    //     let topUsers = await User.find({}).sort([
-    //         ['won', 'desc']
-    //     ]).limit(3);
-    //     res.send(topUsers)
-    // } catch (error) {
-    //     res.send(null)
-    // }
 });
 
 router.post("/users/register", function(req, res, next) {

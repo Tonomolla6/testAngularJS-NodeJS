@@ -15,6 +15,10 @@
     color: black;
     padding: 3px 8px;
     cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title {
@@ -34,6 +38,7 @@ table img {
     width: 40px;
     height: 40px;
     border-radius: 100%;
+    object-fit: cover;
 }
 
 th.image {
@@ -64,4 +69,4 @@ tr th {
 
 tr:hover {
     background-color: #ffc90029;
-}
+} 

@@ -11,6 +11,9 @@ function WinnersConfig($stateProvider) {
             resolve: {
                 TopUsers: function(User) {
                     return User.getTopUsers();
+                },
+                Users100: function(User) {
+                    return User.getTopUsers(100);
                 }
             }
         });

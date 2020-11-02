@@ -3,17 +3,41 @@
     <div class="container page">
         <popular-news news="$ctrl.popular_news"></popular-news>
         <section>
+            
+            <!-- PAGE -->
             <div class="left-page">
                 <h4>Board</h4>
                 <hr>
-
-                <article-draw></article-draw>
+                <article-draw ng-repeat="article in $ctrl.articles" article="article"></article-draw>
             </div>
+            
+            
+            <!-- FILTERS -->
             <div class="right-page">
-                <!-- <friends></friends> -->
                 <h4>Friends</h4>
                 <hr>
+
+                <!-- SIEMPRE -->
                 <div class="friends">
+                    <div class="friend active">
+                        <div class="all-img"><i class="fas fa-users"></i></div>
+                        <h6>All the news</h6>
+                    </div>
+                </div>
+                <div class="friends-separator">
+                    <hr>
+                </div>
+
+                <!-- CONTROL -->
+                <div show-authed="false" class="friends">
+                    <div class="not-logged">
+                        <p>Do you want to filter the news by your friends?</p>
+                        <div class="button" ui-sref="app.login">Log in</div>
+                    </div>
+                </div>
+
+                <div show-authed="true" class="friends">
+                    <!-- <friends></friends> -->
                     <div class="friend active">
                         <img src="https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg" alt="">
                         <h6>Carla Gandia Benito</h6>

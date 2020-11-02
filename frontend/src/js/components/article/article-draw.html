@@ -3,17 +3,17 @@
 <div class="news">
     <div class="new">
         <header>
-            <img class="profile" src="https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg" alt="">
+            <img class="profile" src="{{$ctrl.article.author.image}}" alt="">
             <div class="text">
-                <h6>Carla Gandia Benito</h6>
-                <p>2020/20/18 13:27</p>
+                <h6>@{{$ctrl.article.author.username}}</h6>
+                <p>{{$ctrl.article.updatedAt | date: 'longDate'}}</p>
             </div>
         </header>
         <article>
             <div class="description">
-                I have won a game with more than 50,000 players, it has been intense, fast and very fun, I share my victory with all of you so that you are encouraged to participate in these events, Thank you BINGO KING!!!!
+                {{$ctrl.article.description}}
             </div>
-            <img class="image" src="https://cdn.pixabay.com/photo/2016/06/01/08/40/money-1428594_1280.jpg" alt="">
+            <img class="image" src="{{$ctrl.article.image}}" alt="Imagen no disponible">
             <section class="social_control_post">
                 <a href="/#!/article">
                     <div>

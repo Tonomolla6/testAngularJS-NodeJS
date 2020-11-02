@@ -4,7 +4,7 @@
 
 .news_popular {
     background-color: white;
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 10px;
     display: flex;
 }
@@ -65,7 +65,7 @@ div.title {
     width: 100%;
     background-color: white;
     margin: 0%;
-    padding: 15px 10px 0px 15px;
+    padding: 20px 10px 0px 20px;
     position: relative;
 }
 

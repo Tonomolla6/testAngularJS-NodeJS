@@ -24,4 +24,7 @@ servicesModule.service('Toastr', ToastrService);
 import DummiesService from './dummies.service';
 servicesModule.service('Dummies', DummiesService);
 
+import ArticlesService from './articles.service';
+servicesModule.service('Articles', ArticlesService);
+
 export default servicesModule;

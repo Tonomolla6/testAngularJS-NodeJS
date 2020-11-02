@@ -50429,7 +50429,7 @@ _angular2.default.bootstrap(document, ['app'], {
     strictDi: true
 });
 
-},{"./article":13,"./auth":16,"./board":20,"./components":27,"./config/app.config":33,"./config/app.constants":34,"./config/app.run":35,"./config/app.templates":36,"./editor":40,"./home":43,"./layout":46,"./profile":47,"./services":53,"./settings":59,"./winners":62,"angular":9,"angular-messages":2,"angular-toastr":4,"angular-ui-bootstrap":6,"angular-ui-router":7}],11:[function(require,module,exports){
+},{"./article":13,"./auth":16,"./board":20,"./components":27,"./config/app.config":33,"./config/app.constants":34,"./config/app.run":35,"./config/app.templates":36,"./editor":40,"./home":43,"./layout":46,"./profile":47,"./services":54,"./settings":60,"./winners":63,"angular":9,"angular-messages":2,"angular-toastr":4,"angular-ui-bootstrap":6,"angular-ui-router":7}],11:[function(require,module,exports){
 'use strict';
 
 ArticleConfig.$inject = ["$stateProvider"];
@@ -50440,11 +50440,20 @@ function ArticleConfig($stateProvider) {
     'ngInject';
 
     $stateProvider.state('app.article', {
-        url: '/article',
+        url: '/article/:slug',
         controller: 'ArticleCtrl',
         controllerAs: '$ctrl',
         templateUrl: 'article/article.html',
-        title: 'Article'
+        title: 'Article',
+        resolve: {
+            article: ["Articles", "$state", "$stateParams", function article(Articles, $state, $stateParams) {
+                return Articles.get($stateParams.slug).then(function (article) {
+                    return article;
+                }, function (err) {
+                    return $state.go('app.home');
+                });
+            }]
+        }
     });
 };
 
@@ -50459,14 +50468,16 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ArticleCtrl = function ArticleCtrl(User, AppConstants) {
+var ArticleCtrl = function ArticleCtrl(User, AppConstants, article) {
     'ngInject';
 
     _classCallCheck(this, ArticleCtrl);
 
     this.appName = AppConstants.appName;
+    this.article = article;
+    console.log(article);
 };
-ArticleCtrl.$inject = ["User", "AppConstants"];
+ArticleCtrl.$inject = ["User", "AppConstants", "article"];
 
 exports.default = ArticleCtrl;
 
@@ -50697,7 +50708,12 @@ function BoardConfig($stateProvider) {
         controller: 'BoardCtrl',
         controllerAs: '$ctrl',
         templateUrl: 'board/board.html',
-        title: 'Board'
+        title: 'Board',
+        resolve: {
+            // popular: function(Articles) {
+            //     return Articles.query();
+            // }
+        }
     });
 };
 
@@ -50712,7 +50728,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var BoardCtrl = function BoardCtrl(User, AppConstants, $scope) {
+var BoardCtrl = function BoardCtrl(User, AppConstants, $scope, Articles) {
     'ngInject';
 
     _classCallCheck(this, BoardCtrl);
@@ -50726,8 +50742,15 @@ var BoardCtrl = function BoardCtrl(User, AppConstants, $scope) {
         };
         return news;
     });
+    this.filters = "";
+
+    if (!this.filters) {
+        Articles.query(config).then(function (res, err) {
+            this.articles = res;
+        });
+    }
 };
-BoardCtrl.$inject = ["User", "AppConstants", "$scope"];
+BoardCtrl.$inject = ["User", "AppConstants", "$scope", "Articles"];
 
 exports.default = BoardCtrl;
 
@@ -50788,7 +50811,7 @@ var ArticleDraw = {
 exports.default = ArticleDraw;
 
 },{}],22:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -50803,6 +50826,9 @@ var articleDrawCtrl = function articleDrawCtrl() {
 };
 
 var ArticleDraw = {
+    bindings: {
+        article: '='
+    },
     controller: articleDrawCtrl,
     templateUrl: 'components/article/article-draw.html'
 };
@@ -51187,18 +51213,58 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var WinnersListCtrl = function WinnersListCtrl(Services, $scope) {
-  'ngInject';
+var WinnersListCtrl = function () {
+  WinnersListCtrl.$inject = ["$scope"];
+  function WinnersListCtrl($scope) {
+    'ngInject';
 
-  _classCallCheck(this, WinnersListCtrl);
-};
-WinnersListCtrl.$inject = ["Services", "$scope"];
+    var _this = this;
+
+    _classCallCheck(this, WinnersListCtrl);
+
+    $scope.pages = 0;
+    this.selectedPage = 1;
+    this.users_paged = [];
+    this.pages;
+
+    this.$onInit = function () {
+      var result = _this.users.length / parseInt(_this.limit);
+      $scope.pages = result % 10 == 0 ? result : Math.floor(result) + 1;
+      _this.pages = $scope.pages;
+      _this.drawUsers();
+    };
+  }
+
+  _createClass(WinnersListCtrl, [{
+    key: 'changePage',
+    value: function changePage(index) {
+      if (index + 1 > this.pages) this.selectedPage = this.pages;else if (index == -1) this.selectedPage = 1;else this.selectedPage = index + 1;
+      this.drawUsers();
+    }
+  }, {
+    key: 'drawUsers',
+    value: function drawUsers() {
+      var max = this.selectedPage * this.limit > this.users.length ? this.users.length : this.selectedPage * this.limit;
+      var min = max - this.limit;
+      this.users_paged = [];
+
+      for (var index = min; index < max; index++) {
+        this.users_paged.push(this.users[index]);
+      }
+    }
+  }]);
+
+  return WinnersListCtrl;
+}();
 
 var WinnersList = {
   bindings: {
-    users: '='
+    users: '=',
+    limit: '='
   },
   controller: WinnersListCtrl,
   templateUrl: 'components/winners-helpers/winners-list.html'
@@ -51320,27 +51386,27 @@ exports.default = AppRun;
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("article/article.html", "<link rel=\"stylesheet\" href=\"css/article/article.css\">\n<div class=\"article-page primary\">\n    <div class=\"container page\">\n        <article-draw></article-draw>\n        <article-comment></article-comment>\n    </div>\n</div>");
+  $templateCache.put("article/article.html", "<link rel=\"stylesheet\" href=\"css/article/article.css\">\n<div class=\"article-page primary\">\n    <div class=\"container page\">\n        <article-draw article=\"$ctrl.article\"></article-draw>\n        <article-comment article=\"$ctrl.article\"></article-comment>\n    </div>\n</div>");
   $templateCache.put("auth/auth.html", "<link rel=\"stylesheet\" href=\"css/auth/auth.css\">\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/angular-toastr@2/dist/angular-toastr.css\" />\n<div class=\"auth-page\">\n    <div class=\"container page\">\n        <div class=\"row row_bank\">\n            <h1>YOU AREN\'T 18 YEARS OLD?</h1>\n            <p>Minors are prohibited from gambling, but you should know a few more things that can help prevent possible risky behavior. The Public, State and Autonomous Administrations, regulate the conditions under which games of chance are developed and\n                commercialized and establish the identity verification mechanisms to be used in order to verify the age of majority of the participants, as well as the games to those who need that identification.</p>\n        </div>\n        <hr>\n        <div class=\"row\">\n\n            <div class=\"page_row\">\n                <h1 class=\"text-xs-center\" ng-bind=\"::$ctrl.title\"></h1>\n                <p class=\"text-xs-center\">\n                    <a ui-sref=\"app.login\" ng-show=\"$ctrl.authType === \'register\'\">\n            Have an account?\n          </a>\n                    <a ui-sref=\"app.register\" ng-show=\"$ctrl.authType === \'login\'\">\n            Need an account?\n          </a>\n                </p>\n\n                <!-- <list-errors errors=\"$ctrl.errors\"></list-errors> -->\n\n                <form name=\"formData\" ng-submit=\"$ctrl.submitForm()\">\n                    <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n                        <fieldset class=\"form-group\" ng-show=\"$ctrl.authType === \'register\'\">\n                            <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\" ng-model=\"$ctrl.formData.username\" name=\"username\" />\n\n                            <div ng-messages=\"formData.Username.$error\" style=\"color:red\">\n                                <p ng-message=\"required\" ng-show=\"formData.Username.$dirty\">Esta vacio. Empanao</p>\n                            </div>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\" ng-model=\"$ctrl.formData.email\" name=\"Email\" required />\n\n                            <div ng-messages=\"formData.Email.$error\" style=\"color:red\">\n                                <p ng-message=\"required\" ng-show=\"formData.Email.$dirty\">Esta vacio. Empanao</p>\n                            </div>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"Password\" ng-model=\"$ctrl.formData.password\" ng-minlength=\"3\" ng-maxlength=\"15\" name=\"Password\" required />\n\n                            <div ng-messages=\"formData.Password.$error\" style=\"color:red\">\n                                <p ng-message=\"required\" ng-show=\"formData.Password.$dirty\">Esta vacio. Empanao</p>\n                                <p ng-message=\"minlength\">Los caracteres minimos para la contraseña son 3.</p>\n                                <p ng-message=\"maxlength\">Los caracteres minimos para la contraseña son 15.</p>\n                            </div>\n                        </fieldset>\n\n                        <button class=\"btn btn-lg btn-primary pull-xs-right\" type=\"submit\" ng-bind=\"::$ctrl.title\">\n            </button>\n\n                    </fieldset>\n                </form>\n                <hr class=\"social\">\n                <p>Do you want to use external services?</p>\n                <a class=\"social_button\" href=\"http://localhost:3000/api/auth/github\"> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\">\n            <path\n              d=\"M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z\" />\n          </svg>Entrar con Github </a>\n                <a class=\"social_button\" href=\"http://localhost:3000/api/auth/google\"> <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" enable-background=\"new 0 0 24 24\" class=\"Svg-sc-sr61w3 lnykFD\">\n            <path fill=\"#FBBB00\"\n              d=\"M6.2 14.2l-.7 2.7-2.7.1c-.8-1.5-1.2-3.2-1.2-5 0-1.7.4-3.4 1.2-4.8l3.3 2.8c-.2.6-.3 1.3-.3 2 0 .8.1 1.5.4 2.2z\">\n            </path>\n            <path fill=\"#518EF8\"\n              d=\"M22.4 12c0 .7-.1 1.5-.2 2.2-.5 2.4-1.8 4.5-3.7 6l-3.4-2.8c1.2-.7 2.2-1.8 2.7-3.2h-5.6v-4.1h10c.2.6.2 1.2.2 1.9z\">\n            </path>\n            <path fill=\"#28B446\"\n              d=\"M18.5 20.1c-1.8 1.4-4.1 2.3-6.5 2.3-4 0-7.4-2.2-9.2-5.5l3.4-2.8c.9 2.4 3.2 4 5.8 4 1.1 0 2.2-.3 3.1-.8l3.4 2.8z\">\n            </path>\n            <path fill=\"#F14336\"\n              d=\"M18.7 4l-3.4 2.8c-1-.6-2.1-.9-3.3-.9-2.7 0-5 1.8-5.9 4.2l-3.4-2.9c1.8-3.4 5.3-5.6 9.3-5.6 2.5 0 4.9.9 6.7 2.4z\">\n            </path>\n          </svg> Entrar con Google </a>\n            </div>\n\n        </div>\n    </div>\n</div>");
-  $templateCache.put("board/board.html", "<link rel=\"stylesheet\" href=\"css/board/board.css\">\n<div class=\"board-page\">\n    <div class=\"container page\">\n        <popular-news news=\"$ctrl.popular_news\"></popular-news>\n        <section>\n            <div class=\"left-page\">\n                <h4>Board</h4>\n                <hr>\n\n                <article-draw></article-draw>\n            </div>\n            <div class=\"right-page\">\n                <!-- <friends></friends> -->\n                <h4>Friends</h4>\n                <hr>\n                <div class=\"friends\">\n                    <div class=\"friend active\">\n                        <img src=\"https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg\" alt=\"\">\n                        <h6>Carla Gandia Benito</h6>\n                    </div>\n                    <div class=\"friend\">\n                        <img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\">\n                        <h6>Marcos Pérez Gomez</h6>\n                    </div>\n                    <div class=\"friend\">\n                        <img src=\"https://cdn.pixabay.com/photo/2017/01/03/01/38/man-1948310_960_720.jpg\" alt=\"\">\n                        <h6>Raul Lopez Juarez</h6>\n                    </div>\n                </div>\n            </div>\n        </section>\n    </div>\n</div>");
+  $templateCache.put("board/board.html", "<link rel=\"stylesheet\" href=\"css/board/board.css\">\n<div class=\"board-page\">\n    <div class=\"container page\">\n        <popular-news news=\"$ctrl.popular_news\"></popular-news>\n        <section>\n            \n            <!-- PAGE -->\n            <div class=\"left-page\">\n                <h4>Board</h4>\n                <hr>\n                <article-draw ng-repeat=\"article in $ctrl.articles\" article=\"article\"></article-draw>\n            </div>\n            \n            \n            <!-- FILTERS -->\n            <div class=\"right-page\">\n                <h4>Friends</h4>\n                <hr>\n\n                <!-- SIEMPRE -->\n                <div class=\"friends\">\n                    <div class=\"friend active\">\n                        <div class=\"all-img\"><i class=\"fas fa-users\"></i></div>\n                        <h6>All the news</h6>\n                    </div>\n                </div>\n                <div class=\"friends-separator\">\n                    <hr>\n                </div>\n\n                <!-- CONTROL -->\n                <div show-authed=\"false\" class=\"friends\">\n                    <div class=\"not-logged\">\n                        <p>Do you want to filter the news by your friends?</p>\n                        <div class=\"button\" ui-sref=\"app.login\">Log in</div>\n                    </div>\n                </div>\n\n                <div show-authed=\"true\" class=\"friends\">\n                    <!-- <friends></friends> -->\n                    <div class=\"friend active\">\n                        <img src=\"https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg\" alt=\"\">\n                        <h6>Carla Gandia Benito</h6>\n                    </div>\n                    <div class=\"friend\">\n                        <img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\">\n                        <h6>Marcos Pérez Gomez</h6>\n                    </div>\n                    <div class=\"friend\">\n                        <img src=\"https://cdn.pixabay.com/photo/2017/01/03/01/38/man-1948310_960_720.jpg\" alt=\"\">\n                        <h6>Raul Lopez Juarez</h6>\n                    </div>\n                </div>\n            </div>\n        </section>\n    </div>\n</div>");
   $templateCache.put("components/list-errors.html", "<ul class=\"error-messages\" ng-show=\"$ctrl.errors\">\n  <div ng-repeat=\"(field, errors) in $ctrl.errors\">\n    <li ng-repeat=\"error in errors\">\n      {{field}} {{error}}\n    </li>\n  </div>\n</ul>\n");
-  $templateCache.put("editor/editor.html", "<div class=\"editor-page\">\n  <div class=\"container page\">\n    <div class=\"row\">\n      <div class=\"col-md-10 offset-md-1 col-xs-12\">\n\n        <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n        <form>\n          <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                ng-model=\"$ctrl.article.title\"\n                type=\"text\"\n                placeholder=\"Article Title\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control\"\n                ng-model=\"$ctrl.article.description\"\n                type=\"text\"\n                placeholder=\"What\'s this article about?\" />\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <textarea class=\"form-control\"\n                rows=\"8\"\n                ng-model=\"$ctrl.article.body\"\n                placeholder=\"Write your article (in markdown)\">\n              </textarea>\n            </fieldset>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control\"\n                type=\"text\"\n                placeholder=\"Enter tags\"\n                ng-model=\"$ctrl.tagField\"\n                ng-keyup=\"$event.keyCode == 13 && $ctrl.addTag()\" />\n\n              <div class=\"tag-list\">\n                <span ng-repeat=\"tag in $ctrl.article.tagList\"\n                  class=\"tag-default tag-pill\">\n                  <i class=\"ion-close-round\" ng-click=\"$ctrl.removeTag(tag)\"></i>\n                  {{ tag }}\n                </span>\n              </div>\n            </fieldset>\n\n            <button class=\"btn btn-lg pull-xs-right btn-primary\" type=\"button\" ng-click=\"$ctrl.submit()\">\n              Publish Article\n            </button>\n\n          </fieldset>\n        </form>\n\n      </div>\n    </div>\n  </div>\n</div>\n");
-  $templateCache.put("home/home.html", "<link rel=\"stylesheet\" href=\"css/home/home.css\">\n<div class=\"home-page primary\">\n\n  <!-- Slider component -->\n  <home-slider-comp></home-slider-comp>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12\">\n        <!-- Tabs for toggling between feed, article lists -->\n\n        <!-- List the current articles -->\n        <!-- <article-list limit=\"10\" list-config=\"$ctrl.listConfig\"></article-list> -->\n        <services-banner></services-banner>\n        <hr class=\"space\">\n        <services-list services=\"$ctrl.services\"></services-list>\n        <hr class=\"space\">\n        <services-comments comments=\"$ctrl.comments\"></services-comments>\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
+  $templateCache.put("home/home.html", "<link rel=\"stylesheet\" href=\"css/home/home.css\">\n<div class=\"home-page primary\">\n\n  <!-- Slider component -->\n  <home-slider-comp></home-slider-comp>\n\n  <div class=\"container page\">\n    <div class=\"row\">\n\n      <!-- Main view - contains tabs & article list -->\n      <div class=\"col-md-12\">\n        <!-- Tabs for toggling between feed, article lists -->\n\n        <!-- List the current articles -->        \n        <hr class=\"space\">\n        <hr class=\"space\">\n      </div>\n\n      <!-- Sidebar where popular tags are listed -->\n\n      <!-- End the row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
+  $templateCache.put("editor/editor.html", "<link rel=\"stylesheet\" href=\"css/editor/editor.css\">\n<div class=\"editor-page\">\n  <div class=\"container page\">\n    <div class=\"row\">\n      <div class=\"col-md-10 offset-md-1 col-xs-12\">\n\n        <h1 class=\"text-xs-center\">Create a new article for your followers</h1>\n        <hr>\n        <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n        <form>\n          <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n            <!-- Titulo del articulo -->\n            <label>Article title</label>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                ng-model=\"$ctrl.article.title\"\n                type=\"text\"\n                placeholder=\"The Murcian Pedro Herrera has won 100,0...\" />\n            </fieldset>\n\n            <!-- Titulo del articulo -->\n            <label>Description</label>\n\n            <fieldset class=\"form-group\">\n              <textarea class=\"form-control\"\n                rows=\"8\"\n                ng-model=\"$ctrl.article.description\"\n                placeholder=\"The world game last Tuesday at 18:00 was perfect for our player Pedr...\">\n              </textarea>\n            </fieldset>\n\n            <!-- Url Image -->\n            <label>Image</label>\n\n            <fieldset class=\"form-group\">\n              <input class=\"form-control form-control-lg\"\n                ng-model=\"$ctrl.article.image\"\n                type=\"text\"\n                placeholder=\"https://image.im/image_artic...\" />\n            </fieldset>\n\n            <!-- Control access -->\n            <label for=\"\">Do you want only your followers to see this article?</label>\n            <fieldset>\n              <input ng-model=\"$ctrl.article.private\" type=\"checkbox\"/>\n              Private\n            </fieldset>\n\n\n            <div class=\"center\">\n              <button class=\"button\" type=\"button\" ng-click=\"$ctrl.submit()\">\n                Publish Article\n              </button>\n            </div>\n          </fieldset>\n        </form>\n\n      </div>\n    </div>\n  </div>\n</div>\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\n\n<div ui-view></div>\n\n<app-footer></app-footer>\n");
   $templateCache.put("layout/footer.html", "<link rel=\"stylesheet\" href=\"css/layout/footer.css\">\n<footer>\n    <div class=\"container2\">\n        <a class=\"logo-font\" ui-sref=\"app.home\" ng-bind=\"::$ctrl.appName | lowercase\"></a>\n        <span class=\"attribution\">\n          &copy; {{::$ctrl.date | date:\'yyyy\'}}.\n          An interactive learning project from <a href=\"https://thinkster.io\">Thinkster</a>.\n          Code licensed under MIT.\n        </span>\n        <div ng-click=\"$ctrl.dummies()\" class=\"dummies\">\n            Generate dummies\n        </div>\n    </div>\n</footer>");
-  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-light\">\n\n    <div class=\"container\">\n\n        <a class=\"title-logo navbar-brand\" ui-sref=\"app.home\">\n            <i class=\"fas fa-crown\"></i>\n            <p ng-bind=\"::$ctrl.appName | lowercase\"></p>\n        </a>\n\n        <!-- Show this for logged out users -->\n        <ul show-authed=\"false\" class=\"nav navbar-nav pull-xs-right\">\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.home\">\n                    Home\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.board\">\n                    Board\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.winners\">\n                    Top Winners\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link button\" ui-sref-active=\"active\" ui-sref=\"app.login\">\n                    Log in\n                </a>\n            </li>\n        </ul>\n\n        <!-- Show this for logged in users -->\n        <ul show-authed=\"true\" class=\"nav navbar-nav pull-xs-right\">\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.home\">\n                    Home\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.board\">\n                    Board\n                </a>\n            </li>\n\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.winners\">\n                    Top Winners\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.editor\">\n                    <i class=\"ion-compose\"></i>&nbsp;New Article\n                </a>\n            </li>\n\n            <li class=\"nav-item user\">\n                <a class=\"nav-link\" ui-sref-active=\"active\">\n                    <img ng-src=\"{{$ctrl.currentUser.image}}\" class=\"user-pic\" /> {{ $ctrl.currentUser.username }}\n                    <i class=\"fas fa-angle-down\"></i>\n                </a>\n\n                <ul class=\"user-list\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.profile.main({ username: $ctrl.currentUser.username})\">\n                            <i class=\"fas fa-user-alt\"></i>&nbsp;Profile\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.settings\">\n                            <i class=\"ion-gear-a\"></i>&nbsp;Settings\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </ul>\n\n    </div>\n</nav>");
+  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-light\">\n\n    <div class=\"container\">\n\n        <a class=\"title-logo navbar-brand\" ui-sref=\"app.home\">\n            <i class=\"fas fa-crown\"></i>\n            <p ng-bind=\"::$ctrl.appName | lowercase\"></p>\n        </a>\n\n        <!-- Show this for logged out users -->\n        <ul show-authed=\"false\" class=\"nav navbar-nav pull-xs-right\">\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.home\">\n                    Home\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.board\">\n                    Board\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.winners\">\n                    Top Winners\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link button\" ui-sref-active=\"active\" ui-sref=\"app.login\">\n                    Log in\n                </a>\n            </li>\n        </ul>\n\n        <!-- Show this for logged in users -->\n        <ul show-authed=\"true\" class=\"nav navbar-nav pull-xs-right\">\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.home\">\n                    Home\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.board\">\n                    Board\n                </a>\n            </li>\n\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.winners\">\n                    Top Winners\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.editor\">\n                    <i class=\"ion-compose\"></i>&nbsp;New Article\n                </a>\n            </li>\n\n            <li class=\"nav-item user\">\n                <a class=\"nav-link\" ui-sref-active=\"active\">\n                    <img ng-src=\"{{$ctrl.currentUser.image}}\" class=\"user-pic\" /> {{ $ctrl.currentUser.username }}\n                    <i class=\"fas fa-angle-down\"></i>\n                </a>\n\n                <ul class=\"user-list\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.profile.main({ username: $ctrl.currentUser.username})\">\n                            <i class=\"fas fa-user-alt\"></i>&nbsp;Profile\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.settings\">\n                            <i class=\"ion-gear-a\"></i>&nbsp;Settings\n                        </a>\n                    </li>\n                    <li class=\"nav-item logout\">\n                        <a class=\"nav-link\" ng-click=\"$ctrl.logout()\">\n                            <i class=\"fas fa-sign-out-alt\"></i>&nbsp;Log Out\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </ul>\n\n    </div>\n</nav>");
   $templateCache.put("profile/profile-articles.html", "<article-list limit=\"5\" list-config=\"$ctrl.listConfig\"></article-list>\n");
   $templateCache.put("profile/profile.html", "<div class=\"profile-page\">\n\n  <!-- User\'s basic info & action buttons -->\n  <div class=\"user-info\">\n    <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-xs-12 col-md-10 offset-md-1\">\n\n          <img ng-src=\"{{::$ctrl.profile.image}}\" class=\"user-img\" />\n          <h4 ng-bind=\"::$ctrl.profile.username\"></h4>\n          <p ng-bind=\"::$ctrl.profile.bio\"></p>\n\n          <a ui-sref=\"app.settings\"\n            class=\"btn btn-sm btn-outline-secondary action-btn\"\n            ng-show=\"$ctrl.isUser\">\n            <i class=\"ion-gear-a\"></i> Edit Profile Settings\n          </a>\n\n          <follow-btn user=\"$ctrl.profile\" ng-hide=\"$ctrl.isUser\"></follow-btn>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- Container where User\'s posts & favs are list w/ toggle tabs -->\n  <div class=\"container\">\n    <div class=\"row\">\n\n      <div class=\"col-xs-12 col-md-10 offset-md-1\">\n\n        <!-- Tabs for switching between author articles & favorites -->\n        <div class=\"articles-toggle\">\n          <ul class=\"nav nav-pills outline-active\">\n\n            <li class=\"nav-item\">\n              <a class=\"nav-link active\"\n                ui-sref-active=\"active\"\n                ui-sref=\"app.profile.main({username: $ctrl.profile.username})\">\n                My Articles\n              </a>\n            </li>\n\n            <li class=\"nav-item\">\n              <a class=\"nav-link\"\n                ui-sref-active=\"active\"\n                ui-sref=\"app.profile.favorites({username: $ctrl.profile.username})\">\n                Favorited Articles\n              </a>\n            </li>\n\n          </ul>\n        </div>\n\n        <!-- List of articles -->\n        <div ui-view></div>\n\n\n      </div>\n\n    <!-- End row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
-  $templateCache.put("settings/settings.html", "<link rel=\"stylesheet\" href=\"css/settings/settings.css\">\n<div class=\"settings-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n\n                <h1 class=\"text-xs-center\">Your Settings</h1>\n                <hr class=\"title\">\n                <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n                <form ng-submit=\"$ctrl.submitForm()\">\n                    <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control\" type=\"text\" placeholder=\"URL of profile picture\" ng-model=\"$ctrl.formData.image\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\" ng-model=\"$ctrl.formData.username\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <textarea class=\"form-control form-control-lg\" rows=\"8\" placeholder=\"Short bio about you\" ng-model=\"$ctrl.formData.bio\"></textarea>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\" ng-model=\"$ctrl.formData.email\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"New Password\" ng-model=\"$ctrl.formData.password\" />\n                        </fieldset>\n\n                        <button class=\"btn btn-lg btn-primary pull-xs-right\" type=\"submit\">\n                            Update Settings\n                        </button>\n\n                    </fieldset>\n                </form>\n\n                <!-- Line break for logout button -->\n                <hr />\n\n                <button class=\"btn btn-outline-danger\" ng-click=\"$ctrl.logout()\">\n                    Or click here to logout.\n                </button>\n\n            </div>\n        </div>\n    </div>\n</div>");
-  $templateCache.put("winners/winners.html", "<link rel=\"stylesheet\" href=\"css/winners/winners.css\">\n<div class=\"winners-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n\n                <winners-top users=\"$ctrl.users_top\"></winners-top>\n\n                <winners-list users=\"$ctrl.users\"></winners-list>\n\n            </div>\n        </div>\n    </div>\n</div>");
-  $templateCache.put("components/article/article-comment.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-commpont.css\">\n\n<div class=\"comments\">\n    <div class=\"comment\">\n\n    </div>\n    <div class=\"comment\">\n\n    </div>\n</div>");
-  $templateCache.put("components/article/article-draw.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-draw.css\">\n\n<div class=\"news\">\n    <div class=\"new\">\n        <header>\n            <img class=\"profile\" src=\"https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg\" alt=\"\">\n            <div class=\"text\">\n                <h6>Carla Gandia Benito</h6>\n                <p>2020/20/18 13:27</p>\n            </div>\n        </header>\n        <article>\n            <div class=\"description\">\n                I have won a game with more than 50,000 players, it has been intense, fast and very fun, I share my victory with all of you so that you are encouraged to participate in these events, Thank you BINGO KING!!!!\n            </div>\n            <img class=\"image\" src=\"https://cdn.pixabay.com/photo/2016/06/01/08/40/money-1428594_1280.jpg\" alt=\"\">\n            <section class=\"social_control_post\">\n                <a href=\"/#!/article\">\n                    <div>\n                        <p>0</p>\n                        <i class=\"fas fa-comment\"></i>\n                        <!-- <p>Comments</p> -->\n                    </div>\n                </a>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-heart\"></i>\n                    <!-- <p>Likes</p> -->\n                </div>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-heart-broken\"></i>\n                    <!-- <p>Dislike</p> -->\n                </div>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-share\"></i>\n                    <!-- <p>Share</p> -->\n                </div>\n            </section>\n        </article>\n    </div>\n    <hr>\n</div>");
+  $templateCache.put("settings/settings.html", "<link rel=\"stylesheet\" href=\"css/settings/settings.css\">\n<div class=\"settings-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n\n                <h1 class=\"text-xs-center\">Your Settings</h1>\n                <hr class=\"title\">\n                <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n                <form ng-submit=\"$ctrl.submitForm()\">\n                    <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control\" type=\"text\" placeholder=\"URL of profile picture\" ng-model=\"$ctrl.formData.image\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\" ng-model=\"$ctrl.formData.username\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <textarea class=\"form-control form-control-lg\" rows=\"8\" placeholder=\"Short bio about you\" ng-model=\"$ctrl.formData.bio\"></textarea>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\" ng-model=\"$ctrl.formData.email\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"New Password\" ng-model=\"$ctrl.formData.password\" />\n                        </fieldset>\n\n                        <div class=\"center\">\n                            <button class=\"button settings-button\" type=\"submit\">\n                                Update Settings\n                            </button>\n                        </div>\n                    </fieldset>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
+  $templateCache.put("winners/winners.html", "<link rel=\"stylesheet\" href=\"css/winners/winners.css\">\n<div class=\"winners-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <winners-top users=\"$ctrl.users_top\"></winners-top>\n\n                <winners-list limit=\"5\" users=\"$ctrl.users_list\"></winners-list>\n            </div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/board/popular-news.html", "<link rel=\"stylesheet\" href=\"css/components/board/popular-news.css\">\n\n<div class=\"title\">\n    <h4>Popular posts</h4>\n    <hr>\n</div>\n\n<div class=\"news_popular\">\n    <div class=\"new_popular {{user.news}}\" ng-repeat=\"new in $ctrl.news\">\n        <div class=\"effect\">\n            <a href=\"/#!/article\"></a>\n            <div class=\"img\" style=\"background-image: url({{new.image}})\"></div>\n        </div>\n        <div class=\"text\">\n            <h5 class=\"name\"><strong>{{new.title}}</strong></h5>\n            <p>{{new.description}}</p>\n        </div>\n    </div>\n</div>");
+  $templateCache.put("components/article/article-comment.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-commpont.css\">\n<div class=\"comment\">\n\n</div>");
+  $templateCache.put("components/article/article-draw.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-draw.css\">\n\n<div class=\"news\">\n    <div class=\"new\">\n        <header>\n            <img class=\"profile\" src=\"{{$ctrl.article.author.image}}\" alt=\"\">\n            <div class=\"text\">\n                <h6>@{{$ctrl.article.author.username}}</h6>\n                <p>{{$ctrl.article.updatedAt | date: \'longDate\'}}</p>\n            </div>\n        </header>\n        <article>\n            <div class=\"description\">\n                {{$ctrl.article.description}}\n            </div>\n            <img class=\"image\" src=\"{{$ctrl.article.image}}\" alt=\"Imagen no disponible\">\n            <section class=\"social_control_post\">\n                <a href=\"/#!/article\">\n                    <div>\n                        <p>0</p>\n                        <i class=\"fas fa-comment\"></i>\n                        <!-- <p>Comments</p> -->\n                    </div>\n                </a>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-heart\"></i>\n                    <!-- <p>Likes</p> -->\n                </div>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-heart-broken\"></i>\n                    <!-- <p>Dislike</p> -->\n                </div>\n                <div>\n                    <p>0</p>\n                    <i class=\"fas fa-share\"></i>\n                    <!-- <p>Share</p> -->\n                </div>\n            </section>\n        </article>\n    </div>\n    <hr>\n</div>");
+  $templateCache.put("components/home/home-slider.html", "<link rel=\"stylesheet\" href=\"css/components/home/home-slider.css\">\n<div style=\"height: 400px\">\n    <div uib-carousel active=\"active\" interval=\"$ctrl.imgInterval\" no-wrap=\"$ctrl.noWrapSlides\">\n        <div uib-slide ng-repeat=\"slide in $ctrl.slides track by slide.id\" index=\"slide.id\" style=\"height: 400px\">\n            <img ng-src=\"{{slide.image}}\" class=\"img-fluid\" style=\"filter: blur(2px);\">\n            <div style=\"position: absolute; color: white; z-index: 100; bottom: 50%; width: 100%;\">\n                <h1 class=\"logo-font\">{{slide.titulo}}</h1>\n                <h2>{{slide.text}}</h2>\n\n                <div ng-if=\"slide.button.text\" class=\"buttons-slider\">\n                    <a href=\"{{slide.button.url}}\">\n                        {{slide.button.text}}\n                    </a>\n                </div>\n            </div>\n            <div class=\"carousel-caption\" style=\"padding-bottom:100px;\"></div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/buttons/favorite-btn.html", "<button class=\"btn btn-sm\"\n  ng-class=\"{ \'disabled\' : $ctrl.isSubmitting,\n              \'btn-outline-primary\': !$ctrl.article.favorited,\n              \'btn-primary\': $ctrl.article.favorited }\"\n  ng-click=\"$ctrl.submit()\">\n  <i class=\"ion-heart\"></i> <ng-transclude></ng-transclude>\n</button>\n");
   $templateCache.put("components/buttons/follow-btn.html", "<button\n  class=\"btn btn-sm action-btn\"\n  ng-class=\"{ \'disabled\': $ctrl.isSubmitting,\n              \'btn-outline-secondary\': !$ctrl.user.following,\n              \'btn-secondary\': $ctrl.user.following }\"\n  ng-click=\"$ctrl.submit()\">\n  <i class=\"ion-plus-round\"></i>\n  &nbsp;\n  {{ $ctrl.user.following ? \'Unfollow\' : \'Follow\' }} {{ $ctrl.user.username }}\n</button>\n");
-  $templateCache.put("components/home/home-slider.html", "<link rel=\"stylesheet\" href=\"css/components/home/home-slider.css\">\n<div style=\"height: 400px\">\n    <div uib-carousel active=\"active\" interval=\"$ctrl.imgInterval\" no-wrap=\"$ctrl.noWrapSlides\">\n        <div uib-slide ng-repeat=\"slide in $ctrl.slides track by slide.id\" index=\"slide.id\" style=\"height: 400px\">\n            <img ng-src=\"{{slide.image}}\" class=\"img-fluid\" style=\"filter: blur(2px);\">\n            <div style=\"position: absolute; color: white; z-index: 100; bottom: 50%; width: 100%;\">\n                <h1 class=\"logo-font\">{{slide.titulo}}</h1>\n                <h2>{{slide.text}}</h2>\n\n                <div ng-if=\"slide.button.text\" class=\"buttons-slider\">\n                    <a href=\"{{slide.button.url}}\">\n                        {{slide.button.text}}\n                    </a>\n                </div>\n            </div>\n            <div class=\"carousel-caption\" style=\"padding-bottom:100px;\"></div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/winners-helpers/winners-banner.html", "<style>\n    .title {\n        width: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        flex-direction: column;\n        text-align: center;\n      }\n  \n      .title p {\n          font-size: 1.25rem;\n          font-weight: 300;\n      }\n  \n      .img {\n          margin-top: 10px;\n          display: flex;\n          justify-content: center;\n      }\n  \n</style>\n\n<div class=\"title\">\n    <h1 class=\"logo-font\">Gestiona tu negocio online</h1>\n    <p>Ya seas un autónomo o pequeño empresario, una startup o una gestoría, tenemos las herramientas que necesitas para que tus empleados y tú podáis teletrabajar desde cualquier lugar y a cualquier hora.</p>\n</div>\n\n<div class=\"img\">\n    <img src=\"https://blog.desdelinux.net/wp-content/uploads/2016/09/bingo.png\" />\n</div>");
-  $templateCache.put("components/winners-helpers/winners-list.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-list.css\">\n<div class=\"title\">\n    <div class=\"comments\" ng-repeat=\"comment in $ctrl.comments\"></div>\n    <table>\n        <tr>\n            <th class=\"image\"></th>\n            <th>Name</th>\n            <th>Times won</th>\n            <th>Times losses</th>\n            <th>Position</th>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Germany</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Mexico</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Austria</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>UK</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Canada</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Italy</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Austria</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>UK</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Canada</td>\n        </tr>\n        <tr>\n            <td><img src=\"https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg\" alt=\"\"></td>\n            <td>Alfreds Futterkiste</td>\n            <td>124</td>\n            <td>424</td>\n            <td>Italy</td>\n        </tr>\n    </table>\n\n    <div class=\"pagination_winners\">\n        <span><i class=\"fas fa-arrow-left\"></i></span>\n        <span class=\"active\">1</span>\n        <span>2</span>\n        <span>3</span>\n        <span>4</span>\n        <span>5</span>\n        <span>6</span>\n        <span>7</span>\n        <span>8</span>\n        <span>9</span>\n        <span>10</span>\n        <span><i class=\"fas fa-arrow-right\"></i></span>\n    </div>\n</div>\n</div>");
+  $templateCache.put("components/winners-helpers/winners-list.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-list.css\">\n<div class=\"title\">\n    <p>{{$ctrl.total}}</p>\n        <table>\n            <tr>\n                <th class=\"image\"></th>\n                <th>Name</th>\n                <th>Times won</th>\n                <th>Times losses</th>\n                <th>Position</th>\n            </tr>\n            <tr ng-repeat=\"user in $ctrl.users_paged\">\n                <td><img src=\"{{user.image}}\" alt=\"\"></td>\n                <td>{{user.username}}</td>\n                <td>{{user.won}}</td>\n                <td>{{user.losses}}</td>\n                <td>1</td>\n            </tr>\n        </table>\n    </div>\n\n    <div class=\"pagination_winners\">\n        <span ng-click=\"$ctrl.changePage($ctrl.selectedPage - 2)\"><i class=\"fas fa-arrow-left\"></i></span>\n        <span ng-click=\"$ctrl.changePage(this.$index)\" class=\"{{ $index+1 == $ctrl.selectedPage ? \'active\' : \'\' }}\" ng-repeat=\"x in [].constructor(pages) track by $index\">\n            {{ $index+1 }}\n        </span>\n        <span ng-click=\"$ctrl.changePage($ctrl.selectedPage)\"><i class=\"fas fa-arrow-right\"></i></span>\n    </div>\n</div>\n</div>");
   $templateCache.put("components/winners-helpers/winners-top.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-top.css\">\n<div class=\"title\">\n    <h1 class=\"logo-font\">Players with the most games won</h1>\n    <hr>\n</div>\n\n<div class=\"podium\">\n    <div class=\"user {{user.class}}\" ng-repeat=\"user in $ctrl.users\">\n        <h2>{{user.position}}</h2>\n        <img class=\"image\" src=\"{{user.image}}\" />\n        <h4 class=\"name\"><strong>@{{user.username}}</strong></h4>\n        <h6>Times Won</h6>\n        <h3>{{user.won}}</h3>\n        <div ui-sref=\"app.details_services({slug:\'{{service.slug}}\'})\" class=\"button-winner-top\">View Profile</div>\n    </div>\n</div>");
 }]);
 
@@ -51443,12 +51509,12 @@ var EditorCtrl = function () {
     this._Articles = Articles;
     this._$state = $state;
 
+    // Si el articulo esta vacio se borra todo para añadir uno nuevo, si no se pinta el seleccionado.
     if (!article) {
       this.article = {
         title: '',
         description: '',
-        body: '',
-        tagList: []
+        image: ''
       };
     } else {
       this.article = article;
@@ -51456,29 +51522,16 @@ var EditorCtrl = function () {
   }
 
   _createClass(EditorCtrl, [{
-    key: 'addTag',
-    value: function addTag() {
-      if (!this.article.tagList.includes(this.tagField)) {
-        this.article.tagList.push(this.tagField);
-        this.tagField = '';
-      }
-    }
-  }, {
-    key: 'removeTag',
-    value: function removeTag(tagName) {
-      this.article.tagList = this.article.tagList.filter(function (slug) {
-        return slug != tagName;
-      });
-    }
-  }, {
     key: 'submit',
     value: function submit() {
       var _this = this;
 
+      // Si esta en true se deshabilita el formulario.
       this.isSubmitting = true;
 
-      this._Articles.save(this.article).then(function (newArticle) {
-        _this._$state.go('app.article', { slug: newArticle.slug });
+      // Enviamos la informacion para guardarla.
+      this._Articles.save(this.article).then(function (res) {
+        _this._$state.go('app.article', { slug: res.slug });
       }, function (err) {
         _this.isSubmitting = false;
         _this.errors = err.data.errors;
@@ -51540,15 +51593,7 @@ function HomeConfig($stateProvider) {
     controller: 'HomeCtrl',
     controllerAs: '$ctrl',
     templateUrl: 'home/home.html',
-    title: 'Home',
-    resolve: {
-      services: ["Services", function services(Services) {
-        return Services.getServices();
-      }],
-      comments: ["Comments", function comments(Comments) {
-        return Comments.getAll();
-      }]
-    }
+    title: 'Home'
   });
 };
 
@@ -51561,38 +51606,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HomeCtrl = function () {
-    HomeCtrl.$inject = ["User", "AppConstants", "services", "comments"];
-    function HomeCtrl(User, AppConstants, services, comments) {
-        'ngInject';
+var HomeCtrl = function HomeCtrl(User, AppConstants) {
+    'ngInject';
 
-        _classCallCheck(this, HomeCtrl);
-
-        this.services = services;
-        this.comments = comments;
-        this.appName = AppConstants.appName;
-
-        // Get list of all tags
-
-        // Set current list to either feed or all, depending on auth status.
-        this.listConfig = {
-            type: User.current ? 'feed' : 'all'
-        };
-    }
-
-    _createClass(HomeCtrl, [{
-        key: 'changeList',
-        value: function changeList(newList) {
-            this._$scope.$broadcast('setListTo', newList);
-        }
-    }]);
-
-    return HomeCtrl;
-}();
+    _classCallCheck(this, HomeCtrl);
+};
+HomeCtrl.$inject = ["User", "AppConstants"];
 
 exports.default = HomeCtrl;
 
@@ -51710,6 +51731,8 @@ var AppHeaderCtrl = function AppHeaderCtrl(AppConstants, User, $scope) {
   $scope.$watch('User.current', function (newUser) {
     _this.currentUser = newUser;
   });
+
+  this.logout = User.logout.bind(User);
 };
 AppHeaderCtrl.$inject = ["AppConstants", "User", "$scope"];
 
@@ -51890,7 +51913,6 @@ var ProfileCtrl = function ProfileCtrl(profile, User) {
   this.profile = profile;
 
   if (User.current) {
-    console.log(this.profile);
     this.isUser = User.current.username === this.profile.username;
   } else {
     this.isUser = false;
@@ -51901,6 +51923,114 @@ ProfileCtrl.$inject = ["profile", "User"];
 exports.default = ProfileCtrl;
 
 },{}],51:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Articles = function () {
+  Articles.$inject = ["AppConstants", "$http", "$q"];
+  function Articles(AppConstants, $http, $q) {
+    'ngInject';
+
+    _classCallCheck(this, Articles);
+
+    this._AppConstants = AppConstants;
+    this._$http = $http;
+    this._$q = $q;
+  }
+
+  _createClass(Articles, [{
+    key: 'query',
+    value: function query(config) {
+      // Create the $http object for this request
+      var request = {
+        url: this._AppConstants.api + '/articles' + (config.type === 'feed' ? '/feed' : ''),
+        method: 'GET',
+        params: config.filters ? config.filters : null
+      };
+      return this._$http(request).then(function (res) {
+        return res.data;
+      });
+    }
+  }, {
+    key: 'get',
+    value: function get(slug) {
+      var deferred = this._$q.defer();
+
+      if (!slug.replace(" ", "")) {
+        deferred.reject("Article slug is empty");
+        return deferred.promise;
+      }
+
+      this._$http({
+        url: this._AppConstants.api + '/articles/' + slug,
+        method: 'GET'
+      }).then(function (res) {
+        return deferred.resolve(res.data.article);
+      }, function (err) {
+        return deferred.reject(err);
+      });
+
+      return deferred.promise;
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy(slug) {
+      return this._$http({
+        url: this._AppConstants.api + '/articles/' + slug,
+        method: 'DELETE'
+      });
+    }
+  }, {
+    key: 'save',
+    value: function save(article) {
+      var request = {};
+
+      if (article.slug) {
+        request.url = this._AppConstants.api + '/articles/' + article.slug;
+        request.method = 'PUT';
+        delete article.slug;
+      } else {
+        request.url = this._AppConstants.api + '/articles';
+        request.method = 'POST';
+      }
+
+      request.data = { article: article };
+
+      return this._$http(request).then(function (res) {
+        return res.data.article;
+      });
+    }
+  }, {
+    key: 'favorite',
+    value: function favorite(slug) {
+      return this._$http({
+        url: this._AppConstants.api + '/articles/' + slug + '/favorite',
+        method: 'POST'
+      });
+    }
+  }, {
+    key: 'unfavorite',
+    value: function unfavorite(slug) {
+      return this._$http({
+        url: this._AppConstants.api + '/articles/' + slug + '/favorite',
+        method: 'DELETE'
+      });
+    }
+  }]);
+
+  return Articles;
+}();
+
+exports.default = Articles;
+
+},{}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51961,7 +52091,7 @@ var Comments = function () {
 
 exports.default = Comments;
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52004,7 +52134,7 @@ var Dummies = function () {
 
 exports.default = Dummies;
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52043,6 +52173,10 @@ var _dummies = require('./dummies.service');
 
 var _dummies2 = _interopRequireDefault(_dummies);
 
+var _articles = require('./articles.service');
+
+var _articles2 = _interopRequireDefault(_articles);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Create the module where our functionality can attach to
@@ -52062,9 +52196,11 @@ servicesModule.service('Toastr', _toastr2.default);
 
 servicesModule.service('Dummies', _dummies2.default);
 
+servicesModule.service('Articles', _articles2.default);
+
 exports.default = servicesModule;
 
-},{"./comments.service":51,"./dummies.service":52,"./jwt.service":54,"./profile.service":55,"./services.service":56,"./toastr.service":57,"./user.service":58,"angular":9}],54:[function(require,module,exports){
+},{"./articles.service":51,"./comments.service":52,"./dummies.service":53,"./jwt.service":55,"./profile.service":56,"./services.service":57,"./toastr.service":58,"./user.service":59,"angular":9}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52108,7 +52244,7 @@ var JWT = function () {
 
 exports.default = JWT;
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52167,7 +52303,7 @@ var Profile = function () {
 
 exports.default = Profile;
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52242,7 +52378,7 @@ var Services = function () {
 
 exports.default = Services;
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52282,7 +52418,7 @@ var Toastr = function () {
 
 exports.default = Toastr;
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52408,10 +52544,12 @@ var User = function () {
         }
     }, {
         key: "getTopUsers",
-        value: function getTopUsers() {
+        value: function getTopUsers(limit_data) {
             return this._$http({
                 url: this._AppConstants.api + '/users/',
-                method: 'GET'
+                method: 'POST',
+                data: { limit: limit_data },
+                dataType: "json"
             }).then(function (res) {
                 return res.data;
             });
@@ -52423,7 +52561,7 @@ var User = function () {
 
 exports.default = User;
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52456,7 +52594,7 @@ settingsModule.controller('SettingsCtrl', _settings4.default);
 
 exports.default = settingsModule;
 
-},{"./settings.config":60,"./settings.controller":61,"angular":9}],60:[function(require,module,exports){
+},{"./settings.config":61,"./settings.controller":62,"angular":9}],61:[function(require,module,exports){
 'use strict';
 
 SettingsConfig.$inject = ["$stateProvider"];
@@ -52482,7 +52620,7 @@ function SettingsConfig($stateProvider) {
 
 exports.default = SettingsConfig;
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52509,8 +52647,6 @@ var SettingsCtrl = function () {
       image: User.current.image,
       username: User.current.username
     };
-
-    this.logout = User.logout.bind(User);
   }
 
   _createClass(SettingsCtrl, [{
@@ -52533,7 +52669,7 @@ var SettingsCtrl = function () {
 
 exports.default = SettingsCtrl;
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52567,7 +52703,7 @@ winnersModule.controller('WinnersCtrl', _winners2.default);
 
 exports.default = winnersModule;
 
-},{"./winners.config.js":63,"./winners.controller":64,"angular":9}],63:[function(require,module,exports){
+},{"./winners.config.js":64,"./winners.controller":65,"angular":9}],64:[function(require,module,exports){
 'use strict';
 
 WinnersConfig.$inject = ["$stateProvider"];
@@ -52586,6 +52722,9 @@ function WinnersConfig($stateProvider) {
         resolve: {
             TopUsers: ["User", function TopUsers(User) {
                 return User.getTopUsers();
+            }],
+            Users100: ["User", function Users100(User) {
+                return User.getTopUsers(100);
             }]
         }
     });
@@ -52593,7 +52732,7 @@ function WinnersConfig($stateProvider) {
 
 exports.default = WinnersConfig;
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52604,7 +52743,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var WinnersCtrl = function WinnersCtrl(TopUsers) {
+var WinnersCtrl = function WinnersCtrl(TopUsers, Users100) {
     'ngInject';
 
     var _this = this;
@@ -52613,6 +52752,7 @@ var WinnersCtrl = function WinnersCtrl(TopUsers) {
 
     this.users_top = TopUsers;
     this.users = [].concat(_toConsumableArray(this.users_top));
+    this.users_list = Users100;
 
     this.users_top = this.users_top.map(function (element, i) {
         if (i == 1) {
@@ -52630,7 +52770,7 @@ var WinnersCtrl = function WinnersCtrl(TopUsers) {
         return element;
     });
 };
-WinnersCtrl.$inject = ["TopUsers"];
+WinnersCtrl.$inject = ["TopUsers", "Users100"];
 
 exports.default = WinnersCtrl;
 

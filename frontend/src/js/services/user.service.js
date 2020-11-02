@@ -108,12 +108,14 @@ export default class User {
         return deferred.promise;
     }
 
-    getTopUsers() {
+    getTopUsers(limit_data) {
         return this._$http({
             url: this._AppConstants.api + '/users/',
-            method: 'GET'
+            method: 'POST',
+            data: { limit: limit_data },
+            dataType: "json"
         }).then(res => {
-            return res.data
+            return res.data;
         });
     }
 }

@@ -129,6 +129,9 @@ a {
     color: white !important;
     text-align: center;
     border: 1px dashed var(--color-app);
+    cursor: pointer;
+    padding: 5px;
+    font-weight: bold;
 }
 
 .button:hover {
@@ -204,4 +207,8 @@ a {
 
 .nav-item.user ul.user-list li {
     list-style-type: none;
+}
+
+.logout:hover > a {
+    color: red !important;
 }

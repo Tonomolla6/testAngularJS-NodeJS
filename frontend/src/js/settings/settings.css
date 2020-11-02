@@ -21,3 +21,17 @@ hr.title {
     border-color: var(--color-app);
     height: 3px;
 }
+
+.center  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center button {
+    width: 200px;
+}
+
+input, textarea {
+    font-size: 17px !important;
+}

@@ -1,5 +1,5 @@
 class BoardCtrl {
-    constructor(User, AppConstants, $scope) {
+    constructor(User, AppConstants, $scope, Articles) {
         'ngInject';
         this.popular_news = Array.from({ length: 3 }, (_, i) => {
             let news = {
@@ -10,6 +10,13 @@ class BoardCtrl {
             };
             return news;
         });
+        this.filters = "";
+
+        if (!this.filters) {
+            Articles.query(config).then(function (res,err) {
+                this.articles = res;
+            });
+        }
     }
 }
 

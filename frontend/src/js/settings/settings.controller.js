@@ -11,9 +11,6 @@ class SettingsCtrl {
       image: User.current.image,
       username: User.current.username
     }
-
-    this.logout = User.logout.bind(User);
-
   }
 
   submitForm() {

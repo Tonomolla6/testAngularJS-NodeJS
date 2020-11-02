@@ -5,18 +5,8 @@ export default class Articles {
     this._AppConstants = AppConstants;
     this._$http = $http;
     this._$q = $q;
-
-
   }
 
-  /*
-    Config object spec:
-
-    {
-      type: String [REQUIRED] - Accepts "all", "feed"
-      filters: Object that serves as a key => value of URL params (i.e. {author:"ericsimons"} )
-    }
-  */
   query(config) {
     // Create the $http object for this request
     let request = {
@@ -85,6 +75,4 @@ export default class Articles {
       method: 'DELETE'
     })
   }
-
-
 }

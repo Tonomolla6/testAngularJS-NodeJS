@@ -1,8 +1,9 @@
 class WinnersCtrl {
-    constructor(TopUsers) {
+    constructor(TopUsers,Users100) {
         'ngInject';
         this.users_top = TopUsers;
         this.users = [...this.users_top];
+        this.users_list = Users100;
 
         this.users_top = this.users_top.map((element, i) => {
             if (i == 1) {
