@@ -18,6 +18,7 @@ class WinnersCtrl {
                 element["class"] = "user2";
                 element["position"] = "Third position";
             }
+
             return element;
         });
     }

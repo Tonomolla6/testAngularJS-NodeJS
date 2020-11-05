@@ -1,18 +1,16 @@
 var mongoose = require('mongoose');
 
 var CommentSchema = new mongoose.Schema({
-  body: String,
-  stars: Number,
+  description: String,
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  services: { type: mongoose.Schema.Types.ObjectId, ref: 'Service' }
+  article: { type: mongoose.Schema.Types.ObjectId, ref: 'Article' }
 }, {timestamps: true});
 
 // Requires population of author
 CommentSchema.methods.toJSONFor = function(user){
   return {
     id: this._id,
-    body: this.body,
-    stars: this.stars,
+    description: this.description,
     createdAt: this.createdAt,
     author: this.author.toProfileJSONFor(user)
   };

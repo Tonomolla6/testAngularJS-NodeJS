@@ -49,6 +49,7 @@ ArticleSchema.methods.toJSONFor = function(user){
     updatedAt: this.updatedAt,
     favorited: user ? user.isFavorite(this._id) : false,
     favoritesCount: this.favoritesCount,
+    commentsCount: this.comments.length,
     author: this.author.toProfileJSONFor(user)
   };
 };

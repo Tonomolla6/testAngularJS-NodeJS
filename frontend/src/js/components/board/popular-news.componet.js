@@ -1,5 +1,5 @@
 class PopularNewsBannerCtrl {
-    constructor(Services, $scope) {
+    constructor($scope) {
         'ngInject';
     }
 }

@@ -11,6 +11,7 @@ class EditorCtrl {
         title: '',
         description: '',
         image: '',
+        private: ''
       }
     } else {
       this.article = article;
@@ -22,6 +23,7 @@ class EditorCtrl {
     this.isSubmitting = true;
 
     // Enviamos la informacion para guardarla.
+    console.log(this.article);
     this._Articles.save(this.article).then(
       (res) => {
         this._$state.go('app.article', { slug: res.slug });

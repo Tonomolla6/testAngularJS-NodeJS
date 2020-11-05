@@ -19,7 +19,7 @@ class FollowBtnCtrl {
     // If following already, unfollow
     if (this.user.following) {
       this._Profile.unfollow(this.user.username).then(
-        () => {
+        (res) => {
           this.isSubmitting = false;
           this.user.following = false;
         }
@@ -28,7 +28,7 @@ class FollowBtnCtrl {
     // Otherwise, follow them
     } else {
       this._Profile.follow(this.user.username).then(
-        () => {
+        (res) => {
           this.isSubmitting = false;
           this.user.following = true;
         }

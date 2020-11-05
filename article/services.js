@@ -46,7 +46,7 @@ router.get('/', auth.optional, function (req, res, next) {
 // Parametros
 router.get('/comments', function (req, res, next) {
     var limit = 4;
-
+    console.log('xema maestre');
     if (typeof req.query.limit !== 'undefined') {
         limit = req.query.limit;
     }

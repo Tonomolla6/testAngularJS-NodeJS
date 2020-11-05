@@ -1,12 +1,12 @@
-class ServicesBannerCtrl {
-    constructor(Services, $scope) {
+class WinnersBannerCtrl {
+    constructor($scope) {
       'ngInject';
     }
 }
 
-let ServicesBanner = {
-    controller: ServicesBannerCtrl,
-    templateUrl: 'components/services-helpers/services-banner.html'
+let WinnersBanner = {
+    controller: WinnersBannerCtrl,
+    templateUrl: 'components/winners-helpers/winners-banner.html'
 };
-
-export default ServicesBanner;
+  
+export default WinnersBanner;

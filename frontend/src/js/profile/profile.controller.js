@@ -3,13 +3,13 @@ class ProfileCtrl {
     'ngInject';
 
     this.profile = profile;
-
+    
     if (User.current) {
       this.isUser = (User.current.username === this.profile.username);
     } else {
       this.isUser = false;
     }
-
+    console.log('jaja');
   }
 }
 

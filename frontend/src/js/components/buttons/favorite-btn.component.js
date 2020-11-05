@@ -11,6 +11,8 @@ class FavoriteBtnCtrl {
     submit() {
         this.isSubmitting = true;
 
+        console.log(this.article);
+
         if (!this._User.current) {
             this._$state.go('app.register');
             return;

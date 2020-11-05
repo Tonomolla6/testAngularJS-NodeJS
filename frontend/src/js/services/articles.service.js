@@ -10,9 +10,9 @@ export default class Articles {
   query(config) {
     // Create the $http object for this request
     let request = {
-      url: this._AppConstants.api + '/articles' + ((config.type === 'feed') ? '/feed' : ''),
+      url: this._AppConstants.api + '/articles',
       method: 'GET',
-      params: config.filters ? config.filters : null
+      params: config ? config : null
     };
     return this._$http(request).then((res) => res.data);
   }
@@ -66,6 +66,13 @@ export default class Articles {
     return this._$http({
       url: this._AppConstants.api + '/articles/' + slug + '/favorite',
       method: 'POST'
+    })
+  }
+
+  getComments(slug) {
+    return this._$http({
+      url: this._AppConstants.api + '/articles/' + slug + '/comments',
+      method: 'GET'
     })
   }
 

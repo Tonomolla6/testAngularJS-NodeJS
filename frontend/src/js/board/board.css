@@ -79,8 +79,14 @@ div.friend {
     margin: 2px 0px;
 }
 
-div.friend:hover,
+
 div.friend.active {
+    border-color: var(--color-app);
+    color: var(--color-app);
+}
+
+div.friend:hover {
+    background: #fff9e0;
     border-color: var(--color-app);
     color: var(--color-app);
 }
@@ -118,4 +124,12 @@ div.friends-separator hr {
     align-items: center;
     font-weight: bold;
     flex-direction: column;
+}
+
+.messages.ng-scope {
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
 }

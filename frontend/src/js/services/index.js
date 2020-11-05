@@ -15,9 +15,6 @@ servicesModule.service('Profile', ProfileService);
 import CommentsService from './comments.service';
 servicesModule.service('Comments', CommentsService);
 
-import ServicesService from './services.service';
-servicesModule.service('Services', ServicesService);
-
 import ToastrService from './toastr.service';
 servicesModule.service('Toastr', ToastrService);
 

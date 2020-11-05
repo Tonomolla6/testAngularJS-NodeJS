@@ -10,33 +10,17 @@
             </div>
         </header>
         <article>
+            <div class="title">
+                {{$ctrl.article.title}}
+            </div>
             <div class="description">
                 {{$ctrl.article.description}}
             </div>
-            <img class="image" src="{{$ctrl.article.image}}" alt="Imagen no disponible">
+            <img ng-if="$ctrl.article.image" class="image" src="{{$ctrl.article.image}}" alt="Imagen no disponible">
+            
             <section class="social_control_post">
-                <a href="/#!/article">
-                    <div>
-                        <p>0</p>
-                        <i class="fas fa-comment"></i>
-                        <!-- <p>Comments</p> -->
-                    </div>
-                </a>
-                <div>
-                    <p>0</p>
-                    <i class="fas fa-heart"></i>
-                    <!-- <p>Likes</p> -->
-                </div>
-                <div>
-                    <p>0</p>
-                    <i class="fas fa-heart-broken"></i>
-                    <!-- <p>Dislike</p> -->
-                </div>
-                <div>
-                    <p>0</p>
-                    <i class="fas fa-share"></i>
-                    <!-- <p>Share</p> -->
-                </div>
+                <comment-btn article="$ctrl.article"></comment-btn>
+                <favorite-btn article="$ctrl.article"></favorite-btn>
             </section>
         </article>
     </div>

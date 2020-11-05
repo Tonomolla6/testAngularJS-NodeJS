@@ -15,6 +15,9 @@ componentsModule.component('followBtn', FollowBtn);
 import FavoriteBtn from './buttons/favorite-btn.component';
 componentsModule.component('favoriteBtn', FavoriteBtn);
 
+import CommentBtn from './buttons/comment-btn.component';
+componentsModule.component('commentBtn', CommentBtn);
+
 import WinnersTop from './winners-helpers/winners-top.component';
 componentsModule.component('winnersTop', WinnersTop);
 
@@ -32,6 +35,9 @@ componentsModule.component('articleDraw', ArticleDraw);
 
 import ArticleComment from './article/article-comment.component';
 componentsModule.component('articleComment', ArticleComment);
+
+import ArticleList from './article/article-list.component';
+componentsModule.component('articleList', ArticleList);
 
 import PopularNewsBanner from './board/popular-news.componet';
 componentsModule.component('popularNews', PopularNewsBanner);

@@ -1,5 +1,5 @@
 class WinnersTopCtrl {
-    constructor(Services, $scope) {
+    constructor($scope) {
         'ngInject';
     }
 }

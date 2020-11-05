@@ -1,5 +1,5 @@
 class BoardCtrl {
-    constructor(User, AppConstants, $scope, Articles) {
+    constructor(User, Profile, Articles, $scope) {
         'ngInject';
         this.popular_news = Array.from({ length: 3 }, (_, i) => {
             let news = {
@@ -10,14 +10,50 @@ class BoardCtrl {
             };
             return news;
         });
-        this.filters = "";
 
-        if (!this.filters) {
-            Articles.query(config).then(function (res,err) {
-                this.articles = res;
+        this._scope = $scope;
+        this.filters = {
+            'friends': ['all'],
+            'limit': 3,
+            'offset': 0,
+            'allfriends': []
+        };
+
+        let _this = this;
+        if (User.current) {
+            Profile.getFollowers(User.current.username).then(function (res, err) {
+                _this.friends = res.followers;
+                if (res.followers) {
+                    res.followers.forEach(element => {
+                        _this.filters.allfriends.push(element.username);
+                    });
+                }
+                _this.filters.allfriends.push(User.current.username);
             });
         }
+
     }
+
+    setFiltersFriends(id) {
+        if (this.filters.friends.indexOf(id) >= 0) {
+            this.filters.friends.splice(this.filters.friends.indexOf(id), 1);
+        } else {
+            if (this.filters.friends.indexOf('all') >= 0 && id != 'all') {
+                this.filters.friends.splice(this.filters.friends.indexOf('all'), 1);
+            } else if (id == 'all') {
+                this.filters.friends = [];
+            }
+            this.filters.friends.push(id);
+        }
+
+        if (this.filters.friends.length == 0) {
+            this.filters.friends.push("all");
+        }
+        this.filters.offset = 0;
+        
+        this._scope.$broadcast('change', true);
+
+    };
 }
 
 export default BoardCtrl;

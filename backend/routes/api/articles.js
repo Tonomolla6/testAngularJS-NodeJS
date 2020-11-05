@@ -4,6 +4,8 @@ var Article = mongoose.model('Article');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 var auth = require('../auth');
+var ObjectId = require("mongoose").Types.ObjectId;
+
 
 // Preload article objects on routes with ':article'
 router.param('article', function(req, res, next, slug) {
@@ -32,41 +34,69 @@ router.get('/', auth.optional, function(req, res, next) {
   var query = {};
   var limit = 20;
   var offset = 0;
+  var sort = {createdAt: 'desc'};
 
+  // Limite
   if(typeof req.query.limit !== 'undefined'){
     limit = req.query.limit;
   }
 
+  // Offset
   if(typeof req.query.offset !== 'undefined'){
     offset = req.query.offset;
   }
 
-  if( typeof req.query.tag !== 'undefined' ){
-    query.tagList = {"$in" : [req.query.tag]};
+  // Sort
+  if(typeof req.query.sort !== 'undefined') {
+    sort = req.query.sort;
   }
 
+  // Friends filter
+  let friends = [];
+  if(typeof req.query.friends !== 'undefined'){
+    if (req.query.friends == 'all') {
+      friends = req.query.allfriends; 
+    } else {
+      friends = req.query.friends;
+    }
+  }
+  
   Promise.all([
-    req.query.author ? User.findOne({username: req.query.author}) : null,
+    req.query.friends ? User.find({username: {$in: friends}}) : null,
     req.query.favorited ? User.findOne({username: req.query.favorited}) : null
   ]).then(function(results){
     var author = results[0];
     var favoriter = results[1];
 
-    if(author){
-      query.author = author._id;
+    // Friends filter
+    let id = [];
+    if (author) {
+      author.forEach(element => {
+        id.push(ObjectId(element._id));
+      });
     }
 
+    if (req.query.friends == 'all') {
+      query = { $or: [{ author: { $in: id }},{ private: false }] };
+    } else {
+      query.author = { $in: id };
+    }
+
+    // Favorites
     if(favoriter){
       query._id = {$in: favoriter.favorites};
     } else if(req.query.favorited){
       query._id = {$in: []};
     }
 
+    console.log("-----------");
+    console.log(query);
+    console.log("-----------");
     return Promise.all([
       Article.find(query)
         .limit(Number(limit))
         .skip(Number(offset))
-        .sort({createdAt: 'desc'})
+        .sort(sort)
         .populate('author')
         .exec(),
       Article.count(query).exec(),
@@ -126,6 +156,7 @@ router.post('/', auth.required, function(req, res, next) {
   User.findById(req.payload.id).then(function(user){
     if (!user) { return res.sendStatus(401); }
 
+    console.log(req.body.article);
     var article = new Article(req.body.article);
 
     article.author = user;
@@ -224,7 +255,9 @@ router.delete('/:article/favorite', auth.required, function(req, res, next) {
 
 // return an article's comments
 router.get('/:article/comments', auth.optional, function(req, res, next){
-  Promise.resolve(req.payload ? User.findById(req.payload.id) : null).then(function(user){
+  Promise.resolve(
+    req.payload ? User.findById(req.payload.id) : null
+    ).then(function(user){
     return req.article.populate({
       path: 'comments',
       populate: {
@@ -253,7 +286,7 @@ router.post('/:article/comments', auth.required, function(req, res, next) {
     comment.author = user;
 
     return comment.save().then(function(){
-      req.article.comments.push(comment);
+      req.article.comments = req.article.comments.concat(comment);
 
       return req.article.save().then(function(article) {
         res.json({comment: comment.toJSONFor(user)});

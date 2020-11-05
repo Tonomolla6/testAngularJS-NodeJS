@@ -67,7 +67,8 @@ img.profile {
 section.social_control_post {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0px 50px;
 }
 
 section.social_control_post div {
@@ -81,10 +82,22 @@ section.social_control_post div:hover {
     color: var(--color-app);
 }
 
+section.social_control_post div.active {
+    color: var(--color-app);
+}
+
 section.social_control_post div p {
     margin: 10px 10px 10px 10px;
 }
 
 section.social_control_post a {
     color: inherit;
+}
+
+.title.ng-binding {
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 5px;
+    padding: 0px 20px;
 }

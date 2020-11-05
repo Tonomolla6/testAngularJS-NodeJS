@@ -8,9 +8,10 @@
             <div class="left-page">
                 <h4>Board</h4>
                 <hr>
-                <article-draw ng-repeat="article in $ctrl.articles" article="article"></article-draw>
+                <article-list prueba="$ctrl.register(childRef)" filters="$ctrl.filters"></article-list>
+
+                <!-- <article-draw ng-if="$ctrl.articles" ng-repeat="article in $ctrl.articles" article="article"></article-draw> -->
             </div>
-            
             
             <!-- FILTERS -->
             <div class="right-page">
@@ -19,7 +20,7 @@
 
                 <!-- SIEMPRE -->
                 <div class="friends">
-                    <div class="friend active">
+                    <div class="friend {{ $ctrl.filters.friends.indexOf('all') >= 0 ? 'active' : '' }}" ng-click="$ctrl.setFiltersFriends('all')">
                         <div class="all-img"><i class="fas fa-users"></i></div>
                         <h6>All the news</h6>
                     </div>
@@ -37,18 +38,9 @@
                 </div>
 
                 <div show-authed="true" class="friends">
-                    <!-- <friends></friends> -->
-                    <div class="friend active">
-                        <img src="https://cdn.pixabay.com/photo/2019/11/29/21/30/girl-4662159_1280.jpg" alt="">
-                        <h6>Carla Gandia Benito</h6>
-                    </div>
-                    <div class="friend">
-                        <img src="https://cdn.pixabay.com/photo/2014/11/30/14/11/cat-551554_960_720.jpg" alt="">
-                        <h6>Marcos Pérez Gomez</h6>
-                    </div>
-                    <div class="friend">
-                        <img src="https://cdn.pixabay.com/photo/2017/01/03/01/38/man-1948310_960_720.jpg" alt="">
-                        <h6>Raul Lopez Juarez</h6>
+                    <div ng-repeat="friend in $ctrl.friends" class="friend {{ $ctrl.filters.friends.indexOf(friend.username) >= 0 ? 'active' : '' }}" ng-click="$ctrl.setFiltersFriends(friend.username)">
+                        <img src="{{friend.image}}" alt="">
+                        <h6>@{{friend.username}}</h6>
                     </div>
                 </div>
             </div>

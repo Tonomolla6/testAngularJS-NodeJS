@@ -157,7 +157,6 @@ router.get('/auth/github/callback',
 );
 
 //GOOGLE AUTH
-
 router.get('/auth/google',
     passport.authenticate('google', {
         scope: ['https://www.googleapis.com/auth/plus.login', , 'https://www.googleapis.com/auth/plus.profile.emails.read', 'https://www.googleapis.com/auth/userinfo.email']

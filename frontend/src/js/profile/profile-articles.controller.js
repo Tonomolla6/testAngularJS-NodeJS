@@ -7,18 +7,24 @@ class ProfileArticlesCtrl {
 
     this.profileState = $state.current.name.replace('app.profile.', '');
 
-    // Both favorites and author articles require the 'all' type
-    this.listConfig = { type: 'all' };
 
     // `main` state's filter should be by author
     if (this.profileState === 'main') {
-      this.listConfig.filters = {author: this.profile.username};
+      this.filters = {
+        'friends': [this.profile.username],
+        'limit': 5,
+        'offset': 0
+      };
       // Set page title
       $rootScope.setPageTitle('@' + this.profile.username);
 
     } else if (this.profileState === 'favorites') {
-      this.listConfig.filters = {favorited: this.profile.username};
-      // Set page title
+      this.filters = {
+        'friends': ['all'],
+        'favorited': this.profile.username,
+        'limit': 5,
+        'offset': 0
+      };
       $rootScope.setPageTitle(`Articles favorited by ${this.profile.username}`);
     }
 
