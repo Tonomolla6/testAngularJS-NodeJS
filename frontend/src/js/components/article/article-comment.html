@@ -4,6 +4,7 @@
         <img class="profile" src="{{$ctrl.comment.author.image}}" alt="">
     </header>
     <article>
+        <delete-btn comment="$ctrl.comment" article="$ctrl.article"></delete-btn>
         <div class="description ng-binding">
             <p style="margin: 8px;"><strong>@{{$ctrl.comment.author.username}}</strong> {{$ctrl.comment.description}}</p>
         </div>

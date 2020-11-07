@@ -9,7 +9,7 @@
         <div class="article">
             <p class="header">All Comments ({{$ctrl.article.commentsCount}})</p>
             <div class="comments">
-                <article-comment ng-repeat="comment in $ctrl.comments" comment="comment"></article-comment>
+                <article-comment ng-repeat="comment in $ctrl.comments" article="$ctrl.article" comment="comment"></article-comment>
             </div>
             <form class="input_comment" ng-submit="$ctrl.newComment()" ng-disabled="$ctrl.form.isSubmitting">
                 <p class="header">New Comment</p>

@@ -25,7 +25,7 @@ export default class Comments {
   }
 
 
-  destroy(articleSlug) {
+  destroy(articleSlug,commentId) {
     return this._$http({
       url: `${this._AppConstants.api}/articles/${articleSlug}/comments/${commentId}`,
       method: 'DELETE',

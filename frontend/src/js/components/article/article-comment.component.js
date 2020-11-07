@@ -10,7 +10,8 @@ class articleCommentCtrl {
 
 let ArticleDraw = {
     bindings: {
-        comment: '='
+        comment: '=',
+        article: '='
     },
     controller: articleCommentCtrl,
     templateUrl: 'components/article/article-comment.html'

@@ -1,5 +1,5 @@
 class ArticleCtrl {
-    constructor(User, AppConstants, article, Comments) {
+    constructor(User, AppConstants, article, Comments, $scope) {
         'ngInject';
         this.appName = AppConstants.appName;
         this.article = article;
@@ -7,10 +7,20 @@ class ArticleCtrl {
         this._Comments = Comments;
 
         this.resetForm();
+        this.getComments()
+        
+        let _this = this;
+        $scope.$on('deleted-comment', function(evt,data){ 
+          if (data) {
+            _this.getComments();
+          }
+      });
+    }
 
-        Comments.getAll(this.article.slug).then(
-          (comments) => this.comments = comments
-        );
+    getComments() {
+      this._Comments.getAll(this.article.slug).then(
+        (comments) => this.comments = comments
+      );
     }
 
     resetForm() {

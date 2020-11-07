@@ -13,9 +13,9 @@ class DeleteBtnCtrl {
     }
 
     deleteElement() {
-        if (this.comments) {
-            this._comments.destroy(this.article.slug,this.comment.slug).then(
-                (success) => this._$scope.$emit('deleted',true)
+        if (this.comment) {
+            this._comments.destroy(this.article.slug,this.comment.id).then(
+                (success) => this._$scope.$emit('deleted-comment',true)
             );
         } else {
             this._articles.destroy(this.article.slug).then(
