@@ -1,4 +1,12 @@
+# Frontend AngularJS
 frontend/node_modules
+frontend/package-lock.json
 frontend/build
-backend/node_modules
-backend/credentials/credentials.js
+
+# Backend
+# - NodeJS
+backend/rest/package-lock.json
+backend/rest/node_modules
+backend/rest/credentials/credentials.js
+
+# - GraphQL
