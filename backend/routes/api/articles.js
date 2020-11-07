@@ -215,6 +215,9 @@ router.delete('/:article', auth.required, function(req, res, next) {
 
     if(req.article.author._id.toString() === req.payload.id.toString()){
       return req.article.remove().then(function(){
+          req.article.comments.forEach(async function(element) {
+              await Comment.findById(element).remove().exec();
+          });
         return res.sendStatus(204);
       });
     } else {
@@ -222,6 +225,15 @@ router.delete('/:article', auth.required, function(req, res, next) {
     }
   }).catch(next);
 });
+
+DeleteVideojuego = async function(videojuego) {
+  videojuego.comments.forEach(async function(element) {
+      await VideojuegoComment.findById(element).remove().exec();
+  });
+  videojuego.save();
+
+  return videojuego.remove();
+}
 
 // Favorite an article
 router.post('/:article/favorite', auth.required, function(req, res, next) {
@@ -237,6 +249,7 @@ router.post('/:article/favorite', auth.required, function(req, res, next) {
     });
   }).catch(next);
 });
+
 
 // Unfavorite an article
 router.delete('/:article/favorite', auth.required, function(req, res, next) {

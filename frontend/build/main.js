@@ -50429,7 +50429,7 @@ _angular2.default.bootstrap(document, ['app'], {
     strictDi: true
 });
 
-},{"./article":13,"./auth":16,"./board":20,"./components":29,"./config/app.config":35,"./config/app.constants":36,"./config/app.run":37,"./config/app.templates":38,"./editor":42,"./home":45,"./layout":48,"./profile":49,"./services":56,"./settings":61,"./winners":64,"angular":9,"angular-messages":2,"angular-toastr":4,"angular-ui-bootstrap":6,"angular-ui-router":7}],11:[function(require,module,exports){
+},{"./article":13,"./auth":16,"./board":20,"./components":30,"./config/app.config":36,"./config/app.constants":37,"./config/app.run":38,"./config/app.templates":39,"./editor":43,"./home":46,"./layout":49,"./profile":50,"./services":57,"./settings":62,"./winners":65,"angular":9,"angular-messages":2,"angular-toastr":4,"angular-ui-bootstrap":6,"angular-ui-router":7}],11:[function(require,module,exports){
 'use strict';
 
 ArticleConfig.$inject = ["$stateProvider"];
@@ -50806,6 +50806,12 @@ var BoardCtrl = function () {
                 _this.filters.allfriends.push(User.current.username);
             });
         }
+
+        $scope.$on('deleted', function (evt, data) {
+            if (data) {
+                $scope.$broadcast('change', true);
+            }
+        });
     }
 
     _createClass(BoardCtrl, [{
@@ -51113,6 +51119,70 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var DeleteBtnCtrl = function () {
+    DeleteBtnCtrl.$inject = ["Articles", "Comments", "User", "$scope"];
+    function DeleteBtnCtrl(Articles, Comments, User, $scope) {
+        'ngInject';
+
+        var _this = this;
+
+        _classCallCheck(this, DeleteBtnCtrl);
+
+        this._articles = Articles;
+        this._comments = Comments;
+        this._$scope = $scope;
+
+        this.$onInit = function () {
+            if (User.current.username != _this.article.author.username) {
+                _this.disabled = true;
+            }
+        };
+    }
+
+    _createClass(DeleteBtnCtrl, [{
+        key: 'deleteElement',
+        value: function deleteElement() {
+            var _this2 = this;
+
+            if (this.comments) {
+                this._comments.destroy(this.article.slug, this.comment.slug).then(function (success) {
+                    return _this2._$scope.$emit('deleted', true);
+                });
+            } else {
+                this._articles.destroy(this.article.slug).then(function (success) {
+                    return _this2._$scope.$emit('deleted', true);
+                });
+            }
+        }
+    }]);
+
+    return DeleteBtnCtrl;
+}();
+
+var DeleteBtn = {
+    bindings: {
+        article: '=',
+        comment: '=',
+        model: '='
+    },
+    transclude: true,
+    controller: DeleteBtnCtrl,
+    templateUrl: 'components/buttons/delete-btn.html'
+};
+
+exports.default = DeleteBtn;
+
+},{}],27:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var FavoriteBtnCtrl = function () {
     FavoriteBtnCtrl.$inject = ["User", "Articles", "$state"];
     function FavoriteBtnCtrl(User, Articles, $state) {
@@ -51169,7 +51239,7 @@ var FavoriteBtn = {
 
 exports.default = FavoriteBtn;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51235,7 +51305,7 @@ var FollowBtn = {
 
 exports.default = FollowBtn;
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -51289,7 +51359,7 @@ var HomeSlider = {
 
 exports.default = HomeSlider;
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51319,6 +51389,10 @@ var _favoriteBtn2 = _interopRequireDefault(_favoriteBtn);
 var _commentBtn = require('./buttons/comment-btn.component');
 
 var _commentBtn2 = _interopRequireDefault(_commentBtn);
+
+var _deleteBtn = require('./buttons/delete-btn.component');
+
+var _deleteBtn2 = _interopRequireDefault(_deleteBtn);
 
 var _winnersTop = require('./winners-helpers/winners-top.component');
 
@@ -51366,6 +51440,8 @@ componentsModule.component('favoriteBtn', _favoriteBtn2.default);
 
 componentsModule.component('commentBtn', _commentBtn2.default);
 
+componentsModule.component('deleteBtn', _deleteBtn2.default);
+
 componentsModule.component('winnersTop', _winnersTop2.default);
 
 componentsModule.component('winnersBanner', _winnersBanner2.default);
@@ -51384,7 +51460,7 @@ componentsModule.component('popularNews', _popularNews2.default);
 
 exports.default = componentsModule;
 
-},{"./article/article-comment.component":21,"./article/article-draw.component":22,"./article/article-list.component":23,"./board/popular-news.componet":24,"./buttons/comment-btn.component":25,"./buttons/favorite-btn.component":26,"./buttons/follow-btn.component":27,"./home/home-slider.component":28,"./list-errors.component":30,"./show-authed.directive":31,"./winners-helpers/winners-banner.component":32,"./winners-helpers/winners-list.component":33,"./winners-helpers/winners-top.component":34,"angular":9}],30:[function(require,module,exports){
+},{"./article/article-comment.component":21,"./article/article-draw.component":22,"./article/article-list.component":23,"./board/popular-news.componet":24,"./buttons/comment-btn.component":25,"./buttons/delete-btn.component":26,"./buttons/favorite-btn.component":27,"./buttons/follow-btn.component":28,"./home/home-slider.component":29,"./list-errors.component":31,"./show-authed.directive":32,"./winners-helpers/winners-banner.component":33,"./winners-helpers/winners-list.component":34,"./winners-helpers/winners-top.component":35,"angular":9}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51399,7 +51475,7 @@ var ListErrors = {
 
 exports.default = ListErrors;
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 ShowAuthed.$inject = ["User"];
@@ -51438,7 +51514,7 @@ function ShowAuthed(User) {
 
 exports.default = ShowAuthed;
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51461,7 +51537,7 @@ var WinnersBanner = {
 
 exports.default = WinnersBanner;
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51527,7 +51603,7 @@ var WinnersList = {
 
 exports.default = WinnersList;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51553,7 +51629,7 @@ var WinnersTop = {
 
 exports.default = WinnersTop;
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 AppConfig.$inject = ["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider"];
@@ -51593,7 +51669,7 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
 
 exports.default = AppConfig;
 
-},{"./auth.interceptor":39}],36:[function(require,module,exports){
+},{"./auth.interceptor":40}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51608,7 +51684,7 @@ var AppConstants = {
 
 exports.default = AppConstants;
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 AppRun.$inject = ["AppConstants", "$rootScope"];
@@ -51637,7 +51713,7 @@ function AppRun(AppConstants, $rootScope) {
 
 exports.default = AppRun;
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
@@ -51650,15 +51726,16 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\n\n<div ui-view></div>\n\n<app-footer></app-footer>\n");
   $templateCache.put("layout/footer.html", "<link rel=\"stylesheet\" href=\"css/layout/footer.css\">\n<footer>\n    <div class=\"container2\">\n        <a class=\"logo-font\" ui-sref=\"app.home\" ng-bind=\"::$ctrl.appName | lowercase\"></a>\n        <span class=\"attribution\">\n          &copy; {{::$ctrl.date | date:\'yyyy\'}}.\n          An interactive learning project from <a href=\"https://thinkster.io\">Thinkster</a>.\n          Code licensed under MIT.\n        </span>\n        <div ng-click=\"$ctrl.dummies()\" class=\"dummies\">\n            Generate dummies\n        </div>\n    </div>\n</footer>");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-light\">\n\n    <div class=\"container\">\n\n        <a class=\"title-logo navbar-brand\" ui-sref=\"app.home\">\n            <i class=\"fas fa-crown\"></i>\n            <p ng-bind=\"::$ctrl.appName | lowercase\"></p>\n        </a>\n\n        <!-- Show this for logged out users -->\n        <ul show-authed=\"false\" class=\"nav navbar-nav pull-xs-right\">\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.home\">\n                    Home\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.board\">\n                    Board\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.winners\">\n                    Top Winners\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link button\" ui-sref-active=\"active\" ui-sref=\"app.login\">\n                    Log in\n                </a>\n            </li>\n        </ul>\n\n        <!-- Show this for logged in users -->\n        <ul show-authed=\"true\" class=\"nav navbar-nav pull-xs-right\">\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.home\">\n                    Home\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.board\">\n                    Board\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.winners\">\n                    Top Winners\n                </a>\n            </li>\n\n            <li class=\"nav-item\">\n                <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.editor\">\n                    <i class=\"ion-compose\"></i>&nbsp;New Article\n                </a>\n            </li>\n\n            <li class=\"nav-item user\">\n                <a class=\"nav-link\" ui-sref-active=\"active\">\n                    <img ng-src=\"{{$ctrl.currentUser.image}}\" class=\"user-pic\" /> {{ $ctrl.currentUser.username }}\n                    <i class=\"fas fa-angle-down\"></i>\n                </a>\n\n                <ul class=\"user-list\">\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.profile.main({ username: $ctrl.currentUser.username})\">\n                            <i class=\"fas fa-user-alt\"></i>&nbsp;Profile\n                        </a>\n                    </li>\n                    <li class=\"nav-item\">\n                        <a class=\"nav-link\" ui-sref-active=\"active\" ui-sref=\"app.settings\">\n                            <i class=\"ion-gear-a\"></i>&nbsp;Settings\n                        </a>\n                    </li>\n                    <li class=\"nav-item logout\">\n                        <a class=\"nav-link\" ng-click=\"$ctrl.logout()\">\n                            <i class=\"fas fa-sign-out-alt\"></i>&nbsp;Log Out\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </ul>\n\n    </div>\n</nav>");
-  $templateCache.put("profile/profile-articles.html", "<article-list limit=\"5\" filters=\"$ctrl.filters\"></article-list>");
+  $templateCache.put("profile/profile-articles.html", "<article-list filters=\"$ctrl.filters\"></article-list>");
   $templateCache.put("profile/profile.html", "<div class=\"profile-page\">\n\n  <!-- User\'s basic info & action buttons -->\n  <div class=\"user-info\">\n    <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-xs-12 col-md-10 offset-md-1\">\n\n          <img ng-src=\"{{::$ctrl.profile.image}}\" class=\"user-img\" />\n          <h4 ng-bind=\"::$ctrl.profile.username\"></h4>\n          <p ng-bind=\"::$ctrl.profile.bio\"></p>\n\n          <a ui-sref=\"app.settings\"\n            class=\"btn btn-sm btn-outline-secondary action-btn\"\n            ng-show=\"$ctrl.isUser\">\n            <i class=\"ion-gear-a\"></i> Edit Profile Settings\n          </a>\n\n          <follow-btn user=\"$ctrl.profile\" ng-hide=\"$ctrl.isUser\"></follow-btn>\n\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!-- Container where User\'s posts & favs are list w/ toggle tabs -->\n  <div class=\"container\">\n    <div class=\"row\">\n\n      <div class=\"col-xs-12 col-md-10 offset-md-1\">\n\n        <!-- Tabs for switching between author articles & favorites -->\n        <div class=\"articles-toggle\">\n          <ul class=\"nav nav-pills outline-active\">\n\n            <li class=\"nav-item\">\n              <a class=\"nav-link active\"\n                ui-sref-active=\"active\"\n                ui-sref=\"app.profile.main({username: $ctrl.profile.username})\">\n                My Articles\n              </a>\n            </li>\n\n            <li class=\"nav-item\">\n              <a class=\"nav-link\"\n                ui-sref-active=\"active\"\n                ui-sref=\"app.profile.favorites({username: $ctrl.profile.username})\">\n                Favorited Articles\n              </a>\n            </li>\n\n          </ul>\n        </div>\n\n        <!-- List of articles -->\n        <div ui-view></div>\n\n\n      </div>\n\n    <!-- End row & container divs -->\n    </div>\n  </div>\n\n</div>\n");
   $templateCache.put("settings/settings.html", "<link rel=\"stylesheet\" href=\"css/settings/settings.css\">\n<div class=\"settings-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-6 offset-md-3 col-xs-12\">\n\n                <h1 class=\"text-xs-center\">Your Settings</h1>\n                <hr class=\"title\">\n                <list-errors errors=\"$ctrl.errors\"></list-errors>\n\n                <form ng-submit=\"$ctrl.submitForm()\">\n                    <fieldset ng-disabled=\"$ctrl.isSubmitting\">\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control\" type=\"text\" placeholder=\"URL of profile picture\" ng-model=\"$ctrl.formData.image\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"text\" placeholder=\"Username\" ng-model=\"$ctrl.formData.username\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <textarea class=\"form-control form-control-lg\" rows=\"8\" placeholder=\"Short bio about you\" ng-model=\"$ctrl.formData.bio\"></textarea>\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"email\" placeholder=\"Email\" ng-model=\"$ctrl.formData.email\" />\n                        </fieldset>\n\n                        <fieldset class=\"form-group\">\n                            <input class=\"form-control form-control-lg\" type=\"password\" placeholder=\"New Password\" ng-model=\"$ctrl.formData.password\" />\n                        </fieldset>\n\n                        <div class=\"center\">\n                            <button class=\"button settings-button\" type=\"submit\">\n                                Update Settings\n                            </button>\n                        </div>\n                    </fieldset>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("winners/winners.html", "<link rel=\"stylesheet\" href=\"css/winners/winners.css\">\n<div class=\"winners-page\">\n    <div class=\"container page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <winners-top users=\"$ctrl.users_top\"></winners-top>\n                \n                <winners-list limit=\"5\" users=\"$ctrl.users_list\"></winners-list>\n            </div>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/article/article-comment.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-comment.css\">\n<div class=\"comment\">\n    <header>\n        <img class=\"profile\" src=\"{{$ctrl.comment.author.image}}\" alt=\"\">\n    </header>\n    <article>\n        <div class=\"description ng-binding\">\n            <p style=\"margin: 8px;\"><strong>@{{$ctrl.comment.author.username}}</strong> {{$ctrl.comment.description}}</p>\n        </div>\n        <p class=\"date\">{{$ctrl.comment.createdAt | date: \'longDate\'}}</p>\n    </article>\n    <hr>\n</div>");
-  $templateCache.put("components/article/article-draw.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-draw.css\">\n\n<div class=\"news\">\n    <div class=\"new\">\n        <header>\n            <img class=\"profile\" src=\"{{$ctrl.article.author.image}}\" alt=\"\">\n            <div class=\"text\">\n                <h6>@{{$ctrl.article.author.username}}</h6>\n                <p>{{$ctrl.article.updatedAt | date: \'longDate\'}}</p>\n            </div>\n        </header>\n        <article>\n            <div class=\"title\">\n                {{$ctrl.article.title}}\n            </div>\n            <div class=\"description\">\n                {{$ctrl.article.description}}\n            </div>\n            <img ng-if=\"$ctrl.article.image\" class=\"image\" src=\"{{$ctrl.article.image}}\" alt=\"Imagen no disponible\">\n            \n            <section class=\"social_control_post\">\n                <comment-btn article=\"$ctrl.article\"></comment-btn>\n                <favorite-btn article=\"$ctrl.article\"></favorite-btn>\n            </section>\n        </article>\n    </div>\n    <hr>\n</div>");
+  $templateCache.put("components/article/article-draw.html", "<link rel=\"stylesheet\" href=\"css/components/article/article-draw.css\">\n<div class=\"news\">\n    <delete-btn article=\"$ctrl.article\"></delete-btn>\n    <div class=\"new\">\n        <header>\n            <img class=\"profile\" src=\"{{$ctrl.article.author.image}}\" alt=\"\">\n            <div class=\"text\">\n                <h6>@{{$ctrl.article.author.username}}</h6>\n                <p>{{$ctrl.article.updatedAt | date: \'longDate\'}}</p>\n            </div>\n        </header>\n        <article>\n            <div class=\"title\">\n                {{$ctrl.article.title}}\n            </div>\n            <div class=\"description\">\n                {{$ctrl.article.description}}\n            </div>\n            <img ng-if=\"$ctrl.article.image\" class=\"image\" src=\"{{$ctrl.article.image}}\" alt=\"Imagen no disponible\">\n            \n            <section class=\"social_control_post\">\n                <comment-btn article=\"$ctrl.article\"></comment-btn>\n                <favorite-btn article=\"$ctrl.article\"></favorite-btn>\n            </section>\n        </article>\n    </div>\n    <hr>\n</div>");
   $templateCache.put("components/article/article-list.html", "<article-draw ng-if=\"$ctrl.articles\" ng-repeat=\"article in $ctrl.articles\" article=\"article\"></article-draw>\n<div ng-if=\"!$ctrl.articles\" class=\"messages\">\n    No se ha encontrado ningun resultado.\n</div>");
   $templateCache.put("components/board/popular-news.html", "<link rel=\"stylesheet\" href=\"css/components/board/popular-news.css\">\n\n<div class=\"title\">\n    <h4>Popular posts</h4>\n    <hr>\n</div>\n\n<div class=\"news_popular\">\n    <div class=\"new_popular {{user.news}}\" ng-repeat=\"new in $ctrl.news\">\n        <div class=\"effect\">\n            <a href=\"/#!/article\"></a>\n            <div class=\"img\" style=\"background-image: url({{new.image}})\"></div>\n        </div>\n        <div class=\"text\">\n            <h5 class=\"name\"><strong>{{new.title}}</strong></h5>\n            <p>{{new.description}}</p>\n        </div>\n    </div>\n</div>");
   $templateCache.put("components/buttons/comment-btn.html", "<div ng-click=\"$ctrl.submit()\">\n    <p>{{$ctrl.article.commentsCount}}</p>\n    <i class=\"fas fa-comment\"></i>\n</div>");
+  $templateCache.put("components/buttons/delete-btn.html", "<link rel=\"stylesheet\" href=\"css/components/buttons/delete-btn.css\">\n<div ng-click=\"$ctrl.deleteElement()\"\n    ng-class=\"{disabled: $ctrl.disabled}\">\n    <i class=\"fas fa-trash-alt\"></i>\n</div>");
   $templateCache.put("components/buttons/favorite-btn.html", "<div ng-class=\"{ \'disabled\' : $ctrl.isSubmitting,\n            \'active\': $ctrl.article.favorited }\"\nng-click=\"$ctrl.submit()\">\n<i class=\"fas fa-heart\"></i>\n  <p>{{$ctrl.article.favoritesCount}}</p>\n</div>");
   $templateCache.put("components/buttons/follow-btn.html", "<button\n  class=\"btn btn-sm action-btn\"\n  ng-class=\"{ \'disabled\': $ctrl.isSubmitting,\n              \'btn-outline-secondary\': !$ctrl.user.following,\n              \'btn-secondary\': $ctrl.user.following }\"\n  ng-click=\"$ctrl.submit()\">\n  <i class=\"ion-plus-round\"></i>\n  &nbsp;\n  {{ $ctrl.user.following ? \'Unfollow\' : \'Follow\' }} {{ $ctrl.user.username }}\n</button>\n");
   $templateCache.put("components/home/home-slider.html", "<link rel=\"stylesheet\" href=\"css/components/home/home-slider.css\">\n<div style=\"height: 400px\">\n    <div uib-carousel active=\"active\" interval=\"$ctrl.imgInterval\" no-wrap=\"$ctrl.noWrapSlides\">\n        <div uib-slide ng-repeat=\"slide in $ctrl.slides track by slide.id\" index=\"slide.id\" style=\"height: 400px\">\n            <img ng-src=\"{{slide.image}}\" class=\"img-fluid\" style=\"filter: blur(2px);\">\n            <div style=\"position: absolute; color: white; z-index: 100; bottom: 50%; width: 100%;\">\n                <h1 class=\"logo-font\">{{slide.titulo}}</h1>\n                <h2>{{slide.text}}</h2>\n\n                <div ng-if=\"slide.button.text\" class=\"buttons-slider\">\n                    <a href=\"{{slide.button.url}}\">\n                        {{slide.button.text}}\n                    </a>\n                </div>\n            </div>\n            <div class=\"carousel-caption\" style=\"padding-bottom:100px;\"></div>\n        </div>\n    </div>\n</div>");
@@ -51667,7 +51744,7 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("components/winners-helpers/winners-top.html", "<link rel=\"stylesheet\" href=\"css/components/winners-helpers/winners-top.css\">\n<div class=\"title\">\n    <h1 class=\"logo-font\">Players with the most games won</h1>\n    <hr>\n</div>\n\n<div class=\"podium\">\n    <div class=\"user {{user.class}}\" ng-repeat=\"user in $ctrl.users\">\n        <h2>{{user.position}}</h2>\n        <img class=\"image\" src=\"{{user.image}}\" />\n        <h4 class=\"name\"><strong>@{{user.username}}</strong></h4>\n        <h6>Times Won</h6>\n        <h3>{{user.won}}</h3>\n        <div ui-sref=\"app.details_services({slug:\'{{service.slug}}\'})\" class=\"button-winner-top\">View Profile</div>\n    </div>\n</div>");
 }]);
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 authInterceptor.$inject = ["JWT", "AppConstants", "$window", "$q"];
@@ -51702,7 +51779,7 @@ function authInterceptor(JWT, AppConstants, $window, $q) {
 
 exports.default = authInterceptor;
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 EditorConfig.$inject = ["$stateProvider"];
@@ -51745,7 +51822,7 @@ function EditorConfig($stateProvider) {
 
 exports.default = EditorConfig;
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51757,8 +51834,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var EditorCtrl = function () {
-  EditorCtrl.$inject = ["Articles", "article", "$state"];
-  function EditorCtrl(Articles, article, $state) {
+  EditorCtrl.$inject = ["Articles", "article", "$state", "$scope"];
+  function EditorCtrl(Articles, article, $state, $scope) {
     'ngInject';
 
     _classCallCheck(this, EditorCtrl);
@@ -51777,6 +51854,12 @@ var EditorCtrl = function () {
     } else {
       this.article = article;
     }
+
+    $scope.$on('deleted', function (evt, data) {
+      if (data) {
+        $scope.go('app.home');
+      }
+    });
   }
 
   _createClass(EditorCtrl, [{
@@ -51803,7 +51886,7 @@ var EditorCtrl = function () {
 
 exports.default = EditorCtrl;
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51837,7 +51920,7 @@ editorModule.controller('EditorCtrl', _editor4.default);
 
 exports.default = editorModule;
 
-},{"./editor.config":40,"./editor.controller":41,"angular":9}],43:[function(require,module,exports){
+},{"./editor.config":41,"./editor.controller":42,"angular":9}],44:[function(require,module,exports){
 'use strict';
 
 HomeConfig.$inject = ["$stateProvider"];
@@ -51858,7 +51941,7 @@ function HomeConfig($stateProvider) {
 
 exports.default = HomeConfig;
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51876,7 +51959,7 @@ HomeCtrl.$inject = ["User", "AppConstants"];
 
 exports.default = HomeCtrl;
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -51910,7 +51993,7 @@ homeModule.controller('HomeCtrl', _home4.default);
 
 exports.default = homeModule;
 
-},{"./home.config":43,"./home.controller":44,"angular":9}],46:[function(require,module,exports){
+},{"./home.config":44,"./home.controller":45,"angular":9}],47:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -51968,7 +52051,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52002,7 +52085,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52034,7 +52117,7 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":46,"./header.component":47,"angular":9}],49:[function(require,module,exports){
+},{"./footer.component":47,"./header.component":48,"angular":9}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52074,7 +52157,7 @@ profileModule.controller('ProfileArticlesCtrl', _profileArticles2.default);
 
 exports.default = profileModule;
 
-},{"./profile-articles.controller":50,"./profile.config":51,"./profile.controller":52,"angular":9}],50:[function(require,module,exports){
+},{"./profile-articles.controller":51,"./profile.config":52,"./profile.controller":53,"angular":9}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52117,7 +52200,7 @@ ProfileArticlesCtrl.$inject = ["profile", "$state", "$rootScope"];
 
 exports.default = ProfileArticlesCtrl;
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 ProfileConfig.$inject = ["$stateProvider"];
@@ -52160,7 +52243,7 @@ function ProfileConfig($stateProvider) {
 
 exports.default = ProfileConfig;
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52187,7 +52270,7 @@ ProfileCtrl.$inject = ["profile", "User"];
 
 exports.default = ProfileCtrl;
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52303,7 +52386,7 @@ var Articles = function () {
 
 exports.default = Articles;
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52351,7 +52434,7 @@ var Comments = function () {
     }
   }, {
     key: 'destroy',
-    value: function destroy(commentId, articleSlug) {
+    value: function destroy(articleSlug) {
       return this._$http({
         url: this._AppConstants.api + '/articles/' + articleSlug + '/comments/' + commentId,
         method: 'DELETE'
@@ -52400,7 +52483,7 @@ var Comments = function () {
 
 exports.default = Comments;
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52443,7 +52526,7 @@ var Dummies = function () {
 
 exports.default = Dummies;
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52503,7 +52586,7 @@ servicesModule.service('Articles', _articles2.default);
 
 exports.default = servicesModule;
 
-},{"./articles.service":53,"./comments.service":54,"./dummies.service":55,"./jwt.service":57,"./profile.service":58,"./toastr.service":59,"./user.service":60,"angular":9}],57:[function(require,module,exports){
+},{"./articles.service":54,"./comments.service":55,"./dummies.service":56,"./jwt.service":58,"./profile.service":59,"./toastr.service":60,"./user.service":61,"angular":9}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52547,7 +52630,7 @@ var JWT = function () {
 
 exports.default = JWT;
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52617,7 +52700,7 @@ var Profile = function () {
 
 exports.default = Profile;
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52657,7 +52740,7 @@ var Toastr = function () {
 
 exports.default = Toastr;
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52800,7 +52883,7 @@ var User = function () {
 
 exports.default = User;
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52833,7 +52916,7 @@ settingsModule.controller('SettingsCtrl', _settings4.default);
 
 exports.default = settingsModule;
 
-},{"./settings.config":62,"./settings.controller":63,"angular":9}],62:[function(require,module,exports){
+},{"./settings.config":63,"./settings.controller":64,"angular":9}],63:[function(require,module,exports){
 'use strict';
 
 SettingsConfig.$inject = ["$stateProvider"];
@@ -52859,7 +52942,7 @@ function SettingsConfig($stateProvider) {
 
 exports.default = SettingsConfig;
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52908,7 +52991,7 @@ var SettingsCtrl = function () {
 
 exports.default = SettingsCtrl;
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -52942,7 +53025,7 @@ winnersModule.controller('WinnersCtrl', _winners2.default);
 
 exports.default = winnersModule;
 
-},{"./winners.config.js":65,"./winners.controller":66,"angular":9}],65:[function(require,module,exports){
+},{"./winners.config.js":66,"./winners.controller":67,"angular":9}],66:[function(require,module,exports){
 'use strict';
 
 WinnersConfig.$inject = ["$stateProvider"];
@@ -52971,7 +53054,7 @@ function WinnersConfig($stateProvider) {
 
 exports.default = WinnersConfig;
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

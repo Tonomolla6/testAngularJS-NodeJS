@@ -2,6 +2,7 @@ div.news {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 div.news hr {
@@ -100,4 +101,15 @@ section.social_control_post a {
     text-align: center;
     margin-bottom: 5px;
     padding: 0px 20px;
+}
+
+delete-btn {
+    position: absolute;
+    cursor: pointer;
+    top: 12px;
+    right: 40px;
+}
+
+delete-btn:hover {
+    color: red;
 }

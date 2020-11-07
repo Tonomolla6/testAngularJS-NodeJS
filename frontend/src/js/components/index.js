@@ -18,6 +18,9 @@ componentsModule.component('favoriteBtn', FavoriteBtn);
 import CommentBtn from './buttons/comment-btn.component';
 componentsModule.component('commentBtn', CommentBtn);
 
+import DeleteBtn from './buttons/delete-btn.component';
+componentsModule.component('deleteBtn', DeleteBtn);
+
 import WinnersTop from './winners-helpers/winners-top.component';
 componentsModule.component('winnersTop', WinnersTop);
 

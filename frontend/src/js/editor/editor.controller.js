@@ -1,5 +1,5 @@
 class EditorCtrl {
-  constructor(Articles, article, $state) {
+  constructor(Articles, article, $state, $scope) {
     'ngInject';
 
     this._Articles = Articles;
@@ -16,6 +16,12 @@ class EditorCtrl {
     } else {
       this.article = article;
     }
+
+    $scope.$on('deleted', function(evt,data){ 
+      if (data) {
+          $scope.go('app.home');
+      }
+    });
   }
 
   submit() {

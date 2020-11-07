@@ -32,6 +32,11 @@ class BoardCtrl {
             });
         }
 
+        $scope.$on('deleted', function(evt,data){ 
+            if (data) {
+                $scope.$broadcast('change', true);
+            }
+        });
     }
 
     setFiltersFriends(id) {
