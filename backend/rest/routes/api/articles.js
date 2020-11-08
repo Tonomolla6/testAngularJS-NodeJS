@@ -226,15 +226,6 @@ router.delete('/:article', auth.required, function(req, res, next) {
   }).catch(next);
 });
 
-DeleteVideojuego = async function(videojuego) {
-  videojuego.comments.forEach(async function(element) {
-      await VideojuegoComment.findById(element).remove().exec();
-  });
-  videojuego.save();
-
-  return videojuego.remove();
-}
-
 // Favorite an article
 router.post('/:article/favorite', auth.required, function(req, res, next) {
   var articleId = req.article._id;
@@ -243,13 +234,13 @@ router.post('/:article/favorite', auth.required, function(req, res, next) {
     if (!user) { return res.sendStatus(401); }
 
     return user.favorite(articleId).then(function(){
+      user.Karma(1);
       return req.article.updateFavoriteCount().then(function(article){
         return res.json({article: article.toJSONFor(user)});
       });
     });
   }).catch(next);
 });
-
 
 // Unfavorite an article
 router.delete('/:article/favorite', auth.required, function(req, res, next) {
@@ -259,6 +250,7 @@ router.delete('/:article/favorite', auth.required, function(req, res, next) {
     if (!user) { return res.sendStatus(401); }
 
     return user.unfavorite(articleId).then(function(){
+      user.Karma(-1);
       return req.article.updateFavoriteCount().then(function(article){
         return res.json({article: article.toJSONFor(user)});
       });
@@ -299,6 +291,7 @@ router.post('/:article/comments', auth.required, function(req, res, next) {
     comment.author = user;
 
     return comment.save().then(function(){
+      user.Karma(1);
       req.article.comments = req.article.comments.concat(comment);
 
       return req.article.save().then(function(article) {
@@ -314,6 +307,7 @@ router.delete('/:article/comments/:comment', auth.required, function(req, res, n
     req.article.save()
       .then(Comment.find({_id: req.comment._id}).remove().exec())
       .then(function(){
+        user.Karma(-1);
         res.sendStatus(204);
       });
   } else {

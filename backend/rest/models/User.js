@@ -13,6 +13,7 @@ var UserSchema = new mongoose.Schema({
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
     hash: String,
     salt: String,
+    karma: { type: Number, default: 0 },
     email: String,
     bio: String,
     type: String,
@@ -114,6 +115,16 @@ UserSchema.methods.isFollowing = function (id) {
     return this.following.some(function (followId) {
         return followId.toString() === id.toString();
     });
+};
+
+// Para añadir o restar karma a los usuarios
+UserSchema.methods.Karma = function (cantidad) {
+    this.karma = this.karma + cantidad;
+    if (this.karma < 0){
+        this.karma = 0;
+    }
+
+    return this.save();
 };
 
 mongoose.model('User', UserSchema);
