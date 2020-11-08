@@ -10,3 +10,6 @@ backend/rest/node_modules
 backend/rest/credentials/credentials.js
 
 # - GraphQL
+backend/graphql/package-lock.json
+backend/graphql/node_modules
+backend/graphql/credentials/credentials.js
