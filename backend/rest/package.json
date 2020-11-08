@@ -40,9 +40,10 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "docker-compose": "^0.23.5",
     "faker": "^5.1.0",
     "newman": "^3.8.2",
-    "swagger-ui-express": "2.0.6",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "swagger-ui-express": "2.0.6"
   }
 }

@@ -17,6 +17,7 @@ const typeDefs = gql`
     }
     input MatchInput {
         result: Boolean
+        author: String
     }
 `;
 

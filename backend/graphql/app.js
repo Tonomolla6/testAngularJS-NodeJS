@@ -43,9 +43,8 @@ function mongooseConnect() {
       mongoose.set('useNewUrlParser', true);
       mongoose.set('useUnifiedTopology', true);
       try {
-        // Dokerizar cambiar por mongo
-        // mongoose.connect('mongodb://mongo/conduit_nodejs');
-        mongoose.connect('mongodb://localhost/conduit_nodejs');
+        mongoose.connect('mongodb://mongo/conduit_nodejs');
+        // mongoose.connect('mongodb://localhost/conduit_nodejs');
       } catch (error) {
         console.log(error);
         
