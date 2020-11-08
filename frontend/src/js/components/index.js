@@ -42,7 +42,10 @@ componentsModule.component('articleComment', ArticleComment);
 import ArticleList from './article/article-list.component';
 componentsModule.component('articleList', ArticleList);
 
-import PopularNewsBanner from './board/popular-news.componet';
+import PopularNewsBanner from './board/popular-news.component';
 componentsModule.component('popularNews', PopularNewsBanner);
+
+import HistoryList from './profile/history-list.component';
+componentsModule.component('historyList', HistoryList);
 
 export default componentsModule;

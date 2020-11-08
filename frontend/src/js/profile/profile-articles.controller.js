@@ -17,17 +17,25 @@ class ProfileArticlesCtrl {
       };
       // Set page title
       $rootScope.setPageTitle('@' + this.profile.username);
-
     } else if (this.profileState === 'favorites') {
       this.filters = {
         'friends': ['all'],
         'favorited': this.profile.username,
         'limit': 5,
         'offset': 0
-      };
+      }
       $rootScope.setPageTitle(`Articles favorited by ${this.profile.username}`);
-    }
 
+    } else if (this.profileState === 'history') {
+      // this.filters = {
+      //   'friends': ['all'],
+      //   'favorited': this.profile.username,
+      //   'limit': 5,
+      //   'offset': 0
+      // };
+      console.log("Funciona bro");
+      $rootScope.setPageTitle(`Your gwme history -> ${this.profile.username}`);
+    }
   }
 }
 

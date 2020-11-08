@@ -32,6 +32,13 @@ function ProfileConfig($stateProvider) {
     controllerAs: '$ctrl',
     templateUrl: 'profile/profile-articles.html',
     title: 'Favorites'
+  })
+  .state('app.profile.history', {
+    url:'',
+    controller: 'ProfileArticlesCtrl',
+    controllerAs: '$ctrl',
+    templateUrl: 'profile/profile-history.html',
+    title: 'History'
   });
 
 };

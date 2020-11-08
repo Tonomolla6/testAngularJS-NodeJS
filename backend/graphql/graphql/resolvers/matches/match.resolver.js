@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Match = mongoose.model('Match');
+const request = require("../../../routes/api/requests");
 
 const resolvers = {
     Query: {
@@ -16,6 +17,16 @@ const resolvers = {
     
             match.save();
             return match;
+        },
+        getMatches: async (root, {input}) => {
+            console.log(input)
+            if (input.username){
+                let usuario = await request.getUser(input.username);
+                return Match.find({'author':usuario.profile.username}).exec();
+                return usuario;
+                console.log(usuario)
+                return Match.find({'author':usuario.username}).exec();
+            }
         }
     }
 };

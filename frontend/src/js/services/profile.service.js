@@ -1,5 +1,5 @@
 export default class Profile {
-  constructor(AppConstants, $http) {
+  constructor(AppConstants, $http, GraphQL) {
     'ngInject';
 
     this._AppConstants = AppConstants;
@@ -34,5 +34,27 @@ export default class Profile {
       method: 'GET'
     };
     return this._$http(request).then((res) => res.data);
+  }
+
+  getHistory(username) {
+    let query = `
+      query getSubscription {
+        subscription(slug:"${slug}") {
+          id
+          type
+          slug
+          user{
+            _id
+            username
+            image
+          }
+          start
+          finish
+          active
+        }
+      }
+    `;
+    console.log(this._GQL.get(query));
+    return this._GQL.get(query);
   }
 }

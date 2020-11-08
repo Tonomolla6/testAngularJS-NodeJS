@@ -8,6 +8,7 @@ const typeDefs = gql`
     }
     extend type Mutation {
         createMatch(input: MatchInput): Match
+        getMatches(input: UserInput): Match
     }
     type Match {
         id: ID!
@@ -18,6 +19,9 @@ const typeDefs = gql`
     input MatchInput {
         result: Boolean
         author: String
+    },
+    input UserInput {
+        username: String
     }
 `;
 

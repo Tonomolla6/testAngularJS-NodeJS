@@ -58,7 +58,7 @@ Both in the backend and in the frontend we have to install the necessary depende
 sudo npm install
 ```
 
-##🚀  Getting started
+## 🚀  Getting started
 
 #### Database
 
@@ -94,6 +94,7 @@ The default browser will automatically open and run the application.
 ![alt text](https://i.ibb.co/9Yts2rt/Screen-Capture-select-area-20201105210054.png)
 ![alt text](https://i.ibb.co/1G1d4LG/Screen-Capture-select-area-20201105210425.png)
 ![alt text](https://i.ibb.co/XtGJVXG/Screen-Capture-select-area-20201105210244.png)
+![alt text](https://i.ibb.co/gt0685v/Screen-Capture-select-area-20201105210549.png)
 ![alt text](https://i.ibb.co/M5HxR9b/Screen-Capture-select-area-20201105210402.png)
 ## Autores ✒️
 
