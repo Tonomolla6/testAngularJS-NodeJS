@@ -33,7 +33,6 @@ class ProfileArticlesCtrl {
       //   'limit': 5,
       //   'offset': 0
       // };
-      console.log("Funciona bro");
       $rootScope.setPageTitle(`Your gwme history -> ${this.profile.username}`);
     }
   }

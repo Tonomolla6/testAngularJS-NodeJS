@@ -13,9 +13,12 @@ const resolvers = {
     },
     Mutation: {
         createMatch: (root, {input}) => {
+            console.log(input);
             const match = new Match(input);
     
+            console.log(match);
             match.save();
+            console.log(match);
             return match;
         },
         getMatches: async (root, {input}) => {

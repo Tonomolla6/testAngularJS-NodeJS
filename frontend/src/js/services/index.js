@@ -24,4 +24,7 @@ servicesModule.service('Dummies', DummiesService);
 import ArticlesService from './articles.service';
 servicesModule.service('Articles', ArticlesService);
 
+import GraphQL from './graphql.service';
+servicesModule.service('GraphQL', GraphQL);
+
 export default servicesModule;

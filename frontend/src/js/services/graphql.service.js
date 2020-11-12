@@ -65,37 +65,34 @@
  
      getAuth(query) {
          let deferred = this._$q.defer();
- 
+
          this._authClient.query({
              query: gql(query)
          }).then(
              (res) => deferred.resolve(res.data),
              (err) => deferred.reject(err)
          );
- 
+
          return deferred.promise;
      }
 
- 
      //Necesita que el user este login
-     mute(query, input,server = this._AppConstants.gql + '/graphqlauth/') {
-         console.log({input});
-         let deferred = this._$q.defer();
-         if (!this._clients.has(server)) {
-             this._clients.set(server, this.createAuthClient());
-         }
-         console.log(this._authClient);
-         this._authClient.mutate({
-             mutation: gql(query),
-             //los {} muy importantes
-             variables: {input},
-             
-         }).then(
-             (res) => deferred.resolve(res.data),
-             (err) => deferred.reject(err)
-         );
-         return deferred.promise;
-     }
- 
+     mute(query,input, server = this._AppConstants.gql + '/graphqlauth/') {
+        console.log({input});
+        let deferred = this._$q.defer();
+        if (!this._clients.has(server)) {
+            this._clients.set(server, this.createAuthClient());
+        }
+        console.log(this._authClient);
+        this._authClient.mutate({
+            mutation: gql(query),
+            //los {} muy importantes
+            variables: {input},
+        }).then(
+            (res) => deferred.resolve(res.data),
+            (err) => deferred.reject(err)
+        );
+        return deferred.promise;
+    }
  };
  

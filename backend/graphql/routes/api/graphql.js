@@ -14,35 +14,34 @@
  https://www.apollographql.com/docs/apollo-server/security/authentication/
  https://www.apollographql.com/docs/apollo-server/data/errors/ */
 
-import { ApolloServer, AuthenticationError } from "apollo-server-express"
-import typeDefs from "../../graphql/schemas/schema";
-import resolvers from "../../graphql/resolvers/resolver";
-const mongoose = require('mongoose');
-const User = mongoose.model('User');
-
-const SERVER = new ApolloServer({
-    typeDefs,
-    resolvers
-});
-
-const SERVERAUTH = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: async ({ req }) => {
-        let user = null;
-        
-        if (req.payload) {
-            user = await User.findById(req.payload.id);
-        } // else do nothing and let user be null
-        
-        // add the user to the context
-        return { user, AuthenticationError };
-    }
-});
-
-const SERVERS = {
-    graphql: SERVER,
-    graphqlauth: SERVERAUTH
-};
-
-export default SERVERS;
+ import { ApolloServer, AuthenticationError } from "apollo-server-express"
+ import typeDefs from "../../graphql/schemas/schema";
+ import resolvers from "../../graphql/resolvers/resolver";
+ const request = require('./requests')
+ 
+ const SERVER = new ApolloServer({
+     typeDefs,
+     resolvers
+ });
+ 
+ const SERVERAUTH = new ApolloServer({
+     typeDefs,
+     resolvers,
+     context: async ({ req }) => {
+         let user = null;
+         if (req.payload) {
+             // Nos conectamos con rest para obtener el token.
+             user = await request.getToken(req.headers.authorization.split(' ')[1]);
+         }
+         
+         // add the user to the context
+         return { user, AuthenticationError };
+     }
+ });
+ 
+ const SERVERS = {
+     graphql: SERVER,
+     graphqlauth: SERVERAUTH
+ };
+ 
+ export default SERVERS;

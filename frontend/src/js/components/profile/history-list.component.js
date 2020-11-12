@@ -3,13 +3,28 @@ class HistoryListCtrl {
       'ngInject';
 
       this._profile = Profile;
+      // console.log(historic);
 
-      this.getHistory(User.current.username);
+      this.playMatch();
     }
 
-    getHistory(username) {
-      console.log(username);
-      this._profile.getHistory().then();
+    playMatch() {
+      this._profile.playMatch().then(
+        (success) =>{
+          console.log(success);
+          // this._toaster.showToastr('success','COMPRADA la subscripción con exito');
+          // setTimeout(() => {
+          //   this._$state.go('app.home');
+          // }, 1500); 
+        }, 
+        (err) =>{
+          console.log(err);
+          // this._toaster.showToastr('error','Error al comprar');
+          // setTimeout(() => {
+          //   this._$state.go('app.home');
+          // }, 1500); 
+        }
+      )
     }
 }
 

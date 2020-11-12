@@ -4,6 +4,7 @@ export default class Profile {
 
     this._AppConstants = AppConstants;
     this._$http = $http;
+    this._GraphQL = GraphQL;
 
   }
 
@@ -36,25 +37,31 @@ export default class Profile {
     return this._$http(request).then((res) => res.data);
   }
 
-  getHistory(username) {
+  getHistoric() {
+    let prueba = "tonomolla6";
     let query = `
-      query getSubscription {
-        subscription(slug:"${slug}") {
-          id
-          type
-          slug
-          user{
-            _id
-            username
-            image
-          }
-          start
-          finish
-          active
+      query getMatches(){
+        matches(input:"${prueba}"){
+          username
         }
       }
     `;
-    console.log(this._GQL.get(query));
-    return this._GQL.get(query);
+    return this._GraphQL.get(query);
+  }
+
+  playMatch() {
+    let MatchInput = {
+      "result": true
+    };
+    let mutation = `
+      mutation createMatch($input:MatchInput!){
+        createMatch(input:$input){
+          id
+          slug
+          result
+        }
+      }
+    `;
+    return this._GraphQL.mute(mutation, MatchInput);
   }
 }

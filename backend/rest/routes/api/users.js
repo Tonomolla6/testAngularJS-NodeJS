@@ -145,6 +145,14 @@ router.post("/users/sociallogin", function(req, res, next) {
     });
 });
 
+// Get user by token.
+router.get('/user/token', auth.required, function(req, res, next){
+    User.findById(req.payload.id).then(function(user){
+      if(!user){ return res.sendStatus(401); }
+      return res.json({user: user});
+    }).catch(next);
+  });
+
 //GITHUB AUTH
 
 router.get("/auth/github", passport.authenticate("github"));

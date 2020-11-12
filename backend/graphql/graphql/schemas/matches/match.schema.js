@@ -14,11 +14,9 @@ const typeDefs = gql`
         id: ID!
         slug: String!
         result: Boolean
-        author: User
     }
     input MatchInput {
         result: Boolean
-        author: String
     },
     input UserInput {
         username: String
