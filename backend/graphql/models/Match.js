@@ -3,7 +3,8 @@ var uniqueValidator = require('mongoose-unique-validator');
 
 var MatchSchema = new mongoose.Schema({
   slug: {type: String, lowercase: true, unique: true},
-  result: Boolean
+  result: Boolean,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {
   timestamps: true,
   usePushEach: true
@@ -29,7 +30,9 @@ MatchSchema.methods.toJSONFor = function(user){
     id: this._id,
     result:this.result,
     slug: this.slug,
-    createdAt: this.createdAt  };
+    createdAt: this.createdAt,
+    author: this.author.toProfileJSONFor(user)
+  };
 };
 
 mongoose.model('Match', MatchSchema);

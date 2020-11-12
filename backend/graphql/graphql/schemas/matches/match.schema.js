@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-express';
 const typeDefs = gql`
     extend type Query {
         match(slug: String!): Match
-        matches: [Match]
+        matches(username: String): [Match]
         matchesResults(slug: String!): [Match]
     }
     extend type Mutation {
@@ -14,6 +14,7 @@ const typeDefs = gql`
         id: ID!
         slug: String!
         result: Boolean
+        author: User
     }
     input MatchInput {
         result: Boolean

@@ -37,12 +37,16 @@ export default class Profile {
     return this._$http(request).then((res) => res.data);
   }
 
-  getHistoric() {
-    let prueba = "tonomolla6";
+  getHistoric(username) {
     let query = `
-      query getMatches(){
-        matches(input:"${prueba}"){
-          username
+      query getMatches {
+        matches(username:"${username}"){
+          result
+          author {
+            email
+            username
+            image
+          }
         }
       }
     `;
@@ -57,8 +61,6 @@ export default class Profile {
       mutation createMatch($input:MatchInput!){
         createMatch(input:$input){
           id
-          slug
-          result
         }
       }
     `;

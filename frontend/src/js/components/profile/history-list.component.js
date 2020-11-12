@@ -1,15 +1,17 @@
 class HistoryListCtrl {
-    constructor(Profile, User) {
+    constructor(Profile, User ) {
       'ngInject';
 
       this._profile = Profile;
+      this._user = User;
+      // console.log(User);
       // console.log(historic);
 
-      this.playMatch();
+      this.getHistoric();
     }
 
-    playMatch() {
-      this._profile.playMatch().then(
+    getHistoric() {
+      this._profile.getHistoric(this._user.current.username).then(
         (success) =>{
           console.log(success);
           // this._toaster.showToastr('success','COMPRADA la subscripción con exito');

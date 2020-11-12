@@ -153,6 +153,34 @@ router.get('/user/token', auth.required, function(req, res, next){
     }).catch(next);
   });
 
+router.param('username', function(req, res, next, username){
+    User.findOne({username: username}).then(function(user){
+      if (!user) { return res.sendStatus(404); }
+  
+      req.user = user;
+  
+      return next();
+    }).catch(next);
+});
+
+router.param('iduser', function(req, res, next, iduser){
+    User.findOne({_id: iduser}).then(function(user){
+      if (!user) { return res.sendStatus(404); }
+  
+      req.user = user;
+  
+      return next();
+    }).catch(next);
+  });
+
+router.get('/username/:username', function(req, res, next){
+    return res.json(req.user);
+});
+
+router.get('/iduser/:iduser', function(req, res, next){
+    return res.json(req.user);
+});
+
 //GITHUB AUTH
 
 router.get("/auth/github", passport.authenticate("github"));
