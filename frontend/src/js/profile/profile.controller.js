@@ -9,7 +9,6 @@ class ProfileCtrl {
     } else {
       this.isUser = false;
     }
-    console.log('jaja');
   }
 }
 

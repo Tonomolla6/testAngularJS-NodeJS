@@ -1,9 +1,10 @@
 class ProfileArticlesCtrl {
-  constructor(profile, $state, $rootScope) {
+  constructor(profile, $state, $rootScope, User) {
     'ngInject';
 
     // The profile for this page, resolved by UI Router
     this.profile = profile;
+    this._user = User;
 
     this.profileState = $state.current.name.replace('app.profile.', '');
 
@@ -33,7 +34,7 @@ class ProfileArticlesCtrl {
       //   'limit': 5,
       //   'offset': 0
       // };
-      $rootScope.setPageTitle(`Your gwme history -> ${this.profile.username}`);
+      $rootScope.setPageTitle(`Your game history -> ${this.profile.username}`);
     }
   }
 }

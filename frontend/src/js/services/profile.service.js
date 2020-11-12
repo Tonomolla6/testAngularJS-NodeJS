@@ -55,7 +55,7 @@ export default class Profile {
 
   playMatch() {
     let MatchInput = {
-      "result": true
+      "result": Math.floor((Math.random() * 2)) ? true : false,
     };
     let mutation = `
       mutation createMatch($input:MatchInput!){

@@ -83,7 +83,6 @@
         if (!this._clients.has(server)) {
             this._clients.set(server, this.createAuthClient());
         }
-        console.log(this._authClient);
         this._authClient.mutate({
             mutation: gql(query),
             //los {} muy importantes
