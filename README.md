@@ -1,6 +1,6 @@
-# testAngularJS-NodeJS
+# BingoKing
 
-Description que aun no he pensado.
+The web page where the winners post their games created with AngularJS and with two communicated bakends nodeJS and graphQL, using mongoDB to save the data
 
 ## 📋 Technologies
 #### Frontend
